@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CraftUI
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: a57758cb28c7e4e63902796b33f64e05, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: d9f117b028f592f42baad6d10d69337c, type: 3}
+  - {fileID: 21300000, guid: 9507fdb09922640baae2f902e7df6c9d, type: 3}
+  - {fileID: 21300000, guid: 2af2a2e04a7484836a5b4ac5127614f5, type: 3}
+  - {fileID: 21300000, guid: 63122b11879b762428629aeb4e210086, type: 3}
+  - {fileID: 21300000, guid: 43f69d8157be14ba18997f02429f3fda, type: 3}
+  - {fileID: 21300000, guid: 7b2c43d1b80a5fc4f8f55b3d59477d44, type: 3}
+  - {fileID: 21300000, guid: aebda062a4e8e411585da083100579d5, type: 3}
+  - {fileID: -2413806693520163455, guid: f47fbfe2fdc13964092648955cad8dff, type: 3}
+  - {fileID: 21300000, guid: c60a9c13583d346ce95bc8a2f0d66f32, type: 3}
+  - {fileID: 21300000, guid: 57770133ced6843cf9e773ab8d39db5a, type: 3}
+  - {fileID: 21300000, guid: 1e8d91b3517cd4dfe9086503494cc00c, type: 3}
+  - {fileID: 21300000, guid: 98b9b3547de8e2f44ae0bd64e77f9a85, type: 3}
+  - {fileID: 21300000, guid: 3b34e735e99da438fba9efaa2433ae07, type: 3}
+  - {fileID: 21300000, guid: 4c885556498854df0b528e1d8255397d, type: 3}
+  - {fileID: 21300000, guid: bf1672865e6bdd94295d61c77f98d9d0, type: 3}
+  - {fileID: 21300000, guid: be925ec6c38084adb959271fe581c42f, type: 3}
+  - {fileID: 21300000, guid: 380e54295434a44d0960fbd4a5674f10, type: 3}
+  - {fileID: 21300000, guid: 8887d199f32c142f1a1ea4ec283ee3dc, type: 3}
+  - {fileID: 21300000, guid: c87c91b99208449b0aed67dcabb0c975, type: 3}
+  - {fileID: 21300000, guid: f85aa2ea5dec942e286e68f74201de41, type: 3}
+  - {fileID: 21300000, guid: 98dbae1b612a8408ca9252d6c026b3ca, type: 3}
+  - {fileID: 21300000, guid: 71c530cb27f7f7c4fb88ee6b723c8370, type: 3}
+  - {fileID: 21300000, guid: 2e8124cbb405dc2499d4d668ba19589f, type: 3}
+  - {fileID: 21300000, guid: d149563c700ef422ebe4746f8334dc6c, type: 3}
+  - {fileID: 21300000, guid: 9b091c8ced2e49a4faabcc75f48663b3, type: 3}
+  - {fileID: 21300000, guid: 7391c95db40ff45cab5edb78c1eea28b, type: 3}
+  - {fileID: 21300000, guid: c4805e6d0ad2f404bae09c8adf06a0b2, type: 3}
+  - {fileID: 21300000, guid: 09b3fdad3ab48ba469c96b6aab6ffa79, type: 3}
+  - {fileID: 21300000, guid: 248bff1e8c3c98e41bab6f708bb56c4b, type: 3}
+  - {fileID: 21300000, guid: c338005e2e3a24abb9f4a4fa01be021e, type: 3}
+  - {fileID: 21300000, guid: f06e7b9f2a441ed4dad134e9ad30ef42, type: 3}
+  - {fileID: 21300000, guid: 634a7fbf403a64a3cbf0d0dacfeae232, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - primitive-circle-flat
+  - button-nothanks
+  - button-grey
+  - PopUpContainer
+  - button-orange
+  - generic-square
+  - button-yellow-2
+  - Circle
+  - button-green
+  - Box
+  - button-purple
+  - multiplier-bar-arrow
+  - UI_Button_Yellow
+  - PopUpBg (1)
+  - setting-icon
+  - UI_Button_Blue
+  - button-bg-purple
+  - UI_Button_Green
+  - UI_Button_Yellow_new
+  - UI_RewardCoinPile
+  - Icon_WhiteIcon_Restart
+  - button-green - Copy
+  - button-close
+  - button-bg-blue
+  - banner-pink
+  - Icon_WhiteIcon_Sound
+  - UI_Currency_Coin
+  - ad-watch-icon
+  - vibrate-icon
+  - button-blue
+  - multiplier-bar-arched
+  - button-red
+  m_RenderDataMap: {}
+  m_Tag: CraftUI
+  m_IsVariant: 0

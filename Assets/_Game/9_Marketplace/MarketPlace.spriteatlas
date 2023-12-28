@@ -1,0 +1,106 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MarketPlace
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: b621570094156438d886c6b68940df4a, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: cbe25830d8d034c79b921742cef105bb, type: 3}
+  - {fileID: 21300000, guid: 1c5d64e00ba3c443c859e451eddc63d1, type: 3}
+  - {fileID: 21300000, guid: aa6918814893b4b599f8850aece5c57c, type: 3}
+  - {fileID: 21300000, guid: fe877ed10003d46f09cf4fc2226460c2, type: 3}
+  - {fileID: 21300000, guid: 1a577ee1d19de47fc96dfb77a8c6a241, type: 3}
+  - {fileID: 21300000, guid: f584cc424ef964a848c8f147f7a4c826, type: 3}
+  - {fileID: 21300000, guid: 7a9f17239b1fa461898464782ad669cf, type: 3}
+  - {fileID: 21300000, guid: 4271a243430f44c76b4eb8133e944fe2, type: 3}
+  - {fileID: 21300000, guid: b90fa3438c5f34783bc341c151ff5705, type: 3}
+  - {fileID: 21300000, guid: b27369b3e67b34b5987102bf712be7c5, type: 3}
+  - {fileID: 21300000, guid: 8e3ef7c32658446d79da27924d66156c, type: 3}
+  - {fileID: 21300000, guid: 82c83d34d0d594d2a8a8ff2d4c2b8e0d, type: 3}
+  - {fileID: 21300000, guid: f77eb2250f54841c2bd21b0bcb8d0b53, type: 3}
+  - {fileID: 21300000, guid: 928be1a594e3d4e1c8ebaf7289d11df7, type: 3}
+  - {fileID: 21300000, guid: 3788a8b540f174292a33c1c7bdc12e3a, type: 3}
+  - {fileID: 21300000, guid: a6e764062c2cc4209969105906823c49, type: 3}
+  - {fileID: 21300000, guid: e5de1666a62ad4ac28e388fa2c576f15, type: 3}
+  - {fileID: 21300000, guid: fcaed347a3347418ea7e598447a2fadb, type: 3}
+  - {fileID: 21300000, guid: 64b94287c922c4ffd87dcc484fa33461, type: 3}
+  - {fileID: 21300000, guid: 607c9ff8a461149309f48d085418f3cc, type: 3}
+  - {fileID: 21300000, guid: 44696a097381d4129adf53092b5c5dc6, type: 3}
+  - {fileID: 21300000, guid: 6f0a4a7afa2864a3a9a0987463dae975, type: 3}
+  - {fileID: 21300000, guid: 4788dc8ad5528426b922411d4ae3721a, type: 3}
+  - {fileID: 21300000, guid: ecc99eea38c284bd8b42fcf39e3647fc, type: 3}
+  - {fileID: 21300000, guid: 2aa9837bb79234d4cb916949a82a1977, type: 3}
+  - {fileID: 21300000, guid: 6336ff9bbd1664c1f8068d0d51762b67, type: 3}
+  - {fileID: 21300000, guid: 268c69ab64024414985960fa89d40692, type: 3}
+  - {fileID: 21300000, guid: edb4897e7608846fd821e062e159eae4, type: 3}
+  - {fileID: 21300000, guid: ac8c94beeaba5468fa8a3d0882f937d8, type: 3}
+  - {fileID: 21300000, guid: 084c823f6915449ce9c5832a839a02df, type: 3}
+  - {fileID: 21300000, guid: 6e22906fcb2ca49c4b502f007bef2594, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - UI_StoreIcon
+  - _Item_Ground_2
+  - UI_StoreItemBg
+  - UI_PageHeader
+  - _item_Ground_Ice
+  - UI_ItemFrame
+  - UI_SkinIcon
+  - _item_ground_Wood
+  - Screenshot 2023-11-27 at 20.38.35
+  - Screenshot 2023-11-27 at 20.38.21
+  - UI_SpatulaIcon
+  - UI_PageHeaderTabs
+  - Roll_Master_Shawel
+  - Roll_Master_Spatula
+  - Roll_Master_Knife
+  - Screenshot 2023-11-27 at 20.40.07
+  - Roll_Master_Skateboard
+  - UI_CheckIcon
+  - Screenshot 2023-11-27 at 20.37.31
+  - _Item_Ground_1
+  - _item_ground_Stone
+  - Roll_Master_Gutar
+  - Screenshot 2023-11-27 at 20.38.06
+  - _Item_Ground_Grass
+  - Roll_Master_Console
+  - UI_StoreButton_Purple
+  - Roll_Master_Pan
+  - Roll_Master_Palette
+  - UI_EnvironmentsIcon
+  - Screenshot 2023-11-27 at 20.37.53
+  - Roll_Master_Racket
+  m_RenderDataMap: {}
+  m_Tag: MarketPlace
+  m_IsVariant: 0

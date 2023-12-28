@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b69fc830c24e5fab21f5ed80d2747a, type: 3}
+  m_Name: SingleJigsawData_0007
+  m_EditorClassIdentifier: 
+  Name: Dog- Corgi
+  Id: 7
+  MainSprite: {fileID: -5681439101723563988, guid: 6a233889b09cb442da31172e7f059222, type: 3}
+  JigsawPieceDatas:
+  - {fileID: 11400000, guid: eef4d83f653c04401a0098e5a750c30a, type: 2}
+  - {fileID: 11400000, guid: f2c06c701c4dc4a6f8a63bc3633d7732, type: 2}
+  - {fileID: 11400000, guid: 03eae843bc4084576ac84e3d7327dcb0, type: 2}
+  - {fileID: 11400000, guid: 3c688cb78fc784385a6117bb05bbd4ce, type: 2}
+  - {fileID: 11400000, guid: db82e4a3e087f47dea35050da22a2223, type: 2}
+  - {fileID: 11400000, guid: 378244322f2814e5d83646e59e3f2c67, type: 2}
+  UnlockLevel: 145

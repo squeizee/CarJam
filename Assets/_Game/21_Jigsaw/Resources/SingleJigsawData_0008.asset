@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b69fc830c24e5fab21f5ed80d2747a, type: 3}
+  m_Name: SingleJigsawData_0008
+  m_EditorClassIdentifier: 
+  Name: Lion
+  Id: 8
+  MainSprite: {fileID: 3685772913777985649, guid: aae1ffcad55124f6a8c33fb7d60afadc, type: 3}
+  JigsawPieceDatas:
+  - {fileID: 11400000, guid: cc0a825b8fe0441cf8253ab4504baedb, type: 2}
+  - {fileID: 11400000, guid: be805c3a8dd844d7a958f884b5ce89fa, type: 2}
+  - {fileID: 11400000, guid: 0aa238b46766c4ae09be1c79a31a4109, type: 2}
+  - {fileID: 11400000, guid: d66cef8b276c348bc9a6d6d4492676b3, type: 2}
+  - {fileID: 11400000, guid: 6dba57df4b00d43d98f0b341de61d8fd, type: 2}
+  - {fileID: 11400000, guid: e8ad87b80083047168f1acf53f8c886d, type: 2}
+  UnlockLevel: 169

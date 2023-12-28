@@ -1,0 +1,237 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d35288620874543ae6eb49e3cdd1cc3, type: 3}
+  m_Name: SmallRaceSystemSo
+  m_EditorClassIdentifier: 
+  Screens: []
+  RaceManager: {fileID: 1256981170649574733, guid: 33445250297004e469e100ac6730f252, type: 3}
+  RaceConfig:
+    RaceTitle: Race Started!
+    RaceDescription: Race other players to complete 0 levels and win amazing rewards
+    AllRewards:
+    - mainRewardImage: {fileID: 21300000, guid: 34cf56ff1ed7c4b67b002ce98c9ca487, type: 3}
+      Rewards:
+      - reward_id: rank_01_reward_01
+        reward_img: {fileID: 21300000, guid: f85aa2ea5dec942e286e68f74201de41, type: 3}
+        amount: 1000
+    - mainRewardImage: {fileID: 21300000, guid: da6b574711fd540d49ec1c9b66204117, type: 3}
+      Rewards:
+      - reward_id: rank_01_reward_01
+        reward_img: {fileID: 21300000, guid: f85aa2ea5dec942e286e68f74201de41, type: 3}
+        amount: 300
+    - mainRewardImage: {fileID: 21300000, guid: 6d3d109c8c6ae4c0cae5b6f5c86208eb, type: 3}
+      Rewards:
+      - reward_id: rank_01_reward_01
+        reward_img: {fileID: 21300000, guid: f85aa2ea5dec942e286e68f74201de41, type: 3}
+        amount: 100
+    Duration: 5400
+    MinInviteInterval: 36000
+    AdvancedProperties:
+      autoOfferRaceAtStart: 0
+      JoinType: 0
+      joinRequirement:
+        requirement_img: {fileID: 21300000, guid: bdca2c7f7f1dd43688ab44b726aeafd8, type: 3}
+        amount: 150
+      ReOfferRaceOnSessionExit: 0
+      ReturnJoinType: 0
+      returnJoinRequirement:
+        requirement_img: {fileID: 21300000, guid: bdca2c7f7f1dd43688ab44b726aeafd8, type: 3}
+        amount: 50
+    Leaderboard:
+      leaderboardData:
+        leaderboardId: 
+        playerProfile:
+          name: AAAA
+          icon: {fileID: 21300000, guid: bdb0f287f7777df47a34a01bfe643114, type: 3}
+        participantsOrderType: 0
+        bots:
+        - profile:
+            name: BBBB
+            icon: {fileID: 0}
+          animationCurve:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 6.143868
+              outSlope: 6.143868
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.047984645
+            - serializedVersion: 3
+              time: 0.33
+              value: 1
+              inSlope: 1.2866739
+              outSlope: -0.0065531787
+              tangentMode: 1
+              weightedMode: 0
+              inWeight: 0.25551102
+              outWeight: 1
+            - serializedVersion: 3
+              time: 1
+              value: 1
+              inSlope: 0.009990052
+              outSlope: 0.009990052
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.9892312
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          hardcodeBotRank: 1
+          dynamicClosenessToPlayerScore: 0
+        - profile:
+            name: CCCC
+            icon: {fileID: 21300000, guid: 3d48991e0bd98c845b629dab0d09f609, type: 3}
+          animationCurve:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 3.1177835
+              outSlope: 3.1177835
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.99250126
+            - serializedVersion: 3
+              time: 0.12957047
+              value: 0.41521415
+              inSlope: 4.07019
+              outSlope: 2.3593004
+              tangentMode: 1
+              weightedMode: 0
+              inWeight: 0.33333334
+              outWeight: 0.21235299
+            - serializedVersion: 3
+              time: 0.4
+              value: 1
+              inSlope: 1.8266873
+              outSlope: -0.007555119
+              tangentMode: 1
+              weightedMode: 0
+              inWeight: 0.26778993
+              outWeight: 0.9789336
+            - serializedVersion: 3
+              time: 1
+              value: 1
+              inSlope: 0
+              outSlope: 0
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          hardcodeBotRank: 2
+          dynamicClosenessToPlayerScore: 0
+        - profile:
+            name: DDDD
+            icon: {fileID: 21300000, guid: 2546087151c9aeb46a64763760315019, type: 3}
+          animationCurve:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 4.6266775
+              outSlope: 4.6266775
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.16460994
+            - serializedVersion: 3
+              time: 0.19822349
+              value: 0.5648687
+              inSlope: 3.9805932
+              outSlope: 1.1658723
+              tangentMode: 1
+              weightedMode: 0
+              inWeight: 0.28141686
+              outWeight: 0.21885227
+            - serializedVersion: 3
+              time: 0.5
+              value: 1
+              inSlope: 1.1564858
+              outSlope: 0.003154477
+              tangentMode: 1
+              weightedMode: 0
+              inWeight: 0.30134356
+              outWeight: 1
+            - serializedVersion: 3
+              time: 1
+              value: 1
+              inSlope: 0.006433385
+              outSlope: 0.006433385
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0.98829496
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          hardcodeBotRank: 3
+          dynamicClosenessToPlayerScore: 0
+        - profile:
+            name: EEEE
+            icon: {fileID: 21300000, guid: 36cfdae5052ecda4dbf926e899e770b6, type: 3}
+          animationCurve:
+            serializedVersion: 2
+            m_Curve:
+            - serializedVersion: 3
+              time: 0
+              value: 0
+              inSlope: 4.803388
+              outSlope: 4.803388
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0.07037748
+            - serializedVersion: 3
+              time: 0.123350605
+              value: 0.48262686
+              inSlope: 3.3381588
+              outSlope: 3.3381588
+              tangentMode: 1
+              weightedMode: 0
+              inWeight: 0.33333334
+              outWeight: 0.33333334
+            - serializedVersion: 3
+              time: 0.35
+              value: 1
+              inSlope: 1.34498
+              outSlope: -0.007014219
+              tangentMode: 1
+              weightedMode: 0
+              inWeight: 0.33333334
+              outWeight: 1
+            - serializedVersion: 3
+              time: 1
+              value: 1
+              inSlope: 0
+              outSlope: 0
+              tangentMode: 0
+              weightedMode: 0
+              inWeight: 0
+              outWeight: 0
+            m_PreInfinity: 2
+            m_PostInfinity: 2
+            m_RotationOrder: 4
+          hardcodeBotRank: 4
+          dynamicClosenessToPlayerScore: 0
+        totalScore: 30
+        onlineTime: 20

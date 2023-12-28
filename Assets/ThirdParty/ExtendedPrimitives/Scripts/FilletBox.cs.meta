@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 13d9d665aeeb50f4ea6468134f0f918a
+labels:
+- ExtendedPrimitives
+timeCreated: 1544165416
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {fileID: 2800000, guid: 18a9d0d914149414baad9ef1fe7b33da, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

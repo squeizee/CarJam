@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b69fc830c24e5fab21f5ed80d2747a, type: 3}
+  m_Name: SingleJigsawData_0006
+  m_EditorClassIdentifier: 
+  Name: Peacock
+  Id: 6
+  MainSprite: {fileID: -7861354971140666234, guid: edfda77a8362d4140905b1e0230e2e04, type: 3}
+  JigsawPieceDatas:
+  - {fileID: 11400000, guid: 6984a98dc50f74ee68f3dfd32ff60077, type: 2}
+  - {fileID: 11400000, guid: 6dc8743017e5947f783602cd518ffd5f, type: 2}
+  - {fileID: 11400000, guid: e732083dfe93547408446cdc002fc9ef, type: 2}
+  - {fileID: 11400000, guid: 29dfbec0dda4740e0bd0826c7a01fe92, type: 2}
+  - {fileID: 11400000, guid: 27761b2ad78464f3188b1103cfc7b40a, type: 2}
+  UnlockLevel: 127

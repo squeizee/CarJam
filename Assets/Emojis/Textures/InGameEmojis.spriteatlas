@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: InGameEmojis
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 1024
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: b02e437a7156d4cd792d2516dcbce04d, type: 3}
+    - {fileID: 2800000, guid: 228ea835590194af180dc7aab4d19835, type: 3}
+    - {fileID: 2800000, guid: 9947b4c6ef81e44998a29da8c6c8956b, type: 3}
+    - {fileID: 2800000, guid: 7b6c0ea677642449088ceb52ba689141, type: 3}
+    - {fileID: 2800000, guid: 1d9ef733cc5064e269c368da2e73d2be, type: 3}
+    - {fileID: 2800000, guid: c40832fffd8ed47ceaf5d84d307bfa33, type: 3}
+    - {fileID: 2800000, guid: 7b6c0ea677642449088ceb52ba689141, type: 3}
+    - {fileID: 2800000, guid: 1ceea0a4a9ba5464184c6dac371232a7, type: 3}
+    - {fileID: 2800000, guid: ef1bd9cf1eb8c4f1a98f1302ea997462, type: 3}
+    - {fileID: 2800000, guid: eec43033fa31f4911977d31d11d87937, type: 3}
+    - {fileID: 2800000, guid: 66713edf8ac36412697c653437ac8cbb, type: 3}
+    - {fileID: 2800000, guid: 118e5d6c25a154f47a1da7ae8d8900e4, type: 3}
+    - {fileID: 2800000, guid: dd6c7859f73f341f0a607d1ecf52c449, type: 3}
+    - {fileID: 2800000, guid: 3cb754d2901e64d849ab0e32d9659330, type: 3}
+    - {fileID: 2800000, guid: f1abbaace45c749cfbda4bab009aeac4, type: 3}
+    - {fileID: 2800000, guid: fe3928de3945f4dad8d5af0b2f2674e1, type: 3}
+    - {fileID: 2800000, guid: 275bb409830f649d0bec65523df946dd, type: 3}
+    - {fileID: 2800000, guid: c2dcecb35efa84eb9b2f20efe108e131, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 3cb754d2901e64d849ab0e32d9659330, type: 3}
+  - {fileID: 21300000, guid: eec43033fa31f4911977d31d11d87937, type: 3}
+  - {fileID: 21300000, guid: 1d9ef733cc5064e269c368da2e73d2be, type: 3}
+  - {fileID: 21300000, guid: c2dcecb35efa84eb9b2f20efe108e131, type: 3}
+  - {fileID: 21300000, guid: 1ceea0a4a9ba5464184c6dac371232a7, type: 3}
+  - {fileID: 21300000, guid: 228ea835590194af180dc7aab4d19835, type: 3}
+  - {fileID: 21300000, guid: 7b6c0ea677642449088ceb52ba689141, type: 3}
+  - {fileID: 21300000, guid: 9947b4c6ef81e44998a29da8c6c8956b, type: 3}
+  - {fileID: 21300000, guid: 275bb409830f649d0bec65523df946dd, type: 3}
+  - {fileID: 21300000, guid: dd6c7859f73f341f0a607d1ecf52c449, type: 3}
+  - {fileID: 21300000, guid: b02e437a7156d4cd792d2516dcbce04d, type: 3}
+  - {fileID: 21300000, guid: 118e5d6c25a154f47a1da7ae8d8900e4, type: 3}
+  - {fileID: 21300000, guid: f1abbaace45c749cfbda4bab009aeac4, type: 3}
+  - {fileID: 21300000, guid: fe3928de3945f4dad8d5af0b2f2674e1, type: 3}
+  - {fileID: 21300000, guid: ef1bd9cf1eb8c4f1a98f1302ea997462, type: 3}
+  - {fileID: 21300000, guid: 66713edf8ac36412697c653437ac8cbb, type: 3}
+  - {fileID: 21300000, guid: c40832fffd8ed47ceaf5d84d307bfa33, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Cheek 1
+  - Brow 3L
+  - Eye 6
+  - Mouth 8
+  - Tears R1
+  - Brow 1L
+  - Eye 1
+  - Brow 1R
+  - Eye 5R
+  - Eye 3R
+  - Yellow circle
+  - Eye 3L
+  - Heart
+  - Eye 5L
+  - Mouth 11
+  - Brow 3R
+  - Tears L1
+  m_RenderDataMap: {}
+  m_Tag: InGameEmojis
+  m_IsVariant: 0

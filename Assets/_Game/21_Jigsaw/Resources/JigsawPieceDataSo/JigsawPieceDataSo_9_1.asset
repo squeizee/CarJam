@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbaf43e567cb43778fe9a9338d606cb6, type: 3}
+  m_Name: JigsawPieceDataSo_9_1
+  m_EditorClassIdentifier: 
+  Id: 1
+  Sprite: {fileID: 2252355668466042761, guid: f4578f78a3f894900bf3a070b75c9f7f, type: 3}
+  Position: {x: 0.29, y: 2.96, z: 0}

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b2fd1d27c84816b07dfb558cb1ac7a, type: 3}
+  m_Name: CraftUISystemSo
+  m_EditorClassIdentifier: 
+  UIParentPrefab: {fileID: 147465084645581977, guid: be8e0cea8998443029fc4246da02850d, type: 3}
+  Screens:
+  - {fileID: -3345873670661002836, guid: 49387a6ae5e9c4d2b8451597a88eb2bf, type: 3}
+  - {fileID: 8993518118288669543, guid: 7ce98f5b8b4d14b4aadb276758e0eae4, type: 3}
+  UISoundPrefab: {fileID: 8485118057908575928, guid: af78423a95baf4495ae67d39118f58f2, type: 3}

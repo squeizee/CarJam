@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6ee59df4d54949a56c84933df8f98e, type: 3}
+  m_Name: LinearLevelSo
+  m_EditorClassIdentifier: 
+  LevelData:
+  - {fileID: 11400000, guid: 2bd97995ec2e5447f8daa17b4e6cb571, type: 2}
+  - {fileID: 11400000, guid: c3306e542078a47f6a12e6ece8f8e5cb, type: 2}
+  - {fileID: 11400000, guid: 55937c946d8d041e18413f0a1e2f68b6, type: 2}
+  - {fileID: 11400000, guid: bde111893fa1b467f98c3a56b9c0001b, type: 2}
+  - {fileID: 11400000, guid: cd4bf31c431704801be7c5af2e11ee34, type: 2}
+  - {fileID: 11400000, guid: f8aa3f5392c444d1e830a1edf38111f5, type: 2}
+  Screens:
+  - {fileID: 917027641290017260, guid: d0670f0e61e1e43548f7646a631af2c6, type: 3}
+  - {fileID: 3835827835931434024, guid: 565901766a78e47c5b306ab353b358bd, type: 3}
+  - {fileID: 5458047684617650348, guid: d02d4137277fe42f2ac3ced72965826e, type: 3}
+  - {fileID: 3760252442464829291, guid: 10c33f1be4d8e4812a52997871dc99ee, type: 3}
+  - {fileID: 3354131558697156159, guid: 7a712ab94f0a649c5957b55d08388e06, type: 3}
+  - {fileID: 1054594550481396460, guid: f99ed64421ee342aebb5f232f700a05d, type: 3}
+  - {fileID: 2181727667175937644, guid: c5bfbc5e9183740e9aa0e8b883010fae, type: 3}
+  BossLevelConfig:
+    OfferStartProgress: 15
+    OfferPeriod: 7
+    OfferRewardStart: 95
+    OfferRewardIncrease: 5
+    AdditionalMoves: 6
+    AdditionalSpatula: 4
+    AdditionalTime: 30
+    ReviveCost: 250
+  NormalLevelConfig:
+    OfferRewardStart: 10
+    OfferRewardIncrease: 0.1
+    RandomInterval: 5
+    ReviveCost: 250

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b69fc830c24e5fab21f5ed80d2747a, type: 3}
+  m_Name: SingleJigsawData_0009
+  m_EditorClassIdentifier: 
+  Name: Peanut Dog
+  Id: 9
+  MainSprite: {fileID: 2331715017929449561, guid: f4578f78a3f894900bf3a070b75c9f7f, type: 3}
+  JigsawPieceDatas:
+  - {fileID: 11400000, guid: 5e353efc3af9c4e9cb50ffb2dc3ddb91, type: 2}
+  - {fileID: 11400000, guid: a974330d6fe894085903332f92cf370e, type: 2}
+  - {fileID: 11400000, guid: 966cbefbfad1447098bed832ca79f285, type: 2}
+  - {fileID: 11400000, guid: 04fbf9fbd884941b8ba016535482271b, type: 2}
+  - {fileID: 11400000, guid: 133aeac72e378409a8886ead8e96d570, type: 2}
+  - {fileID: 11400000, guid: fc5932a2aa13e439cbd472e2b8c44a0c, type: 2}
+  UnlockLevel: 193

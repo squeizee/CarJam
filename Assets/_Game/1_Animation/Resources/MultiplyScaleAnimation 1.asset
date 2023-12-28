@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0368f55e1c6480aa6d31560cec1dee7, type: 3}
+  m_Name: MultiplyScaleAnimation 1
+  m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  Duration:
+    Start:
+      Type: 1
+      Time: 0
+      Animation: {fileID: 11400000, guid: bccc82f83920d47f89d7019eb5b32e43, type: 2}
+    End:
+      Type: 3
+      Time: 0.5
+      Animation: {fileID: 11400000, guid: bccc82f83920d47f89d7019eb5b32e43, type: 2}
+    IsStaticCalculated: 1
+    StartStatic:
+      Type: 0
+      Time: 1
+      Animation: {fileID: 0}
+    EndStatic:
+      Type: 0
+      Time: 1.5
+      Animation: {fileID: 0}
+  Ease: 30
+  Scale: 2

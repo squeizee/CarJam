@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b69fc830c24e5fab21f5ed80d2747a, type: 3}
+  m_Name: SingleJigsawData_0002
+  m_EditorClassIdentifier: 
+  Name: Metal Croco
+  Id: 2
+  MainSprite: {fileID: 4862025972573439695, guid: f48380540898646d5bd10deddf8996e4, type: 3}
+  JigsawPieceDatas:
+  - {fileID: 11400000, guid: ae86b09aa48a547a5bf8ca8f4dbedd1c, type: 2}
+  - {fileID: 11400000, guid: ae925d33c812a4614b948dee716fc3b2, type: 2}
+  - {fileID: 11400000, guid: 1bc345958c71546cc8630fc336742bfe, type: 2}
+  - {fileID: 11400000, guid: 737fa608ddc9a4f11ad9f603ac9ceadf, type: 2}
+  - {fileID: 11400000, guid: d42328bb6b1b746588dec2b1570177ca, type: 2}
+  UnlockLevel: 39

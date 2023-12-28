@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b69fc830c24e5fab21f5ed80d2747a, type: 3}
+  m_Name: SingleJigsawData_0000
+  m_EditorClassIdentifier: 
+  Name: Penguin
+  Id: 0
+  MainSprite: {fileID: 6827640049334472120, guid: f071f326415364855866acb9751dfa94, type: 3}
+  JigsawPieceDatas:
+  - {fileID: 11400000, guid: 0062cb9761f7140b28878f5535d30713, type: 2}
+  - {fileID: 11400000, guid: 0e2dba92df7e64106b6407b5f5ad2155, type: 2}
+  - {fileID: 11400000, guid: 129ecd6c06ce34568ae8a585d48ae742, type: 2}
+  UnlockLevel: 12

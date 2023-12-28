@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: add5c14736d04fbfbeae86ad8095288a, type: 3}
+  m_Name: ChallengeSystemSo
+  m_EditorClassIdentifier: 
+  Screens:
+  - {fileID: -431812901726097075, guid: c22a96aae50594d3d85b1e1f05ac61ae, type: 3}
+  - {fileID: -5565391481921360506, guid: ea304f22f98854f82b8ae8dac56db058, type: 3}
+  - {fileID: -9085758649448941915, guid: 34366b9d68a82489d96291459198a282, type: 3}
+  - {fileID: 2823594815808863595, guid: 40b0d2549db1147b1affc49762a6df4a, type: 3}

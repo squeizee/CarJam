@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b69fc830c24e5fab21f5ed80d2747a, type: 3}
+  m_Name: SingleJigsawData_0001
+  m_EditorClassIdentifier: 
+  Name: 'Cool Cat '
+  Id: 1
+  MainSprite: {fileID: -4884967916704485898, guid: b50cdc62c595b46a09e2abc77f6c1035, type: 3}
+  JigsawPieceDatas:
+  - {fileID: 11400000, guid: a5851bd3f1f9b4907a5037caa97b1ae2, type: 2}
+  - {fileID: 11400000, guid: 58e768642793b43b582d15391d0abbc3, type: 2}
+  - {fileID: 11400000, guid: 3bc8f3dd5d4eb46e4aa49664528a1b58, type: 2}
+  - {fileID: 11400000, guid: 5da1dd9c9b2e74ef39d908036d90fc37, type: 2}
+  UnlockLevel: 23

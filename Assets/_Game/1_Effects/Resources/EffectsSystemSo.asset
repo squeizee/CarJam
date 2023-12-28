@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3401b5b8ac46629baa60a1a9cfbd52, type: 3}
+  m_Name: EffectsSystemSo
+  m_EditorClassIdentifier: 
+  ConfettiPrefab: {fileID: 2987926807752178196, guid: 27789e05dd26a4858a484cee8e142552, type: 3}
+  InitialConfettiPosition: {x: 0, y: -0.65, z: 10.78}

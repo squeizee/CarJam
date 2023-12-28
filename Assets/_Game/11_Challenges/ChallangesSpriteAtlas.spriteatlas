@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ChallangesSpriteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 3dbe0753e957b4c74b96191dfdcd42d7, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 99a83210ac79e4c72a92f6d944a444e9, type: 3}
+  - {fileID: 21300000, guid: 00f0c1a033a2e47679d6142296bdd501, type: 3}
+  - {fileID: 21300000, guid: ad4762e1f24b3477cbc566888922019d, type: 3}
+  - {fileID: 21300000, guid: 7bef9013222f946b19705cccbb7cb731, type: 3}
+  - {fileID: 21300000, guid: ff465ca36d4974851a97a4888de5bc1a, type: 3}
+  - {fileID: 21300000, guid: bc1a7ed3297354873b6b15ef8b48a03a, type: 3}
+  - {fileID: 21300000, guid: 280b9a144f8f14d459ae68c312ff7643, type: 3}
+  - {fileID: 21300000, guid: d21da756254824d5ea26b1b66917eaf6, type: 3}
+  - {fileID: 21300000, guid: 3cfc3886d2541456eafa7356183b4d0e, type: 3}
+  - {fileID: 21300000, guid: 2cf46ce6be4d14a3ab0074c7d2c6d195, type: 3}
+  - {fileID: 21300000, guid: 8ee18967e3db24a9fb2247f8b794b4c3, type: 3}
+  - {fileID: 21300000, guid: c7a831777217e4178881acd869f0b02b, type: 3}
+  - {fileID: 21300000, guid: 1ab20de7879d64d599854660ad3e40cb, type: 3}
+  - {fileID: 21300000, guid: e34773d9df753414fb6b29a30d1a3dc6, type: 3}
+  - {fileID: 21300000, guid: e197fc2a7c7224763ac7cc1bcd80449d, type: 3}
+  - {fileID: 21300000, guid: 788f618b8f331442285bd3e874fae800, type: 3}
+  - {fileID: 21300000, guid: 03cfe51cd4d344f25a312cbc87ea15cb, type: 3}
+  - {fileID: 21300000, guid: a49d738c91b434803b2bd0ba4f8868c8, type: 3}
+  - {fileID: 21300000, guid: 6510acdc819434bc2a7d0b3dcdebb0ed, type: 3}
+  - {fileID: 21300000, guid: 4c875c3dca1e84c4faeb915fbca215cc, type: 3}
+  - {fileID: 21300000, guid: e429812ebd595454eb1a7123efaf49cf, type: 3}
+  - {fileID: 21300000, guid: ec0a8a4e54e274b579cedd4e0387575a, type: 3}
+  - {fileID: 21300000, guid: 9a5fc1ce7be304d7ba122bd8762dbe07, type: 3}
+  - {fileID: 21300000, guid: 101550de6bfe14aeea1b658c5b27b14e, type: 3}
+  - {fileID: 21300000, guid: 71afe2fea33a54a39b97132cac7ecadf, type: 3}
+  - {fileID: 21300000, guid: 1469316f0b3004e5dbc1dac907a040d6, type: 3}
+  - {fileID: 21300000, guid: cdef378f198b542c781fcb2486337ad1, type: 3}
+  - {fileID: 21300000, guid: f3db78afac8f04a3f98098922ffada2c, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - UI_LevelIndicatorBg
+  - UI_StatBg
+  - UI_PanelBg_Red
+  - UI_StarImage
+  - UI_HeartSmall
+  - Gradient_2
+  - UI_PanelBg_Grey
+  - UI_HeartRefill
+  - UI_LockImage_Unlocked
+  - UI_CupImage
+  - UI_PanelBg_Yellow
+  - UI_LockImage_Locked
+  - UI_ChallengeImage
+  - UI_GenericPanelBg
+  - UI_PlayButtonSmall
+  - Gradient_1
+  - UI_SkullImage
+  - UI_PopUpPanel
+  - UI_AdIcon
+  - UI_InfoBubbleTip
+  - UI_ProgressFiller
+  - UI_ChallengeButton
+  - AlphaGradient
+  - UI_StatHeart
+  - UI_InfoBubble
+  - UI_ProgressBg
+  - UI_WhitePanel
+  - UI_NotificationBg
+  m_RenderDataMap: {}
+  m_Tag: ChallangesSpriteAtlas
+  m_IsVariant: 0

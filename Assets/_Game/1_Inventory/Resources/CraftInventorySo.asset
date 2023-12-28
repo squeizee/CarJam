@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19e8cd587a44469ba399f980e9890303, type: 3}
+  m_Name: CraftInventorySo
+  m_EditorClassIdentifier: 
+  ItemMetas:
+  - ItemId: 0
+    Name: Coin
+    Sprite: {fileID: 0}
+    ItemPrefab: {fileID: 8606873901506666839, guid: 171ae42b6060d4b17a2869d90be90d44, type: 3}
+  - ItemId: 4
+    Name: Hammer
+    Sprite: {fileID: 0}
+    ItemPrefab: {fileID: 0}
+  - ItemId: 5
+    Name: Shuffle
+    Sprite: {fileID: 0}
+    ItemPrefab: {fileID: 0}
+  - ItemId: 6
+    Name: Undo
+    Sprite: {fileID: 0}
+    ItemPrefab: {fileID: 0}
+  - ItemId: 12
+    Name: Life
+    Sprite: {fileID: 0}
+    ItemPrefab: {fileID: 0}
+  Screens:
+  - {fileID: 1689413467085317368, guid: 6df362db3613b4de0a50503d82a77f9b, type: 3}

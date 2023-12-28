@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 918eae3e0b6d4f37b617d295a40100e3, type: 3}
+  m_Name: MarketPlaceSo
+  m_EditorClassIdentifier: 
+  Screens:
+  - {fileID: 7188522322806529965, guid: 7198e20867ed94204afb7f686ac3dc72, type: 3}
+  - {fileID: 3338774651473447545, guid: a77ca623afca841db8293ec397ad7f26, type: 3}
+  SkinItemDatas:
+  - Price: 0
+    UnlockLevel: 0
+    Sprite: {fileID: 21300000, guid: 64b94287c922c4ffd87dcc484fa33461, type: 3}
+  - Price: 250
+    UnlockLevel: 0
+    Sprite: {fileID: 21300000, guid: a6e764062c2cc4209969105906823c49, type: 3}
+  - Price: 500
+    UnlockLevel: 41
+    Sprite: {fileID: 21300000, guid: b90fa3438c5f34783bc341c151ff5705, type: 3}
+  - Price: 750
+    UnlockLevel: 48
+    Sprite: {fileID: 21300000, guid: 084c823f6915449ce9c5832a839a02df, type: 3}
+  - Price: 1000
+    UnlockLevel: 62
+    Sprite: {fileID: 21300000, guid: 4788dc8ad5528426b922411d4ae3721a, type: 3}
+  - Price: 2000
+    UnlockLevel: 76
+    Sprite: {fileID: 21300000, guid: b27369b3e67b34b5987102bf712be7c5, type: 3}
+  SpatulaItemDatas:
+  - Price: 0
+    UnlockLevel: 0
+    Sprite: {fileID: 21300000, guid: 928be1a594e3d4e1c8ebaf7289d11df7, type: 3}
+  - Price: 500
+    UnlockLevel: 0
+    Sprite: {fileID: 21300000, guid: f77eb2250f54841c2bd21b0bcb8d0b53, type: 3}
+  - Price: 750
+    UnlockLevel: 0
+    Sprite: {fileID: 21300000, guid: 6e22906fcb2ca49c4b502f007bef2594, type: 3}
+  - Price: 1000
+    UnlockLevel: 41
+    Sprite: {fileID: 21300000, guid: 3788a8b540f174292a33c1c7bdc12e3a, type: 3}
+  - Price: 1250
+    UnlockLevel: 48
+    Sprite: {fileID: 21300000, guid: e5de1666a62ad4ac28e388fa2c576f15, type: 3}
+  - Price: 1500
+    UnlockLevel: 62
+    Sprite: {fileID: 21300000, guid: 6f0a4a7afa2864a3a9a0987463dae975, type: 3}
+  - Price: 2000
+    UnlockLevel: 76
+    Sprite: {fileID: 21300000, guid: edb4897e7608846fd821e062e159eae4, type: 3}
+  - Price: 3000
+    UnlockLevel: 90
+    Sprite: {fileID: 21300000, guid: 2aa9837bb79234d4cb916949a82a1977, type: 3}
+  - Price: 5000
+    UnlockLevel: 111
+    Sprite: {fileID: 21300000, guid: 268c69ab64024414985960fa89d40692, type: 3}
+  EnvironmentItemDatas:
+  - Price: 0
+    UnlockLevel: 0
+    Sprite: {fileID: 21300000, guid: 607c9ff8a461149309f48d085418f3cc, type: 3}
+  - Price: 250
+    UnlockLevel: 0
+    Sprite: {fileID: 21300000, guid: 1c5d64e00ba3c443c859e451eddc63d1, type: 3}
+  - Price: 500
+    UnlockLevel: 41
+    Sprite: {fileID: 21300000, guid: 4271a243430f44c76b4eb8133e944fe2, type: 3}
+  - Price: 750
+    UnlockLevel: 48
+    Sprite: {fileID: 21300000, guid: 44696a097381d4129adf53092b5c5dc6, type: 3}
+  - Price: 1000
+    UnlockLevel: 62
+    Sprite: {fileID: 21300000, guid: 1a577ee1d19de47fc96dfb77a8c6a241, type: 3}
+  - Price: 2000
+    UnlockLevel: 76
+    Sprite: {fileID: 21300000, guid: ecc99eea38c284bd8b42fcf39e3647fc, type: 3}
