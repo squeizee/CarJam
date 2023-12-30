@@ -20,7 +20,8 @@ namespace _Game.Systems.GameFlow.Scripts
 
         public void OnCoreInitialized()
         {
-            if (Craft.Get<CraftConfigSystem>().IsConfigFetched)
+#if FIREBASE_INSTALLED
+                  if (Craft.Get<CraftConfigSystem>().IsConfigFetched)
             {
                 OnConfigFetched();
             }
@@ -28,7 +29,9 @@ namespace _Game.Systems.GameFlow.Scripts
             {
                 GetContext().Dispatcher.Subscribe(CoreEventId.OnConfigFetched, OnConfigFetched);
             }
-                
+#else
+            OnConfigFetched();
+#endif
         }
 
         private void OnConfigFetched()

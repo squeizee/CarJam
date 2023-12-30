@@ -14,6 +14,7 @@ namespace _Game._3_GamePlay.Scripts
             IsAnimated = isAnimated;
         }
     }
+    
     public class BaseGamePlay : MonoBehaviour
     {
         public Action OnGamePlayStarted;

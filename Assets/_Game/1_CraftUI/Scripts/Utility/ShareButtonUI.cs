@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityNative.Sharing;
+//using UnityNative.Sharing;
 
 public class ShareButtonUI : MonoBehaviour
 {
@@ -8,8 +8,8 @@ public class ShareButtonUI : MonoBehaviour
 
     public void OnButtonDown()
     {
-        var sharing = UnityNativeSharing.Create();
-        sharing.ShareText(_shareMessageAndroid);
-        Debug.Log("Share Button Down");
+        // var sharing = UnityNativeSharing.Create();
+        // sharing.ShareText(_shareMessageAndroid);
+        // Debug.Log("Share Button Down");
     }
 }

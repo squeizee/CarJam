@@ -14,9 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   _isTesting: 0
+  Name: 
   _testLevel: {fileID: 0}
-  Tutorials:
-  - {fileID: 8445535660474280048, guid: cd71f4ab1bb154ff1a2fa5d99f7c3f82, type: 3}
-  Levels:
-  - {fileID: 8445535660474280048, guid: a2737a20b1e714c30a71b8008740b603, type: 3}
-  - {fileID: 8445535660474280048, guid: b36885cbaa3cf49869fcc8a865888c52, type: 3}
+  TutorialsReferences:
+  - m_AssetGUID: 4300813e4fe6a32488e9a25d75a1122a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: f36b5a1a2ecd7f54d8b6317d4d549f6b
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  LevelAssetReferences:
+  - m_AssetGUID: fc8dae09e6fc6d348b23cce6c3535d7a
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: c66ae1daaf34d9e438f0bb803f52b8d0
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 9093b74bbe658a7489b0e43350099e5d
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 4da1000d2da6f9d4a9e1ce035be8c0e4
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 13053e60805574a41b2822ff0b3af990
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 43ad903412baf1845877b6672e1298f9
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  TutorialsLevesReferences: []
+  LevelAssetGameObjects: []
