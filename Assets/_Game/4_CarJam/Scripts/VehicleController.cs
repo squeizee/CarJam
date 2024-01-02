@@ -16,7 +16,7 @@ public class VehicleController : GameElement
     {
         State = GameElementState.Moving;
         
-        transform.DOMove(transform.position + transform.forward, 0.4f).SetLoops(4,LoopType.Incremental).SetEase(Ease.Linear).OnComplete(() =>
+        transform.DOMove(transform.position + transform.forward, 0.4f).SetLoops(4,LoopType.Incremental).SetEase(Ease.InCubic).OnComplete(() =>
         {
             State = GameElementState.Completed;
             //destroy vehicle

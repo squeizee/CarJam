@@ -118,7 +118,8 @@ namespace _Game._4_CarJam.Scripts
 
             List<PathFind.Point> path = PathFind.Pathfinding.FindPath(pathFindGrid, from, to);
 
-            character.TryMove(path);
+            character.MoveAlongPath(path);
+            //character.TryMove(path);
         }
 
         public bool IsEmpty(Vector3 pos)

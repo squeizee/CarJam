@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using DG.Tweening.Plugins.Core.PathCore;
 using PathFind;
 using UnityEngine;
 
@@ -56,6 +57,18 @@ namespace _Game._4_CarJam.Scripts
                 _lastCollider = null;
         }
 
+        public void MoveAlongPath(List<Point> path)
+        {
+            transform.DOComplete();
+            State = GameElementState.Moving;
+            List<Vector3> pathVector3 = path.ConvertAll(point => new Vector3(point.x + offset.x,transform.localPosition.y,point.y + offset.z));
+            transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.InOutCubic).OnComplete(
+                () =>
+                {
+                    State = GameElementState.Idle;
+                    CheckVehicleIsAvailable(_lastCollider);
+                });
+        }
         public void TryMove(List<PathFind.Point> path)
         {
             StartCoroutine(MoveTo(path));

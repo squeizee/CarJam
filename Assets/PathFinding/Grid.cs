@@ -72,6 +72,7 @@ namespace PathFind
                     
                     if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                     {
+                        // block diagonal movement
                         if(!nodes[checkX,node.gridY].walkable && !nodes[node.gridX,checkY].walkable)
                             continue;
                         neighbours.Add(nodes[checkX, checkY]);

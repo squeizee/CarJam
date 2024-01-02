@@ -20,8 +20,9 @@ namespace PathFind
     */
     public class Pathfinding
     {
-        // Default dialgonal cost = 14, default straight cost = 10, avoiding diagonal paths value increased
+        // Default dialgonal cost = 14, default straight cost = 10
         private static readonly int _diagonalCost = 100;
+        private static readonly int _straightCost = 10;
         // The API you should use to get path
         // grid: grid to search in.
         // startPos: starting position.
@@ -115,8 +116,8 @@ namespace PathFind
             int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
             if (dstX > dstY)
-                return _diagonalCost * dstY + 10 * (dstX - dstY);
-            return _diagonalCost * dstX + 10 * (dstY - dstX);
+                return _diagonalCost * dstY + _straightCost * (dstX - dstY);
+            return _diagonalCost * dstX + _straightCost * (dstY - dstX);
         }
     }
 
