@@ -637,6 +637,7 @@ MonoBehaviour:
   color: 0
   offset: {x: 1, y: 0, z: -1.5}
   dimension: {x: 3, y: 2}
+  doorCount: 2
 --- !u!54 &3914369907065411159
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -16,13 +16,26 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private GridController gridController;
         
         private List<GameElement> _listGameElements;
+        private List<CharacterController> _listCharacters;
+        private List<VehicleController> _listVehicles;
         private CharacterController _selectedCharacter;
 
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
             base.Initialize(baseGamePlayStartArgs);
+            
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
             _listGameElements.ForEach(x => x.Initialize());
+
+            _listCharacters = GetComponentsInChildren<CharacterController>().ToList();
+            _listVehicles = GetComponentsInChildren<VehicleController>().ToList();
+
+            for (int i = 0; i < _listCharacters.Count; i++)
+            {
+                var vehicle = _listVehicles.Find(x => x.GameElementColor == _listCharacters[i].GameElementColor);
+                _listCharacters[i].VehicleDoorPositions.Add(vehicle,vehicle.DoorPositions.ToList());
+            }
+            
             gridController.Initialize(_listGameElements);
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;

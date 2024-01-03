@@ -8,11 +8,12 @@ using UnityEngine;
 
 namespace _Game._4_CarJam.Scripts
 {
-    
     public class CharacterController : GameElement
     {
         private Collider _lastCollider;
         public Action OnCorrectAction;
+
+        public Dictionary<VehicleController, List<Vector3>> VehicleDoorPositions = new();
 
         private void OnEnable()
         {
@@ -27,7 +28,7 @@ namespace _Game._4_CarJam.Scripts
         {
             base.Initialize();
             State = GameElementState.Idle;
-            
+
             OnGameElementStateChanged += OnStateChange;
         }
 
@@ -38,7 +39,7 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if(!other.CompareTag("CollidedObject")) return;
+            if (!other.CompareTag("CollidedObject")) return;
 
             _lastCollider = other;
 
@@ -47,7 +48,6 @@ namespace _Game._4_CarJam.Scripts
             //if(other.isTrigger) return;
 
             //CheckVehicleIsAvailable(other);
-
         }
 
         private void OnTriggerStay(Collider other)
@@ -58,14 +58,14 @@ namespace _Game._4_CarJam.Scripts
             //
             // CheckVehicleIsAvailable(other);
         }
-        
+
 
         private void OnTriggerExit(Collider other)
         {
-            if(!other.CompareTag("CollidedObject")) return;
+            if (!other.CompareTag("CollidedObject")) return;
 
             if (other != _lastCollider) return;
-            
+
             _lastCollider = null;
         }
 
@@ -73,29 +73,51 @@ namespace _Game._4_CarJam.Scripts
         {
             transform.DOComplete();
             State = GameElementState.Moving;
-            List<Vector3> pathVector3 = path.ConvertAll(point => new Vector3(point.x + Offset.x,transform.localPosition.y,point.y + Offset.z));
+            List<Vector3> pathVector3 = path.ConvertAll(point =>
+                new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
             transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.Linear).OnComplete(
                 () =>
                 {
-                    if(!CheckVehicleIsAvailable(_lastCollider))
-                        State = GameElementState.Idle;
+                    CheckPosition();
+                    // if(!CheckVehicleIsAvailable(_lastCollider))
+                    //     State = GameElementState.Idle;
                 });
         }
-        
+
+        private void CheckPosition()
+        {
+            if (VehicleDoorPositions.Count == 0) return;
+
+            foreach (var vehicle in VehicleDoorPositions)
+            {
+                if ((transform.localPosition.x == vehicle.Value[0].x &&
+                     transform.localPosition.z == vehicle.Value[0].z) ||
+                    (transform.localPosition.x == vehicle.Value[1].x &&
+                     transform.localPosition.z == vehicle.Value[1].z))
+                {
+                    State = GameElementState.Completed;
+                    vehicle.Key.MoveForward();
+                }
+                    
+            }
+        }
+
         private bool CheckVehicleIsAvailable(Collider vehicleCollider)
         {
             if (!vehicleCollider) return false;
-            
-            if (!vehicleCollider.transform.parent.parent.gameObject.TryGetComponent<VehicleController>(out var vehicleController)) return false;
+
+            if (!vehicleCollider.transform.parent.parent.gameObject.TryGetComponent<VehicleController>(
+                    out var vehicleController)) return false;
 
             if (vehicleController.GameElementColor != GameElementColor) return false;
-            
+
             _lastCollider = null;
             State = GameElementState.Completed;
             vehicleController.MoveForward();
-            
+
             return true;
         }
+
         private void OnStateChange()
         {
             switch (State)
