@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7890057263820456475}
   - component: {fileID: 8555110875685925345}
   - component: {fileID: 2510641796714105778}
-  - component: {fileID: -1317131020557259139}
   - component: {fileID: -9137898100454519907}
   m_Layer: 6
   m_Name: CubeBlack
@@ -85,19 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &-1317131020557259139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3841031782133404777}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9132b53ae63fee4cbd3cd3b096ead27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _positionInMap: {x: 0, y: 0, z: 0}
 --- !u!65 &-9137898100454519907
 BoxCollider:
   m_ObjectHideFlags: 0

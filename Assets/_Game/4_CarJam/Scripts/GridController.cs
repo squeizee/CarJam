@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -21,9 +22,27 @@ namespace _Game._4_CarJam.Scripts
         private List<GameElement> _listGameElements;
 
         
+        private Vector2Int _maxPoint;
+        private Vector2Int _minPoint;
+        
         public void Initialize(List<GameElement> listGameElements)
         {
+            
             _listGameElements = listGameElements;
+
+            _minPoint = new Vector2Int(_mapSize.x,_mapSize.y);
+            _maxPoint = new Vector2Int(0,0);
+            
+            foreach (Transform child in groundTileMapParent)
+            {
+                var cellPosition = grid.WorldToCell(child.position);
+                
+                _maxPoint.x = cellPosition.x > _maxPoint.x ? cellPosition.x : _maxPoint.x;
+                _maxPoint.y = cellPosition.y > _maxPoint.y ? cellPosition.y : _maxPoint.y;
+                
+                _minPoint.x = cellPosition.x < _minPoint.x ? cellPosition.x : _minPoint.x;
+                _minPoint.y = cellPosition.y < _minPoint.y ? cellPosition.y : _minPoint.y;
+            }
         }
 
         public ElementType[,] GetMapDataElement()
@@ -107,6 +126,61 @@ namespace _Game._4_CarJam.Scripts
             character.MoveAlongPath(path);
         }
 
+        public void CheckForwardPath(VehicleController vehicleController)
+        {
+            var pivotPoint = grid.WorldToCell(vehicleController.transform.position);
+            var direction = Vector3Int.zero;
+            var neighbor = Vector3Int.zero;
+            var distanceToBorder = 0;
+            var offset = vehicleController.Dimension.x;
+            switch (vehicleController.transform.eulerAngles.y)
+            {
+                case 0:
+                    direction = Vector3Int.up;
+                    neighbor = Vector3Int.right;
+                    distanceToBorder = _maxPoint.y - pivotPoint.y;
+                    break;
+                case 90:
+                    direction = Vector3Int.right;
+                    neighbor = Vector3Int.down;
+                    distanceToBorder = _maxPoint.x - pivotPoint.x;
+                    break;
+                case 180:
+                    direction = Vector3Int.down;
+                    neighbor = Vector3Int.left;
+                    distanceToBorder = pivotPoint.y - _minPoint.y;
+                    break;
+                case 270:
+                    direction = Vector3Int.left;
+                    neighbor = Vector3Int.up;
+                    distanceToBorder = pivotPoint.x - _minPoint.x;
+                    break;
+            }
+
+            var targetPoint = pivotPoint + direction * (offset*2 + distanceToBorder);
+            List<Vector3> path = new List<Vector3>();
+            bool isTargetReached = true;
+            for (int i = 1; i < distanceToBorder +1; i++)
+            {
+                if(IsEmpty(pivotPoint + direction * i) && IsEmpty(pivotPoint + neighbor + direction * i)) 
+                    path.Add(pivotPoint + direction * i);
+                else
+                {
+                    isTargetReached = false;
+                    break;
+                }
+            }
+            if(isTargetReached)
+                path.Add(targetPoint);
+            
+            vehicleController.MoveForward(path,isTargetReached);
+        }
+
+        private bool IsEmptyOrNone(Vector3Int point)
+        {
+            ElementType[,] elementMap = GetMapDataElement();
+            return elementMap[point.x, point.y] == ElementType.Ground || elementMap[point.x, point.y] == ElementType.None;
+        }
         private bool IsEmpty(Vector3Int point)
         {
             ElementType[,] elementMap = GetMapDataElement();

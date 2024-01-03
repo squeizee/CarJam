@@ -20,16 +20,18 @@ namespace _Game._4_CarJam.Scripts
         private List<VehicleController> _listVehicles;
         private CharacterController _selectedCharacter;
 
+        private List<GameElement> _waitingGameElements = new();
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
             base.Initialize(baseGamePlayStartArgs);
             
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
-            _listGameElements.ForEach(x => x.Initialize());
+            _listGameElements.ForEach(x => x.Initialize(OnStateChange));
 
             _listCharacters = GetComponentsInChildren<CharacterController>().ToList();
             _listVehicles = GetComponentsInChildren<VehicleController>().ToList();
-
+            _listVehicles.ForEach(x => x.OnBeforeMove += gridController.CheckForwardPath);
+            
             for (int i = 0; i < _listCharacters.Count; i++)
             {
                 var vehicle = _listVehicles.Find(x => x.GameElementColor == _listCharacters[i].GameElementColor);
@@ -48,6 +50,16 @@ namespace _Game._4_CarJam.Scripts
             
         }
 
+        private void OnStateChange()
+        {
+            foreach (var waitingGameElement in _listGameElements.Where(x=>x.State == GameElement.GameElementState.Waiting))
+            {
+                if (waitingGameElement is VehicleController vehicleController)
+                {
+                    gridController.CheckForwardPath(vehicleController);
+                }
+            }
+        }
         private void CheckCompleted()
         {
             if (_listGameElements.All(x => x.State == GameElement.GameElementState.Completed))

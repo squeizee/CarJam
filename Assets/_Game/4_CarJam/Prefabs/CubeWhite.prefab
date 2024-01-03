@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6814390507789683146}
   - component: {fileID: 3616804495102067623}
   - component: {fileID: 4790550930106741356}
-  - component: {fileID: 5950552229219440670}
   - component: {fileID: 8743342506962269829}
   m_Layer: 6
   m_Name: CubeWhite
@@ -85,19 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &5950552229219440670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4868113692639215185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9132b53ae63fee4cbd3cd3b096ead27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _positionInMap: {x: 0, y: 0, z: 0}
 --- !u!65 &8743342506962269829
 BoxCollider:
   m_ObjectHideFlags: 0

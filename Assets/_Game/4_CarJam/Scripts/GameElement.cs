@@ -31,7 +31,6 @@ public class GameElement : MonoBehaviour
     [SerializeField] private Vector2Int dimension;
     
     private Vector2Int _targetPosition;
-    [SerializeField]
     private GameElementState _state;
     public GameElementState State
     {
@@ -48,8 +47,9 @@ public class GameElement : MonoBehaviour
     public Vector2Int Dimension { get; protected set; }
     
 
-    public virtual void Initialize()
+    public virtual void Initialize(Action onStateChanged)
     {
+        OnGameElementStateChanged += onStateChanged;
         GameElementColor = color;
         Offset = offset;
         Dimension = dimension;
