@@ -34,24 +34,24 @@ public class VehicleController : GameElement
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag("CollidedObject")) return;
-
-        _lastCollider = other;
-
-        if (State == GameElementState.Moving)
-        {
-            Stop();
-        }
+        // if (!other.CompareTag("CollidedObject")) return;
+        //
+        // _lastCollider = other;
+        //
+        // if (State == GameElementState.Moving)
+        // {
+        //     Stop();
+        // }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!other.CompareTag("CollidedObject")) return;
-
-        if (other != _lastCollider) return;
-
-        transform.DOPlay();
-        _lastCollider = null;
+        // if (!other.CompareTag("CollidedObject")) return;
+        //
+        // if (other != _lastCollider) return;
+        //
+        // transform.DOPlay();
+        // _lastCollider = null;
     }
 
     private void AssignDoorPositions()
@@ -70,7 +70,7 @@ public class VehicleController : GameElement
                 break;
             case 180:
                 _doorPositions[0] = transform.localPosition + new Vector3(1, 0, 1);
-                _doorPositions[1] = transform.localPosition + new Vector3(2, 0, 1);
+                _doorPositions[1] = transform.localPosition + new Vector3(-2, 0, 1);
                 break;
             case 270:
                 _doorPositions[0] = transform.localPosition + new Vector3(1, 0, -1);

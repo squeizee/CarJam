@@ -5,6 +5,13 @@ using UnityEngine.Tilemaps;
 
 namespace _Game._4_CarJam.Scripts
 {
+    public enum ElementType
+    {
+        None = 0,
+        Ground = 1,
+        Element = 2
+        
+    }
     public class GridController : MonoBehaviour
     {
         [SerializeField] private Grid grid;
@@ -13,22 +20,22 @@ namespace _Game._4_CarJam.Scripts
 
         private List<GameElement> _listGameElements;
 
+        
         public void Initialize(List<GameElement> listGameElements)
         {
             _listGameElements = listGameElements;
         }
-        
-        public bool[,] GetMapData()
+
+        public ElementType[,] GetMapDataElement()
         {
-            bool[,] boolMap = new bool[_mapSize.x, _mapSize.y];
-            
+            ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];
+
             foreach (Transform child in groundTileMapParent)
             {
                 var cellPosition = grid.WorldToCell(child.position);
-                boolMap[cellPosition.x,cellPosition.y] = true; 
+                elementMap[cellPosition.x,cellPosition.y] = ElementType.Ground; 
             }
 
-            //get state not idle foreach
             foreach (var gameElement in _listGameElements.Where(gameElement =>
                          gameElement.State == GameElement.GameElementState.Idle))
             {
@@ -42,7 +49,7 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
-                                boolMap[pivotPoint.x + x, pivotPoint.y - y] = false;
+                                elementMap[pivotPoint.x + x, pivotPoint.y - y] = ElementType.Element;
                             }
                         }
                         break;
@@ -52,7 +59,7 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
-                                boolMap[pivotPoint.x - x, pivotPoint.y - y] = false;
+                                elementMap[pivotPoint.x - x, pivotPoint.y - y] = ElementType.Element;
                             }
                         }
                         break;
@@ -62,7 +69,7 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
-                                boolMap[pivotPoint.x - x, pivotPoint.y + y] = false;
+                                elementMap[pivotPoint.x - x, pivotPoint.y + y] = ElementType.Element;
                             }
                         }
                         break;
@@ -72,27 +79,25 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
-                                boolMap[pivotPoint.x + x, pivotPoint.y + y] = false;
+                                elementMap[pivotPoint.x + x, pivotPoint.y + y] = ElementType.Element;
                             }
                         }
                         break;
                 }
             }
-
-            return boolMap;
+            
+            return elementMap;
         }
-
-
         public void FindPath(Vector3 pos, CharacterController character)
         {
-            bool[,] boolMap = GetMapData();
             var des = grid.WorldToCell(pos);
-
-            if (!boolMap[des.x, des.y]) return;
-
+            if(!IsEmpty(des)) return;
+            
+            ElementType[,] elementMap = GetMapDataElement();
+            
             var start = grid.WorldToCell(character.transform.position);
 
-            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, boolMap);
+            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
 
             PathFind.Point from = new PathFind.Point(start.x, start.y);
             PathFind.Point to = new PathFind.Point(des.x, des.y);
@@ -102,11 +107,10 @@ namespace _Game._4_CarJam.Scripts
             character.MoveAlongPath(path);
         }
 
-        public bool IsEmpty(Vector3 pos)
+        private bool IsEmpty(Vector3Int point)
         {
-            bool[,] boolMap = GetMapData();
-            var point = grid.WorldToCell(pos);
-            return boolMap[point.x, point.y];
+            ElementType[,] elementMap = GetMapDataElement();
+            return elementMap[point.x, point.y] == ElementType.Ground;
         }
     }
 }

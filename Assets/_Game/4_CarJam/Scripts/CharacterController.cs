@@ -39,15 +39,15 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.CompareTag("CollidedObject")) return;
-
-            _lastCollider = other;
-
-            //if (State != GameElementState.Idle) return;
-
-            //if(other.isTrigger) return;
-
-            //CheckVehicleIsAvailable(other);
+            // if (!other.CompareTag("CollidedObject")) return;
+            //
+            // _lastCollider = other;
+            //
+            // //if (State != GameElementState.Idle) return;
+            //
+            // //if(other.isTrigger) return;
+            //
+            // //CheckVehicleIsAvailable(other);
         }
 
         private void OnTriggerStay(Collider other)
@@ -62,11 +62,11 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.CompareTag("CollidedObject")) return;
-
-            if (other != _lastCollider) return;
-
-            _lastCollider = null;
+            // if (!other.CompareTag("CollidedObject")) return;
+            //
+            // if (other != _lastCollider) return;
+            //
+            // _lastCollider = null;
         }
 
         public void MoveAlongPath(List<Point> path)
@@ -75,13 +75,8 @@ namespace _Game._4_CarJam.Scripts
             State = GameElementState.Moving;
             List<Vector3> pathVector3 = path.ConvertAll(point =>
                 new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
-            transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.Linear).OnComplete(
-                () =>
-                {
-                    CheckPosition();
-                    // if(!CheckVehicleIsAvailable(_lastCollider))
-                    //     State = GameElementState.Idle;
-                });
+            transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.Linear).OnComplete(CheckPosition);
+            
         }
 
         private void CheckPosition()
@@ -97,6 +92,10 @@ namespace _Game._4_CarJam.Scripts
                 {
                     State = GameElementState.Completed;
                     vehicle.Key.MoveForward();
+                }
+                else
+                {
+                    State = GameElementState.Idle;
                 }
                     
             }

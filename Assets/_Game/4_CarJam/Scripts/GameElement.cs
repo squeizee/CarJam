@@ -30,6 +30,8 @@ public class GameElement : MonoBehaviour
     [SerializeField] private Vector3 offset;
     [SerializeField] private Vector2Int dimension;
     
+    private Vector2Int _targetPosition;
+    [SerializeField]
     private GameElementState _state;
     public GameElementState State
     {
