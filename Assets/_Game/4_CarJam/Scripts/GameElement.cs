@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Game._4_CarJam.Scripts;
@@ -18,16 +19,41 @@ public class GameElement : MonoBehaviour
     {
         Idle,
         Moving,
+        Waiting,
         Completed
     }
+    
+    protected Action OnGameElementStateChanged;
+    
+    [SerializeField] private Collider mainCollider;
     [SerializeField] private Colors color;
-    public GameElementState State { get; protected set; }
+    [SerializeField] private Vector3 offset;
+    [SerializeField] private Vector2Int dimension;
+    
+    private GameElementState _state;
+    public GameElementState State
+    {
+        get => _state;
+        protected set
+        {
+            _state = value;
+            mainCollider.isTrigger = _state == GameElementState.Moving;
+            OnGameElementStateChanged?.Invoke();
+        }
+    }
     public Colors GameElementColor { get; protected set; }
+    public Vector3 Offset { get; protected set; }
+    public Vector2Int Dimension { get; protected set; }
+    
 
-    public Vector3 offset;
-    public Vector2Int dimension;
     public virtual void Initialize()
     {
         GameElementColor = color;
+        Offset = offset;
+        Dimension = dimension;
+    }
+    public virtual void Stop()
+    {
+        
     }
 }

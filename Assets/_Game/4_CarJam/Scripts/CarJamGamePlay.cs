@@ -16,13 +16,26 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private GridController gridController;
         
         private List<GameElement> _listGameElements;
+        private List<CharacterController> _listCharacters;
+        private List<VehicleController> _listVehicles;
         private CharacterController _selectedCharacter;
 
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
             base.Initialize(baseGamePlayStartArgs);
+            
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
             _listGameElements.ForEach(x => x.Initialize());
+
+            _listCharacters = GetComponentsInChildren<CharacterController>().ToList();
+            _listVehicles = GetComponentsInChildren<VehicleController>().ToList();
+
+            for (int i = 0; i < _listCharacters.Count; i++)
+            {
+                var vehicle = _listVehicles.Find(x => x.GameElementColor == _listCharacters[i].GameElementColor);
+                _listCharacters[i].VehicleDoorPositions.Add(vehicle,vehicle.DoorPositions.ToList());
+            }
+            
             gridController.Initialize(_listGameElements);
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
@@ -65,7 +78,20 @@ namespace _Game._4_CarJam.Scripts
             }
 
             LayerMask layerMask = LayerMask.GetMask("GameElement");
-            if (Craft.Get<CraftInputSystem>()
+            if (_selectedCharacter)
+            {
+                layerMask = LayerMask.GetMask("Ground");
+                
+                if (Craft.Get<CraftInputSystem>()
+                    .GetGameObjectUnderMouse(layerMask, out var touchedGround, out var hit))
+                {
+                    if (!gridController.IsEmpty(touchedGround.transform.position)) return;
+                    
+                    gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
+                    _selectedCharacter = null;
+                }
+            }
+            else if (Craft.Get<CraftInputSystem>()
                 .GetGameObjectUnderMouse(layerMask, out var objectUnderMouse, out var hit))
             {
                 OnObjectTouched(objectUnderMouse);
@@ -84,13 +110,13 @@ namespace _Game._4_CarJam.Scripts
                 _selectedCharacter = characterController;
                 _selectedCharacter.OnCorrectAction?.Invoke();
             }
-            else if(gridController.IsEmpty(touchedObject.transform.position))
-            {
-                if (!_selectedCharacter) return;
-                gridController.FindPath(touchedObject.transform.position, _selectedCharacter);
-                
-                _selectedCharacter = null;
-            }
+            // else if(gridController.IsEmpty(touchedObject.transform.position))
+            // {
+            //     if (!_selectedCharacter) return;
+            //     gridController.FindPath(touchedObject.transform.position, _selectedCharacter);
+            //     
+            //     _selectedCharacter = null;
+            // }
             
         }
         #endregion
