@@ -65,7 +65,20 @@ namespace _Game._4_CarJam.Scripts
             }
 
             LayerMask layerMask = LayerMask.GetMask("GameElement");
-            if (Craft.Get<CraftInputSystem>()
+            if (_selectedCharacter)
+            {
+                layerMask = LayerMask.GetMask("Ground");
+                
+                if (Craft.Get<CraftInputSystem>()
+                    .GetGameObjectUnderMouse(layerMask, out var touchedGround, out var hit))
+                {
+                    if (!gridController.IsEmpty(touchedGround.transform.position)) return;
+                    
+                    gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
+                    _selectedCharacter = null;
+                }
+            }
+            else if (Craft.Get<CraftInputSystem>()
                 .GetGameObjectUnderMouse(layerMask, out var objectUnderMouse, out var hit))
             {
                 OnObjectTouched(objectUnderMouse);
@@ -84,13 +97,13 @@ namespace _Game._4_CarJam.Scripts
                 _selectedCharacter = characterController;
                 _selectedCharacter.OnCorrectAction?.Invoke();
             }
-            else if(gridController.IsEmpty(touchedObject.transform.position))
-            {
-                if (!_selectedCharacter) return;
-                gridController.FindPath(touchedObject.transform.position, _selectedCharacter);
-                
-                _selectedCharacter = null;
-            }
+            // else if(gridController.IsEmpty(touchedObject.transform.position))
+            // {
+            //     if (!_selectedCharacter) return;
+            //     gridController.FindPath(touchedObject.transform.position, _selectedCharacter);
+            //     
+            //     _selectedCharacter = null;
+            // }
             
         }
         #endregion

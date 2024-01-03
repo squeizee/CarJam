@@ -46,8 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grid: {fileID: 1393949393}
-  groundTileMap: {fileID: 1277171479355143329}
-  mapSize: {x: 6, y: 7}
+  groundTileMapParent: {fileID: 8548444439033902436}
 --- !u!1 &1272868509
 GameObject:
   m_ObjectHideFlags: 0

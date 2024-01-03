@@ -8,9 +8,8 @@ namespace _Game._4_CarJam.Scripts
     public class GridController : MonoBehaviour
     {
         [SerializeField] private Grid grid;
-        [SerializeField] private Tilemap groundTileMap;
-        [SerializeField] Vector2Int mapSize;
-        private Ground[,] _componentMap;
+        [SerializeField] private Transform groundTileMapParent;
+        private Vector2Int _mapSize = new Vector2Int(15,15);
 
         private List<GameElement> _listGameElements;
 
@@ -18,33 +17,15 @@ namespace _Game._4_CarJam.Scripts
         {
             _listGameElements = listGameElements;
         }
-
-        private void Start()
-        {
-            _componentMap = new Ground[mapSize.x, mapSize.y];
-
-            foreach (Transform child in groundTileMap.gameObject.transform)
-            {
-                if (child.TryGetComponent<Ground>(out var ground))
-                {
-                    var cell = groundTileMap.WorldToCell(child.position);
-                    ground.Initialize(cell);
-                    _componentMap[cell.x, cell.y] = ground;
-                }
-            }
-        }
-
+        
         public bool[,] GetMapData()
         {
-            bool[,] boolMap = new bool[mapSize.x, mapSize.y];
-
-            //fill all cells with true
-            for (int i = 0; i < mapSize.x; i++)
+            bool[,] boolMap = new bool[_mapSize.x, _mapSize.y];
+            
+            foreach (Transform child in groundTileMapParent)
             {
-                for (int j = 0; j < mapSize.y; j++)
-                {
-                    boolMap[i, j] = true;
-                }
+                var cellPosition = grid.WorldToCell(child.position);
+                boolMap[cellPosition.x,cellPosition.y] = true; 
             }
 
             //get state not idle foreach
@@ -57,9 +38,9 @@ namespace _Game._4_CarJam.Scripts
                 {
                     case 0:
                         //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.dimension.y; x++)
+                        for (int x = 0; x < gameElement.Dimension.y; x++)
                         {
-                            for (int y = 0; y < gameElement.dimension.x; y++)
+                            for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
                                 boolMap[pivotPoint.x + x, pivotPoint.y - y] = false;
                             }
@@ -67,9 +48,9 @@ namespace _Game._4_CarJam.Scripts
                         break;
                     case 90:
                         //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.dimension.x; x++)
+                        for (int x = 0; x < gameElement.Dimension.x; x++)
                         {
-                            for (int y = 0; y < gameElement.dimension.y; y++)
+                            for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
                                 boolMap[pivotPoint.x - x, pivotPoint.y - y] = false;
                             }
@@ -77,9 +58,9 @@ namespace _Game._4_CarJam.Scripts
                         break;
                     case 180:
                         //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.dimension.y; x++)
+                        for (int x = 0; x < gameElement.Dimension.y; x++)
                         {
-                            for (int y = 0; y < gameElement.dimension.x; y++)
+                            for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
                                 boolMap[pivotPoint.x - x, pivotPoint.y + y] = false;
                             }
@@ -87,9 +68,9 @@ namespace _Game._4_CarJam.Scripts
                         break;
                     case 270:
                         //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.dimension.x; x++)
+                        for (int x = 0; x < gameElement.Dimension.x; x++)
                         {
-                            for (int y = 0; y < gameElement.dimension.y; y++)
+                            for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
                                 boolMap[pivotPoint.x + x, pivotPoint.y + y] = false;
                             }
@@ -111,7 +92,7 @@ namespace _Game._4_CarJam.Scripts
 
             var start = grid.WorldToCell(character.transform.position);
 
-            PathFind.Grid pathFindGrid = new PathFind.Grid(mapSize.x, mapSize.y, boolMap);
+            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, boolMap);
 
             PathFind.Point from = new PathFind.Point(start.x, start.y);
             PathFind.Point to = new PathFind.Point(des.x, des.y);
@@ -119,7 +100,6 @@ namespace _Game._4_CarJam.Scripts
             List<PathFind.Point> path = PathFind.Pathfinding.FindPath(pathFindGrid, from, to);
 
             character.MoveAlongPath(path);
-            //character.TryMove(path);
         }
 
         public bool IsEmpty(Vector3 pos)
