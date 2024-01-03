@@ -10,17 +10,29 @@ namespace _Game._4_CarJam.Scripts
 {
     public class CharacterController : GameElement
     {
-        private Collider _lastCollider;
+        [Header("Derived Class")]
+        [SerializeField] private Transform indicator;
+        
         public Action OnCorrectAction;
 
         public Dictionary<VehicleController, List<Vector3>> VehicleDoorPositions = new();
 
+        private Collider _lastCollider;
+        
+        private Vector3 LocalPosition => transform.localPosition;
         private void OnEnable()
         {
+            indicator.gameObject.SetActive(false);
+            
             OnCorrectAction += () =>
             {
-                transform.DOComplete();
-                transform.DOMoveY(transform.position.y + .7f, 0.25f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
+                indicator.gameObject.SetActive(true);
+                indicator.DOComplete();
+                indicator.DOLocalMoveY(indicator.localPosition.y + .5f, 0.5f).SetLoops(6, LoopType.Yoyo).SetEase(Ease.Linear).OnComplete(
+                    () =>
+                    {
+                        indicator.gameObject.SetActive(false);
+                    });
             };
         }
 
@@ -52,10 +64,10 @@ namespace _Game._4_CarJam.Scripts
 
             foreach (var vehicle in VehicleDoorPositions)
             {
-                if ((transform.localPosition.x == vehicle.Value[0].x &&
-                     transform.localPosition.z == vehicle.Value[0].z) ||
-                    (transform.localPosition.x == vehicle.Value[1].x &&
-                     transform.localPosition.z == vehicle.Value[1].z))
+                if ((LocalPosition.x == vehicle.Value[0].x &&
+                     LocalPosition.z == vehicle.Value[0].z) ||
+                    (LocalPosition.x == vehicle.Value[1].x &&
+                     LocalPosition.z == vehicle.Value[1].z))
                 {
                     State = GameElementState.Completed;
                     vehicle.Key.OnBeforeMove?.Invoke(vehicle.Key);
@@ -75,6 +87,7 @@ namespace _Game._4_CarJam.Scripts
                 case GameElementState.Idle:
                     break;
                 case GameElementState.Moving:
+                    indicator.DOComplete();
                     break;
                 case GameElementState.Waiting:
                     Stop();

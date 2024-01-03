@@ -25,6 +25,7 @@ public class GameElement : MonoBehaviour
     
     protected Action OnGameElementStateChanged;
     
+    [Header("Base Class")]
     [SerializeField] private Collider mainCollider;
     [SerializeField] private Colors color;
     [SerializeField] private Vector3 offset;
