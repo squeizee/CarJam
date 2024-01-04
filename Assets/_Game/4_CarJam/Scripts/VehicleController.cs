@@ -11,7 +11,7 @@ public class VehicleController : GameElement
 {
     [SerializeField] private int doorCount;
     [SerializeField] private Transform _centerPosition;
-
+    
     private Collider _lastCollider;
     private Vector3[] _doorPositions; // 0 -> left, 1 -> right
 
@@ -20,6 +20,15 @@ public class VehicleController : GameElement
     public Vector3[] DoorPositions => _doorPositions;
     public VehicleView VehicleView;
 
+    private void OnEnable()
+    {
+        OnTapped += () =>
+        {
+            transform.DOComplete();
+            transform.DOShakeRotation(.3f,10f);
+            ShowEmoji();
+        };
+    }
     private void Awake()
     {
         AssignDoorPositions();
@@ -30,7 +39,7 @@ public class VehicleController : GameElement
         base.Initialize(onStateChanged);
         State = GameElementState.Idle;
         VehicleView.Initialize(GetElementDirection());
-
+        
         OnGameElementStateChanged += OnStateChange;
     }
 
@@ -42,7 +51,10 @@ public class VehicleController : GameElement
     private void AssignDoorPositions()
     {
         _doorPositions = new Vector3[doorCount];
-
+        
+        // _doorPositions[0] =  GridController.Instance.WorldToCell(doorsTransforms[0].position - doorsTransforms[0].right);
+        // _doorPositions[1] =  GridController.Instance.WorldToCell(doorsTransforms[1].position + doorsTransforms[0].right);
+        
         switch (transform.eulerAngles.y)
         {
             case 0:
@@ -81,8 +93,18 @@ public class VehicleController : GameElement
         return GameElementDirection.Up;
     }
 
+    public void Move()
+    {
+        OnBeforeMove?.Invoke(this);
+    }
     public void MoveForward(List<Vector3> path, bool isTargetReached)
     {
+        if (path.Count == 0)
+        {
+            if (State != GameElementState.Waiting)
+                State = GameElementState.Waiting;
+            return;
+        }
         transform.DOComplete();
         State = GameElementState.Moving;
 
@@ -104,19 +126,6 @@ public class VehicleController : GameElement
             });
         }
     }
-
-    public void MoveForward(List<Point> path)
-    {
-        State = GameElementState.Moving;
-
-        transform.DOMove(transform.position + transform.forward * 5, 0.4f * 5).SetEase(Ease.InCubic).OnComplete(() =>
-        {
-            State = GameElementState.Completed;
-            //destroy vehicle
-            gameObject.SetActive(false);
-        });
-    }
-
     private void OnStateChange()
     {
         switch (State)
@@ -124,8 +133,10 @@ public class VehicleController : GameElement
             case GameElementState.Idle:
                 break;
             case GameElementState.Moving:
+                ShowEmoji(false);
                 break;
             case GameElementState.Waiting:
+                ShowEmoji();
                 break;
             case GameElementState.Completed:
                 gameObject.SetActive(false);
@@ -137,7 +148,14 @@ public class VehicleController : GameElement
     {
         return _centerPosition.position;
     }
-
+    public override void ShowEmoji(bool show = true)
+    {
+        base.ShowEmoji(show);
+    }
+    public override void Tapped()
+    {
+        OnTapped?.Invoke();
+    }
     public override void Stop()
     {
         transform.DOPause();

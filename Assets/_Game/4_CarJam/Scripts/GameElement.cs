@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using _Game._4_CarJam.Scripts;
+using DG.Tweening;
 using UnityEngine;
 
 public class GameElement : MonoBehaviour
@@ -33,13 +34,14 @@ public class GameElement : MonoBehaviour
     }
 
     protected Action OnGameElementStateChanged;
+    protected Action OnCrash;
+    protected Action OnTapped;
 
-    [Header("Base Class")] [SerializeField]
-    private Collider mainCollider;
-
+    [Header("Base Class")] 
     [SerializeField] private Colors color;
     [SerializeField] private Vector3 offset;
     [SerializeField] private Vector2Int dimension;
+    [SerializeField] private Transform emoji;
 
     private Vector2Int _targetPosition;
     private GameElementState _state;
@@ -50,7 +52,6 @@ public class GameElement : MonoBehaviour
         protected set
         {
             _state = value;
-            mainCollider.isTrigger = _state == GameElementState.Moving;
             OnGameElementStateChanged?.Invoke();
         }
     }
@@ -68,6 +69,20 @@ public class GameElement : MonoBehaviour
         Dimension = dimension;
     }
 
+    public virtual void ShowEmoji(bool show = true)
+    {
+        emoji.gameObject.SetActive(show);
+
+        if (show)
+            emoji.DOLocalMoveY(emoji.localPosition.y + .5f, 0.5f).SetLoops(4, LoopType.Yoyo)
+                .SetEase(Ease.Linear).OnComplete(
+                    () => { emoji.gameObject.SetActive(false); });
+    }
+    
+    public virtual void Tapped()
+    {
+        
+    }
     public virtual void Stop()
     {
     }

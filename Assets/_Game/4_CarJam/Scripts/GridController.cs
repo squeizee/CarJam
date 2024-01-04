@@ -56,7 +56,7 @@ namespace _Game._4_CarJam.Scripts
             }
 
             foreach (var gameElement in _listGameElements.Where(gameElement =>
-                         gameElement.State == GameElement.GameElementState.Idle))
+                         gameElement.State is GameElement.GameElementState.Idle or GameElement.GameElementState.Waiting))
             {
                 var pivotPoint = grid.WorldToCell(gameElement.transform.position);
                 
@@ -107,10 +107,10 @@ namespace _Game._4_CarJam.Scripts
             
             return elementMap;
         }
-        public void FindPath(Vector3 pos, CharacterController character)
+        public bool FindPath(Vector3 pos, CharacterController character)
         {
             var des = grid.WorldToCell(pos);
-            if(!IsEmpty(des)) return;
+            if(!IsEmpty(des)) return false;
             
             ElementType[,] elementMap = GetMapDataElement();
             
@@ -122,8 +122,13 @@ namespace _Game._4_CarJam.Scripts
             PathFind.Point to = new PathFind.Point(des.x, des.y);
 
             List<PathFind.Point> path = PathFind.Pathfinding.FindPath(pathFindGrid, from, to);
-
+            
+            if(path.Count == 0) 
+                return false;
+            
             character.MoveAlongPath(path);
+
+            return true;
         }
 
         public void CheckForwardPath(VehicleController vehicleController)
