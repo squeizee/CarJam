@@ -10,25 +10,36 @@ namespace _Game._4_CarJam.Scripts
 {
     public class CharacterController : GameElement
     {
-        private Collider _lastCollider;
+        [Header("Derived Class")]
+        [SerializeField] private Transform indicator;
+        
         public Action OnCorrectAction;
 
         public Dictionary<VehicleController, List<Vector3>> VehicleDoorPositions = new();
 
+        private Collider _lastCollider;
+        
+        private Vector3 LocalPosition => transform.localPosition;
         private void OnEnable()
         {
+            indicator.gameObject.SetActive(false);
+            
             OnCorrectAction += () =>
             {
-                transform.DOComplete();
-                transform.DOMoveY(transform.position.y + .7f, 0.25f).SetLoops(2, LoopType.Yoyo).SetEase(Ease.Linear);
+                indicator.gameObject.SetActive(true);
+                indicator.DOComplete();
+                indicator.DOLocalMoveY(indicator.localPosition.y + .5f, 0.5f).SetLoops(6, LoopType.Yoyo).SetEase(Ease.Linear).OnComplete(
+                    () =>
+                    {
+                        indicator.gameObject.SetActive(false);
+                    });
             };
         }
 
-        public override void Initialize()
+        public override void Initialize(Action onStateChanged)
         {
-            base.Initialize();
+            base.Initialize(onStateChanged);
             State = GameElementState.Idle;
-
             OnGameElementStateChanged += OnStateChange;
         }
 
@@ -36,52 +47,15 @@ namespace _Game._4_CarJam.Scripts
         {
             OnGameElementStateChanged -= OnStateChange;
         }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (!other.CompareTag("CollidedObject")) return;
-
-            _lastCollider = other;
-
-            //if (State != GameElementState.Idle) return;
-
-            //if(other.isTrigger) return;
-
-            //CheckVehicleIsAvailable(other);
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            // if(!other.CompareTag("CollidedObject")) return;
-            //
-            // if (State != GameElementState.Idle) return;
-            //
-            // CheckVehicleIsAvailable(other);
-        }
-
-
-        private void OnTriggerExit(Collider other)
-        {
-            if (!other.CompareTag("CollidedObject")) return;
-
-            if (other != _lastCollider) return;
-
-            _lastCollider = null;
-        }
-
+        
         public void MoveAlongPath(List<Point> path)
         {
             transform.DOComplete();
             State = GameElementState.Moving;
             List<Vector3> pathVector3 = path.ConvertAll(point =>
                 new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
-            transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.Linear).OnComplete(
-                () =>
-                {
-                    CheckPosition();
-                    // if(!CheckVehicleIsAvailable(_lastCollider))
-                    //     State = GameElementState.Idle;
-                });
+            transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.Linear).OnComplete(CheckPosition);
+            
         }
 
         private void CheckPosition()
@@ -90,32 +64,20 @@ namespace _Game._4_CarJam.Scripts
 
             foreach (var vehicle in VehicleDoorPositions)
             {
-                if ((transform.localPosition.x == vehicle.Value[0].x &&
-                     transform.localPosition.z == vehicle.Value[0].z) ||
-                    (transform.localPosition.x == vehicle.Value[1].x &&
-                     transform.localPosition.z == vehicle.Value[1].z))
+                if ((LocalPosition.x == vehicle.Value[0].x &&
+                     LocalPosition.z == vehicle.Value[0].z) ||
+                    (LocalPosition.x == vehicle.Value[1].x &&
+                     LocalPosition.z == vehicle.Value[1].z))
                 {
                     State = GameElementState.Completed;
-                    vehicle.Key.MoveForward();
+                    vehicle.Key.OnBeforeMove?.Invoke(vehicle.Key);
+                }
+                else
+                {
+                    State = GameElementState.Idle;
                 }
                     
             }
-        }
-
-        private bool CheckVehicleIsAvailable(Collider vehicleCollider)
-        {
-            if (!vehicleCollider) return false;
-
-            if (!vehicleCollider.transform.parent.parent.gameObject.TryGetComponent<VehicleController>(
-                    out var vehicleController)) return false;
-
-            if (vehicleController.GameElementColor != GameElementColor) return false;
-
-            _lastCollider = null;
-            State = GameElementState.Completed;
-            vehicleController.MoveForward();
-
-            return true;
         }
 
         private void OnStateChange()
@@ -125,6 +87,7 @@ namespace _Game._4_CarJam.Scripts
                 case GameElementState.Idle:
                     break;
                 case GameElementState.Moving:
+                    indicator.DOComplete();
                     break;
                 case GameElementState.Waiting:
                     Stop();

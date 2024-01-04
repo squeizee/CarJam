@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -5,6 +6,13 @@ using UnityEngine.Tilemaps;
 
 namespace _Game._4_CarJam.Scripts
 {
+    public enum ElementType
+    {
+        None = 0,
+        Ground = 1,
+        Element = 2
+        
+    }
     public class GridController : MonoBehaviour
     {
         [SerializeField] private Grid grid;
@@ -13,22 +21,40 @@ namespace _Game._4_CarJam.Scripts
 
         private List<GameElement> _listGameElements;
 
+        
+        private Vector2Int _maxPoint;
+        private Vector2Int _minPoint;
+        
         public void Initialize(List<GameElement> listGameElements)
         {
+            
             _listGameElements = listGameElements;
-        }
-        
-        public bool[,] GetMapData()
-        {
-            bool[,] boolMap = new bool[_mapSize.x, _mapSize.y];
+
+            _minPoint = new Vector2Int(_mapSize.x,_mapSize.y);
+            _maxPoint = new Vector2Int(0,0);
             
             foreach (Transform child in groundTileMapParent)
             {
                 var cellPosition = grid.WorldToCell(child.position);
-                boolMap[cellPosition.x,cellPosition.y] = true; 
+                
+                _maxPoint.x = cellPosition.x > _maxPoint.x ? cellPosition.x : _maxPoint.x;
+                _maxPoint.y = cellPosition.y > _maxPoint.y ? cellPosition.y : _maxPoint.y;
+                
+                _minPoint.x = cellPosition.x < _minPoint.x ? cellPosition.x : _minPoint.x;
+                _minPoint.y = cellPosition.y < _minPoint.y ? cellPosition.y : _minPoint.y;
+            }
+        }
+
+        public ElementType[,] GetMapDataElement()
+        {
+            ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];
+
+            foreach (Transform child in groundTileMapParent)
+            {
+                var cellPosition = grid.WorldToCell(child.position);
+                elementMap[cellPosition.x,cellPosition.y] = ElementType.Ground; 
             }
 
-            //get state not idle foreach
             foreach (var gameElement in _listGameElements.Where(gameElement =>
                          gameElement.State == GameElement.GameElementState.Idle))
             {
@@ -42,7 +68,7 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
-                                boolMap[pivotPoint.x + x, pivotPoint.y - y] = false;
+                                elementMap[pivotPoint.x + x, pivotPoint.y - y] = ElementType.Element;
                             }
                         }
                         break;
@@ -52,7 +78,7 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
-                                boolMap[pivotPoint.x - x, pivotPoint.y - y] = false;
+                                elementMap[pivotPoint.x - x, pivotPoint.y - y] = ElementType.Element;
                             }
                         }
                         break;
@@ -62,7 +88,7 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
-                                boolMap[pivotPoint.x - x, pivotPoint.y + y] = false;
+                                elementMap[pivotPoint.x - x, pivotPoint.y + y] = ElementType.Element;
                             }
                         }
                         break;
@@ -72,27 +98,25 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
-                                boolMap[pivotPoint.x + x, pivotPoint.y + y] = false;
+                                elementMap[pivotPoint.x + x, pivotPoint.y + y] = ElementType.Element;
                             }
                         }
                         break;
                 }
             }
-
-            return boolMap;
+            
+            return elementMap;
         }
-
-
         public void FindPath(Vector3 pos, CharacterController character)
         {
-            bool[,] boolMap = GetMapData();
             var des = grid.WorldToCell(pos);
-
-            if (!boolMap[des.x, des.y]) return;
-
+            if(!IsEmpty(des)) return;
+            
+            ElementType[,] elementMap = GetMapDataElement();
+            
             var start = grid.WorldToCell(character.transform.position);
 
-            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, boolMap);
+            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
 
             PathFind.Point from = new PathFind.Point(start.x, start.y);
             PathFind.Point to = new PathFind.Point(des.x, des.y);
@@ -102,11 +126,65 @@ namespace _Game._4_CarJam.Scripts
             character.MoveAlongPath(path);
         }
 
-        public bool IsEmpty(Vector3 pos)
+        public void CheckForwardPath(VehicleController vehicleController)
         {
-            bool[,] boolMap = GetMapData();
-            var point = grid.WorldToCell(pos);
-            return boolMap[point.x, point.y];
+            var pivotPoint = grid.WorldToCell(vehicleController.transform.position);
+            var direction = Vector3Int.zero;
+            var neighbor = Vector3Int.zero;
+            var distanceToBorder = 0;
+            var offset = vehicleController.Dimension.x;
+            switch (vehicleController.transform.eulerAngles.y)
+            {
+                case 0:
+                    direction = Vector3Int.up;
+                    neighbor = Vector3Int.right;
+                    distanceToBorder = _maxPoint.y - pivotPoint.y;
+                    break;
+                case 90:
+                    direction = Vector3Int.right;
+                    neighbor = Vector3Int.down;
+                    distanceToBorder = _maxPoint.x - pivotPoint.x;
+                    break;
+                case 180:
+                    direction = Vector3Int.down;
+                    neighbor = Vector3Int.left;
+                    distanceToBorder = pivotPoint.y - _minPoint.y;
+                    break;
+                case 270:
+                    direction = Vector3Int.left;
+                    neighbor = Vector3Int.up;
+                    distanceToBorder = pivotPoint.x - _minPoint.x;
+                    break;
+            }
+
+            var targetPoint = pivotPoint + direction * (offset*2 + distanceToBorder);
+            List<Vector3> path = new List<Vector3>();
+            bool isTargetReached = true;
+            for (int i = 1; i < distanceToBorder +1; i++)
+            {
+                if(IsEmpty(pivotPoint + direction * i) && IsEmpty(pivotPoint + neighbor + direction * i)) 
+                    path.Add(pivotPoint + direction * i);
+                else
+                {
+                    isTargetReached = false;
+                    break;
+                }
+            }
+            if(isTargetReached)
+                path.Add(targetPoint);
+            
+            vehicleController.MoveForward(path,isTargetReached);
+        }
+
+        private bool IsEmptyOrNone(Vector3Int point)
+        {
+            ElementType[,] elementMap = GetMapDataElement();
+            return elementMap[point.x, point.y] == ElementType.Ground || elementMap[point.x, point.y] == ElementType.None;
+        }
+        private bool IsEmpty(Vector3Int point)
+        {
+            ElementType[,] elementMap = GetMapDataElement();
+            return elementMap[point.x, point.y] == ElementType.Ground;
         }
     }
 }

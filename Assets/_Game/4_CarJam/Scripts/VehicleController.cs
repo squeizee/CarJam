@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using _Game._4_CarJam.Scripts;
 using DG.Tweening;
+using PathFind;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,15 +13,16 @@ public class VehicleController : GameElement
     private Collider _lastCollider;
     private Vector3[] _doorPositions; // 0 -> left, 1 -> right
 
+    public Action<VehicleController> OnBeforeMove;
     public Vector3[] DoorPositions => _doorPositions;
     private void Awake()
     {
         AssignDoorPositions();
     }
 
-    public override void Initialize()
+    public override void Initialize(Action onStateChanged)
     {
-        base.Initialize();
+        base.Initialize(onStateChanged);
         State = GameElementState.Idle;
 
         
@@ -31,29 +33,6 @@ public class VehicleController : GameElement
     {
         OnGameElementStateChanged -= OnStateChange;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!other.CompareTag("CollidedObject")) return;
-
-        _lastCollider = other;
-
-        if (State == GameElementState.Moving)
-        {
-            Stop();
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (!other.CompareTag("CollidedObject")) return;
-
-        if (other != _lastCollider) return;
-
-        transform.DOPlay();
-        _lastCollider = null;
-    }
-
     private void AssignDoorPositions()
     {
         _doorPositions = new Vector3[doorCount];
@@ -70,7 +49,7 @@ public class VehicleController : GameElement
                 break;
             case 180:
                 _doorPositions[0] = transform.localPosition + new Vector3(1, 0, 1);
-                _doorPositions[1] = transform.localPosition + new Vector3(2, 0, 1);
+                _doorPositions[1] = transform.localPosition + new Vector3(-2, 0, 1);
                 break;
             case 270:
                 _doorPositions[0] = transform.localPosition + new Vector3(1, 0, -1);
@@ -79,7 +58,28 @@ public class VehicleController : GameElement
         }
     }
 
-    public void MoveForward()
+    public void MoveForward(List<Vector3> path, bool isTargetReached)
+    {
+        transform.DOComplete();
+        State = GameElementState.Moving;
+        
+        List<Vector3> pathVector3 = path.ConvertAll(point =>
+            new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
+        
+        transform.DOLocalPath(pathVector3.ToArray(), 0.2f * path.Count).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            if (isTargetReached)
+            {
+                State = GameElementState.Completed;
+            }
+            else
+            {
+                State = GameElementState.Waiting;
+            }
+        });
+        
+    }
+    public void MoveForward(List<Point> path)
     {
         State = GameElementState.Moving;
 
@@ -102,6 +102,7 @@ public class VehicleController : GameElement
             case GameElementState.Waiting:
                 break;
             case GameElementState.Completed:
+                gameObject.SetActive(false);
                 break;
         }
     }

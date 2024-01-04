@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using _Game._4_CarJam.Scripts;
 
 namespace PathFind
 {
@@ -56,6 +57,20 @@ namespace PathFind
             }
         }
 
+        public Grid(int width, int height, ElementType[,] walkable_tiles)
+        {
+            gridSizeX = width;
+            gridSizeY = height;
+            nodes = new Node[width, height];
+            
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    nodes[x, y] = new Node(walkable_tiles[x, y] == ElementType.Ground ? 1.0f : 0.0f, x, y);
+                }
+            }
+        }
         public List<Node> GetNeighbours(Node node)
         {
             List<Node> neighbours = new List<Node>();

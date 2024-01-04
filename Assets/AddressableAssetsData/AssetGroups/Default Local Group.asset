@@ -33,10 +33,6 @@ MonoBehaviour:
     m_Address: Assets/_Game/4_LevelEditor/Prefabs/CarJamGamePlay_0004.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: 9093b74bbe658a7489b0e43350099e5d
-    m_Address: Assets/_Game/4_LevelEditor/Prefabs/CarJamGamePlay_0005.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 4da1000d2da6f9d4a9e1ce035be8c0e4
     m_Address: Assets/_Game/4_LevelEditor/Prefabs/CarJamGamePlay_0006.prefab
     m_ReadOnly: 0
@@ -47,6 +43,10 @@ MonoBehaviour:
     m_SerializedLabels: []
   - m_GUID: 43ad903412baf1845877b6672e1298f9
     m_Address: Assets/_Game/4_LevelEditor/Prefabs/CarJamGamePlay_0008.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9093b74bbe658a7489b0e43350099e5d
+    m_Address: Assets/_Game/4_LevelEditor/Prefabs/CarJamGamePlay_0005.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
