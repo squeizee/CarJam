@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85cf9cd3c21c4c53b10bd4477d048e18, type: 3}
+  m_Name: VehicleSo
+  m_EditorClassIdentifier: 
+  UpDirectionViewTransformData:
+    Position: {x: 0.49, y: 0, z: -1.21}
+    LocalScale: {x: 1.263125, y: 1, z: 0.9154966}
+  DownDirectionViewTransformData:
+    Position: {x: 0.507, y: 0, z: -0.86}
+    LocalScale: {x: 1.263125, y: 1, z: 0.9504687}
+  LeftDirectionViewTransformData:
+    Position: {x: 0.363, y: 0, z: -1.02}
+    LocalScale: {x: 1.158142, y: 1, z: 0.975}
+  RightDirectionViewTransformData:
+    Position: {x: 0.68, y: 0, z: -1.022}
+    LocalScale: {x: 1.05, y: 1, z: 0.975}
+  VehicleOvershoot: 0.4
+  CompleteDuration: 1

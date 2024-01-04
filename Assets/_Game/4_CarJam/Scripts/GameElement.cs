@@ -15,6 +15,7 @@ public class GameElement : MonoBehaviour
         Gray,
         Yellow
     }
+
     public enum GameElementState
     {
         Idle,
@@ -22,17 +23,27 @@ public class GameElement : MonoBehaviour
         Waiting,
         Completed
     }
-    
+
+    public enum GameElementDirection
+    {
+        Up,
+        Down,
+        Left,
+        Right
+    }
+
     protected Action OnGameElementStateChanged;
-    
-    [Header("Base Class")]
-    [SerializeField] private Collider mainCollider;
+
+    [Header("Base Class")] [SerializeField]
+    private Collider mainCollider;
+
     [SerializeField] private Colors color;
     [SerializeField] private Vector3 offset;
     [SerializeField] private Vector2Int dimension;
-    
+
     private Vector2Int _targetPosition;
     private GameElementState _state;
+
     public GameElementState State
     {
         get => _state;
@@ -43,10 +54,11 @@ public class GameElement : MonoBehaviour
             OnGameElementStateChanged?.Invoke();
         }
     }
+
     public Colors GameElementColor { get; protected set; }
     public Vector3 Offset { get; protected set; }
     public Vector2Int Dimension { get; protected set; }
-    
+
 
     public virtual void Initialize(Action onStateChanged)
     {
@@ -55,8 +67,8 @@ public class GameElement : MonoBehaviour
         Offset = offset;
         Dimension = dimension;
     }
+
     public virtual void Stop()
     {
-        
     }
 }

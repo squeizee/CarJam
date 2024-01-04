@@ -15,6 +15,8 @@ public class VehicleController : GameElement
 
     public Action<VehicleController> OnBeforeMove;
     public Vector3[] DoorPositions => _doorPositions;
+    public VehicleView VehicleView;
+
     private void Awake()
     {
         AssignDoorPositions();
@@ -24,8 +26,8 @@ public class VehicleController : GameElement
     {
         base.Initialize(onStateChanged);
         State = GameElementState.Idle;
+        VehicleView.Initialize(GetElementDirection());
 
-        
         OnGameElementStateChanged += OnStateChange;
     }
 
@@ -33,10 +35,11 @@ public class VehicleController : GameElement
     {
         OnGameElementStateChanged -= OnStateChange;
     }
+
     private void AssignDoorPositions()
     {
         _doorPositions = new Vector3[doorCount];
-        
+
         switch (transform.eulerAngles.y)
         {
             case 0:
@@ -58,27 +61,46 @@ public class VehicleController : GameElement
         }
     }
 
+    public GameElementDirection GetElementDirection()
+    {
+        switch (transform.eulerAngles.y)
+        {
+            case 0:
+                return GameElementDirection.Up;
+            case 90:
+                return GameElementDirection.Right;
+            case 180:
+                return GameElementDirection.Down;
+            case 270:
+                return GameElementDirection.Left;
+        }
+
+        return GameElementDirection.Up;
+    }
+
     public void MoveForward(List<Vector3> path, bool isTargetReached)
     {
         transform.DOComplete();
         State = GameElementState.Moving;
-        
+
         List<Vector3> pathVector3 = path.ConvertAll(point =>
             new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
-        
-        transform.DOLocalPath(pathVector3.ToArray(), 0.2f * path.Count).SetEase(Ease.Linear).OnComplete(() =>
+
+        if (isTargetReached)
         {
-            if (isTargetReached)
-            {
-                State = GameElementState.Completed;
-            }
-            else
+            var targetPoint = pathVector3[pathVector3.Count - 1];
+            transform.DOLocalMove(targetPoint, VehicleSo.Instance.CompleteDuration).OnComplete(() => { State = GameElementState.Completed; })
+                .SetEase(Ease.InBack,overshoot: VehicleSo.Instance.VehicleOvershoot);
+        }
+        else
+        {
+            transform.DOLocalPath(pathVector3.ToArray(), 0.2f * path.Count).SetEase(Ease.Linear).OnComplete(() =>
             {
                 State = GameElementState.Waiting;
-            }
-        });
-        
+            });
+        }
     }
+
     public void MoveForward(List<Point> path)
     {
         State = GameElementState.Moving;
