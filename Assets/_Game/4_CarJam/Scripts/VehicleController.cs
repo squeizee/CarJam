@@ -10,8 +10,11 @@ using Random = UnityEngine.Random;
 public class VehicleController : GameElement
 {
     [SerializeField] private int doorCount;
+    [SerializeField] private Transform _centerPosition;
+
     private Collider _lastCollider;
     private Vector3[] _doorPositions; // 0 -> left, 1 -> right
+
 
     public Action<VehicleController> OnBeforeMove;
     public Vector3[] DoorPositions => _doorPositions;
@@ -89,8 +92,9 @@ public class VehicleController : GameElement
         if (isTargetReached)
         {
             var targetPoint = pathVector3[pathVector3.Count - 1];
-            transform.DOLocalMove(targetPoint, VehicleSo.Instance.CompleteDuration).OnComplete(() => { State = GameElementState.Completed; })
-                .SetEase(Ease.InBack,overshoot: VehicleSo.Instance.VehicleOvershoot);
+            transform.DOLocalMove(targetPoint, VehicleSo.Instance.CompleteDuration)
+                .OnComplete(() => { State = GameElementState.Completed; })
+                .SetEase(Ease.InBack, overshoot: VehicleSo.Instance.VehicleOvershoot);
         }
         else
         {
@@ -127,6 +131,11 @@ public class VehicleController : GameElement
                 gameObject.SetActive(false);
                 break;
         }
+    }
+
+    public Vector3 GetCenterPosition()
+    {
+        return _centerPosition.position;
     }
 
     public override void Stop()
