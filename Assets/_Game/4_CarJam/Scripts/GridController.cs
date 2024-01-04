@@ -56,7 +56,7 @@ namespace _Game._4_CarJam.Scripts
             }
 
             foreach (var gameElement in _listGameElements.Where(gameElement =>
-                         gameElement.State == GameElement.GameElementState.Idle))
+                         gameElement.State is GameElement.GameElementState.Idle or GameElement.GameElementState.Waiting))
             {
                 var pivotPoint = grid.WorldToCell(gameElement.transform.position);
                 
@@ -172,6 +172,8 @@ namespace _Game._4_CarJam.Scripts
             }
             if(isTargetReached)
                 path.Add(targetPoint);
+            
+            if(path.Count == 0) return;
             
             vehicleController.MoveForward(path,isTargetReached);
         }
