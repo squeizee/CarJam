@@ -26,18 +26,26 @@ namespace _Game._4_CarJam.Scripts
             base.Initialize(baseGamePlayStartArgs);
             
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
-            _listGameElements.ForEach(x => x.Initialize(OnStateChange));
 
-            _listCharacters = GetComponentsInChildren<CharacterController>().ToList();
-            _listVehicles = GetComponentsInChildren<VehicleController>().ToList();
-            _listVehicles.ForEach(x => x.OnBeforeMove += gridController.CheckForwardPath);
-            
-            for (int i = 0; i < _listCharacters.Count; i++)
+            foreach (var gameElement in _listGameElements)
             {
-                var vehicle = _listVehicles.Find(x => x.GameElementColor == _listCharacters[i].GameElementColor);
-                _listCharacters[i].VehicleDoorPositions.Add(vehicle,vehicle.DoorPositions.ToList());
+                gameElement.Initialize(OnStateChange);
+                
+                switch (gameElement)
+                {
+                    case VehicleController vehicle:
+                        vehicle.OnBeforeMove += gridController.CheckForwardPath;
+                        break;
+                    case CharacterController character:
+                    {
+                        var vehicleController = _listGameElements.Find(x => x.GameElementColor == character.GameElementColor && x is VehicleController) as VehicleController;
+                    
+                        if (vehicleController)
+                            character.VehicleDoorPositions.Add(vehicleController, vehicleController.DoorPositions.ToList());
+                        break;
+                    }
+                }
             }
-            
             gridController.Initialize(_listGameElements);
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
@@ -56,7 +64,7 @@ namespace _Game._4_CarJam.Scripts
             {
                 if (waitingGameElement is VehicleController vehicleController)
                 {
-                    gridController.CheckForwardPath(vehicleController);
+                    vehicleController.Move();
                 }
             }
         }
@@ -97,7 +105,9 @@ namespace _Game._4_CarJam.Scripts
                 if (Craft.Get<CraftInputSystem>()
                     .GetGameObjectUnderMouse(layerMask, out var touchedGround, out var hit))
                 {
-                    gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
+                    bool isValidClick = gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
+                    if(!isValidClick)
+                        _selectedCharacter.ShowEmoji();
                     _selectedCharacter = null;
                 }
             }
@@ -115,10 +125,14 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnObjectTouched(GameObject touchedObject)
         {
-            if (touchedObject.transform.TryGetComponent<CharacterController>(out var characterController))
+            if (touchedObject.transform.parent.TryGetComponent<CharacterController>(out var characterController))
             {
                 _selectedCharacter = characterController;
-                _selectedCharacter.OnCorrectAction?.Invoke();
+                _selectedCharacter.Tapped();
+            }
+            else if(touchedObject.transform.parent.TryGetComponent<VehicleController>(out var vehicleController))
+            {
+                vehicleController.Tapped();
             }
             
         }

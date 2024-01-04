@@ -13,7 +13,7 @@ namespace _Game._4_CarJam.Scripts
         [Header("Derived Class")] [SerializeField]
         private Transform indicator;
 
-        public Action OnCorrectAction;
+        //public Action OnCorrectAction;
 
         public Dictionary<VehicleController, List<Vector3>> VehicleDoorPositions = new();
 
@@ -23,9 +23,7 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnEnable()
         {
-            indicator.gameObject.SetActive(false);
-
-            OnCorrectAction += () =>
+            OnTapped += () =>
             {
                 indicator.gameObject.SetActive(true);
                 indicator.DOComplete();
@@ -84,7 +82,7 @@ namespace _Game._4_CarJam.Scripts
             transform.DOMove(targetPosition, 0.3f).OnComplete(() =>
             {
                 State = GameElementState.Completed;
-                vehicleController.OnBeforeMove?.Invoke(vehicleController);
+                vehicleController.Move();
             }).SetEase(Ease.InBack);
         }
 
@@ -106,6 +104,15 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
+        public override void ShowEmoji(bool show = true)
+        {
+            base.ShowEmoji(show);
+            indicator.gameObject.SetActive(!show);
+        }
+        public override void Tapped()
+        {
+            OnTapped?.Invoke();
+        }
         public override void Stop()
         {
             transform.DOComplete();
