@@ -11,6 +11,8 @@ public class VehicleController : GameElement
 {
     [SerializeField] private int doorCount;
     [SerializeField] private Transform _centerPosition;
+    [SerializeField] private Transform vehicleViewParent;
+    [SerializeField] private Transform[] doorsTransforms;
     
     private Collider _lastCollider;
     private Vector3[] _doorPositions; // 0 -> left, 1 -> right
@@ -24,8 +26,8 @@ public class VehicleController : GameElement
     {
         OnTapped += () =>
         {
-            transform.DOComplete();
-            transform.DOShakeRotation(.3f,10f);
+            vehicleViewParent.transform.DOComplete();
+            vehicleViewParent.transform.DOShakeRotation(.3f,10f);
             ShowEmoji();
         };
     }

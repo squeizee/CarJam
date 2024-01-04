@@ -15,6 +15,8 @@ namespace _Game._4_CarJam.Scripts
     }
     public class GridController : MonoBehaviour
     {
+        public static GridController Instance;
+        
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
         private Vector2Int _mapSize = new Vector2Int(15,15);
@@ -24,7 +26,15 @@ namespace _Game._4_CarJam.Scripts
         
         private Vector2Int _maxPoint;
         private Vector2Int _minPoint;
-        
+
+        private void Awake()
+        {
+            if(Instance == null)
+                Instance = this;
+            else
+                Destroy(gameObject);
+        }
+
         public void Initialize(List<GameElement> listGameElements)
         {
             

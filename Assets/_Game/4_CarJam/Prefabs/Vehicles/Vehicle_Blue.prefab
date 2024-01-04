@@ -757,6 +757,10 @@ MonoBehaviour:
   emoji: {fileID: 8510455325993264620}
   doorCount: 2
   _centerPosition: {fileID: 5794086170765039758}
+  vehicleViewParent: {fileID: 3712455997839396948}
+  doorsTransforms:
+  - {fileID: 3712455997839382828}
+  - {fileID: 3712455997839457780}
   VehicleView: {fileID: 5257840215229610858}
 --- !u!114 &5257840215229610858
 MonoBehaviour:
@@ -846,6 +850,26 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0.628
       objectReference: {fileID: 0}
+    - target: {fileID: 466576, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 466576, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 466576, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 466576, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 466576, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 481256, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -924,8 +948,18 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 032ff22b51ae5472e9851c3577734626, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+--- !u!4 &3712455997839382828 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 466576, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+  m_PrefabInstance: {fileID: 3712455997839312828}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3712455997839396948 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 481256, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+  m_PrefabInstance: {fileID: 3712455997839312828}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3712455997839457780 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 408136, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
   m_PrefabInstance: {fileID: 3712455997839312828}
   m_PrefabAsset: {fileID: 0}

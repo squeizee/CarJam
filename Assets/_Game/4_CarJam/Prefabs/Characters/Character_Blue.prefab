@@ -172,7 +172,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907874564558602611}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.61, z: -0.27}
   m_LocalScale: {x: 1.2848401, y: 0.9621697, z: 1.2848401}
   m_ConstrainProportionsScale: 0
@@ -181,7 +181,7 @@ Transform:
   - {fileID: 1472943165045501452}
   m_Father: {fileID: 4765692219566082130}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &5175161224862187955
 Animator:
   serializedVersion: 4
@@ -192,7 +192,7 @@ Animator:
   m_GameObject: {fileID: 1907874564558602611}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4ba3a120023d24332b6c2b296a2dc86c, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 362e189e0cebc2e4b8d3634d337202dc, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -800,6 +800,7 @@ MonoBehaviour:
   dimension: {x: 1, y: 1}
   emoji: {fileID: 3451516981050625170}
   indicator: {fileID: 598188760749531947}
+  characterViewParent: {fileID: 1239036777762954185}
 --- !u!1 &6369487210050940216
 GameObject:
   m_ObjectHideFlags: 0
@@ -1437,7 +1438,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8902488261262233358}
-  m_LocalRotation: {x: -0.7071067, y: -0.000000030908616, z: 0.000000030908623, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0.7072302, z: 0.7069834, w: 0}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1445,4 +1446,4 @@ Transform:
   - {fileID: 8199450542521714369}
   m_Father: {fileID: 1239036777762954185}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 180, z: 0}

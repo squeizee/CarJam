@@ -12,13 +12,13 @@ namespace _Game._4_CarJam.Scripts
     {
         [Header("Derived Class")] [SerializeField]
         private Transform indicator;
-
+        [SerializeField] private Transform characterViewParent;
         //public Action OnCorrectAction;
 
         public Dictionary<VehicleController, List<Vector3>> VehicleDoorPositions = new();
 
         private Collider _lastCollider;
-
+        private Animator _animator;
         private Vector3 LocalPosition => transform.localPosition;
 
         private void OnEnable()
@@ -31,6 +31,11 @@ namespace _Game._4_CarJam.Scripts
                     .SetEase(Ease.Linear).OnComplete(
                         () => { indicator.gameObject.SetActive(false); });
             };
+        }
+
+        private void Awake()
+        {
+            _animator = GetComponentInChildren<Animator>();
         }
 
         public override void Initialize(Action onStateChanged)
@@ -91,12 +96,12 @@ namespace _Game._4_CarJam.Scripts
             switch (State)
             {
                 case GameElementState.Idle:
-                    break;
-                case GameElementState.Moving:
-                    indicator.DOComplete();
-                    break;
                 case GameElementState.Waiting:
                     Stop();
+                    break;
+                case GameElementState.Moving:
+                    _animator.Play("Run");
+                    indicator.DOComplete();
                     break;
                 case GameElementState.Completed:
                     gameObject.SetActive(false);
@@ -116,7 +121,7 @@ namespace _Game._4_CarJam.Scripts
         public override void Stop()
         {
             transform.DOComplete();
-            State = GameElementState.Idle;
+            _animator.Play("Idle");
         }
     }
 }
