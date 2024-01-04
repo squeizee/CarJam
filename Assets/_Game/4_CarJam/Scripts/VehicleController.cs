@@ -12,6 +12,7 @@ public class VehicleController : GameElement
     [SerializeField] private int doorCount;
     [SerializeField] private Transform _centerPosition;
 
+    [SerializeField] private Transform[] doorsTransforms;
     private Collider _lastCollider;
     private Vector3[] _doorPositions; // 0 -> left, 1 -> right
 
@@ -42,7 +43,10 @@ public class VehicleController : GameElement
     private void AssignDoorPositions()
     {
         _doorPositions = new Vector3[doorCount];
-
+        
+        // _doorPositions[0] =  GridController.Instance.WorldToCell(doorsTransforms[0].position - doorsTransforms[0].right);
+        // _doorPositions[1] =  GridController.Instance.WorldToCell(doorsTransforms[1].position + doorsTransforms[0].right);
+        
         switch (transform.eulerAngles.y)
         {
             case 0:
