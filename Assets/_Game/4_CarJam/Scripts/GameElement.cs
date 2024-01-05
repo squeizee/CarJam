@@ -43,6 +43,7 @@ public class GameElement : MonoBehaviour
     [SerializeField] private Vector2Int dimension;
     [SerializeField] private Transform emoji;
 
+    
     private Vector2Int _targetPosition;
     private GameElementState _state;
 
@@ -60,13 +61,15 @@ public class GameElement : MonoBehaviour
     public Vector3 Offset { get; protected set; }
     public Vector2Int Dimension { get; protected set; }
 
+    public Vector2Int PositionInGrid { get; protected set; }
 
-    public virtual void Initialize(Action onStateChanged)
+    public virtual void Initialize(Vector2Int positionInGrid,Action onStateChanged)
     {
         OnGameElementStateChanged += onStateChanged;
         GameElementColor = color;
         Offset = offset;
         Dimension = dimension;
+        PositionInGrid = positionInGrid;
     }
 
     public virtual void ShowEmoji(bool show = true)
@@ -79,11 +82,15 @@ public class GameElement : MonoBehaviour
                     () => { emoji.gameObject.SetActive(false); });
     }
     
+    
     public virtual void Tapped()
     {
         
     }
     public virtual void Stop()
+    {
+    }
+    protected virtual void UpdatePositionInGrid(Vector3Int positionInGrid)
     {
     }
 }

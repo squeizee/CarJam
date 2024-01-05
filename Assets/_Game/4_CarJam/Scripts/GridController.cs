@@ -15,26 +15,22 @@ namespace _Game._4_CarJam.Scripts
     }
     public class GridController : MonoBehaviour
     {
-        public static GridController Instance;
         
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
+        
+        public Vector2Int GetCellPosition(Vector3 pos)
+        {
+            var cellPosition = grid.WorldToCell(pos);
+            return new Vector2Int(cellPosition.x,cellPosition.y);
+        }
+        
         private Vector2Int _mapSize = new Vector2Int(15,15);
-
         private List<GameElement> _listGameElements;
-
         
         private Vector2Int _maxPoint;
         private Vector2Int _minPoint;
-
-        private void Awake()
-        {
-            if(Instance == null)
-                Instance = this;
-            else
-                Destroy(gameObject);
-        }
-
+        
         public void Initialize(List<GameElement> listGameElements)
         {
             
@@ -54,7 +50,7 @@ namespace _Game._4_CarJam.Scripts
                 _minPoint.y = cellPosition.y < _minPoint.y ? cellPosition.y : _minPoint.y;
             }
         }
-
+        
         public ElementType[,] GetMapDataElement()
         {
             ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];

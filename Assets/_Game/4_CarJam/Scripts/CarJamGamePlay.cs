@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 using _Game._0_CraftCore.Scripts.Core;
 using _Game._3_GamePlay.Scripts;
 using _Game.Library.CraftTime;
@@ -26,10 +27,11 @@ namespace _Game._4_CarJam.Scripts
             base.Initialize(baseGamePlayStartArgs);
             
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
-
+            gridController.Initialize(_listGameElements);
+            
             foreach (var gameElement in _listGameElements)
             {
-                gameElement.Initialize(OnStateChange);
+                gameElement.Initialize(gridController.GetCellPosition(gameElement.transform.position),OnStateChange);
                 
                 switch (gameElement)
                 {
@@ -41,12 +43,12 @@ namespace _Game._4_CarJam.Scripts
                         var vehicleController = _listGameElements.Find(x => x.GameElementColor == character.GameElementColor && x is VehicleController) as VehicleController;
                     
                         if (vehicleController)
-                            character.VehicleDoorPositions.Add(vehicleController, vehicleController.DoorPositions.ToList());
+                            character.VehicleDoorPositions.Add(vehicleController, vehicleController.DoorPositions);
                         break;
                     }
                 }
             }
-            gridController.Initialize(_listGameElements);
+            
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
         }

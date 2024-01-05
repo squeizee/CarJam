@@ -15,7 +15,7 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Transform characterViewParent;
         //public Action OnCorrectAction;
 
-        public Dictionary<VehicleController, List<Vector3>> VehicleDoorPositions = new();
+        public Dictionary<VehicleController, List<Vector2Int>> VehicleDoorPositions = new();
 
         private Collider _lastCollider;
         private Animator _animator;
@@ -38,9 +38,9 @@ namespace _Game._4_CarJam.Scripts
             _animator = GetComponentInChildren<Animator>();
         }
 
-        public override void Initialize(Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid,Action onStateChanged)
         {
-            base.Initialize(onStateChanged);
+            base.Initialize(positionInGrid,onStateChanged);
             State = GameElementState.Idle;
             OnGameElementStateChanged += OnStateChange;
         }
@@ -57,7 +57,11 @@ namespace _Game._4_CarJam.Scripts
             List<Vector3> pathVector3 = path.ConvertAll(point =>
                 new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
             transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.Linear)
-                .OnComplete(CheckPosition);
+                .OnComplete(() =>
+                {
+                    PositionInGrid = new Vector2Int(path[^1].x, path[^1].y);
+                    CheckPosition();
+                });
         }
 
         private void CheckPosition()
@@ -66,13 +70,10 @@ namespace _Game._4_CarJam.Scripts
 
             foreach (var vehicle in VehicleDoorPositions)
             {
-                if ((LocalPosition.x == vehicle.Value[0].x &&
-                     LocalPosition.z == vehicle.Value[0].z) ||
-                    (LocalPosition.x == vehicle.Value[1].x &&
-                     LocalPosition.z == vehicle.Value[1].z))
-                {
-                    PlayCompletedAnimation(vehicle.Key);
-                }
+                if(PositionInGrid == vehicle.Value[0])
+                    PlayCompletedAnimation(vehicle.Key,VehicleController.DoorSide.Left);
+                else if (PositionInGrid == vehicle.Value[1])
+                    PlayCompletedAnimation(vehicle.Key,VehicleController.DoorSide.Right);
                 else
                 {
                     State = GameElementState.Idle;
@@ -80,15 +81,19 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
-        public void PlayCompletedAnimation(VehicleController vehicleController)
+        public void PlayCompletedAnimation(VehicleController vehicleController,VehicleController.DoorSide doorSide)
         {
             transform.DOComplete();
             var targetPosition = vehicleController.GetCenterPosition();
-            transform.DOMove(targetPosition, 0.3f).OnComplete(() =>
+            vehicleController.OpenDoor(doorSide, () =>
             {
-                State = GameElementState.Completed;
-                vehicleController.Move();
-            }).SetEase(Ease.InBack);
+                transform.DOMove(targetPosition, 0.3f).OnComplete(() =>
+                {
+                    State = GameElementState.Completed;
+                    vehicleController.Move();
+                }).SetEase(Ease.InBack);
+            });
+            
         }
 
         private void OnStateChange()
@@ -109,6 +114,7 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
+        
         public override void ShowEmoji(bool show = true)
         {
             base.ShowEmoji(show);
@@ -122,6 +128,10 @@ namespace _Game._4_CarJam.Scripts
         {
             transform.DOComplete();
             _animator.Play("Idle");
+        }
+        protected override void UpdatePositionInGrid(Vector3Int positionInGrid)
+        {
+            
         }
     }
 }

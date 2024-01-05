@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using _Game._4_CarJam.Scripts;
 using DG.Tweening;
 using PathFind;
@@ -9,17 +10,24 @@ using Random = UnityEngine.Random;
 
 public class VehicleController : GameElement
 {
+    public enum DoorSide
+    {
+        Left = 0,
+        Right = 1,
+    }
+
     [SerializeField] private int doorCount;
     [SerializeField] private Transform _centerPosition;
     [SerializeField] private Transform vehicleViewParent;
     [SerializeField] private Transform[] doorsTransforms;
-    
+
     private Collider _lastCollider;
     private Vector3[] _doorPositions; // 0 -> left, 1 -> right
-
+    private int _doorAngle = 55;
+    private Dictionary<DoorSide, Vector2Int> _dictDoor = new();
 
     public Action<VehicleController> OnBeforeMove;
-    public Vector3[] DoorPositions => _doorPositions;
+    public List<Vector2Int> DoorPositions => _dictDoor.Values.ToList();
     public VehicleView VehicleView;
 
     private void OnEnable()
@@ -27,21 +35,17 @@ public class VehicleController : GameElement
         OnTapped += () =>
         {
             vehicleViewParent.transform.DOComplete();
-            vehicleViewParent.transform.DOShakeRotation(.3f,10f);
+            vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
             ShowEmoji();
         };
     }
-    private void Awake()
-    {
-        AssignDoorPositions();
-    }
 
-    public override void Initialize(Action onStateChanged)
+    public override void Initialize(Vector2Int positionInGrid,Action onStateChanged)
     {
-        base.Initialize(onStateChanged);
+        base.Initialize(positionInGrid,onStateChanged);
         State = GameElementState.Idle;
         VehicleView.Initialize(GetElementDirection());
-        
+        AssignDoorPositions();
         OnGameElementStateChanged += OnStateChange;
     }
 
@@ -52,53 +56,45 @@ public class VehicleController : GameElement
 
     private void AssignDoorPositions()
     {
-        _doorPositions = new Vector3[doorCount];
-        
-        // _doorPositions[0] =  GridController.Instance.WorldToCell(doorsTransforms[0].position - doorsTransforms[0].right);
-        // _doorPositions[1] =  GridController.Instance.WorldToCell(doorsTransforms[1].position + doorsTransforms[0].right);
-        
-        switch (transform.eulerAngles.y)
+        switch (GetElementDirection())
         {
-            case 0:
-                _doorPositions[0] = transform.localPosition + new Vector3(-1, 0, -1);
-                _doorPositions[1] = transform.localPosition + new Vector3(2, 0, -1);
-                break;
-            case 90:
-                _doorPositions[0] = transform.localPosition + new Vector3(-1, 0, 1);
-                _doorPositions[1] = transform.localPosition + new Vector3(-1, 0, -2);
-                break;
-            case 180:
-                _doorPositions[0] = transform.localPosition + new Vector3(1, 0, 1);
-                _doorPositions[1] = transform.localPosition + new Vector3(-2, 0, 1);
-                break;
-            case 270:
-                _doorPositions[0] = transform.localPosition + new Vector3(1, 0, -1);
-                _doorPositions[1] = transform.localPosition + new Vector3(1, 0, 2);
-                break;
+           case GameElementDirection.Up:
+               _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(-1, -1));
+               _dictDoor.Add(DoorSide.Right, PositionInGrid +new Vector2Int(2, -1));
+               break;
+           case GameElementDirection.Right:
+               _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(-1, 1));
+               _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(-1, -2));
+               break;
+           case GameElementDirection.Down:
+               _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(1, 1));
+               _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(-2, 1));
+               break;
+           case GameElementDirection.Left:
+               _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(1, -1));
+               _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(1, 2));
+               break;
         }
     }
 
-    public GameElementDirection GetElementDirection()
+    private GameElementDirection GetElementDirection()
     {
-        switch (transform.eulerAngles.y)
+        return transform.eulerAngles.y switch
         {
-            case 0:
-                return GameElementDirection.Up;
-            case 90:
-                return GameElementDirection.Right;
-            case 180:
-                return GameElementDirection.Down;
-            case 270:
-                return GameElementDirection.Left;
-        }
-
-        return GameElementDirection.Up;
+            0 => GameElementDirection.Up,
+            90 => GameElementDirection.Right,
+            180 => GameElementDirection.Down,
+            270 => GameElementDirection.Left,
+            _ => GameElementDirection.Up
+        };
     }
 
     public void Move()
     {
+        CloseDoor();
         OnBeforeMove?.Invoke(this);
     }
+
     public void MoveForward(List<Vector3> path, bool isTargetReached)
     {
         if (path.Count == 0)
@@ -107,6 +103,7 @@ public class VehicleController : GameElement
                 State = GameElementState.Waiting;
             return;
         }
+
         transform.DOComplete();
         State = GameElementState.Moving;
 
@@ -115,7 +112,7 @@ public class VehicleController : GameElement
 
         if (isTargetReached)
         {
-            var targetPoint = pathVector3[pathVector3.Count - 1];
+            var targetPoint = pathVector3[^1];
             transform.DOLocalMove(targetPoint, VehicleSo.Instance.CompleteDuration)
                 .OnComplete(() => { State = GameElementState.Completed; })
                 .SetEase(Ease.InBack, overshoot: VehicleSo.Instance.VehicleOvershoot);
@@ -124,10 +121,12 @@ public class VehicleController : GameElement
         {
             transform.DOLocalPath(pathVector3.ToArray(), 0.2f * path.Count).SetEase(Ease.Linear).OnComplete(() =>
             {
+                PositionInGrid = new Vector2Int((int) path[^1].x, (int) path[^1].y);
                 State = GameElementState.Waiting;
             });
         }
     }
+
     private void OnStateChange()
     {
         switch (State)
@@ -150,14 +149,33 @@ public class VehicleController : GameElement
     {
         return _centerPosition.position;
     }
+
+    public void OpenDoor(DoorSide doorSide, Action onComplete)
+    {
+        doorsTransforms[(int)doorSide].DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .75f).SetEase(Ease.OutBack).OnComplete(()=>
+        {
+            onComplete?.Invoke();
+        });
+    }
+
+    private void CloseDoor()
+    {
+        foreach (var door in _dictDoor)
+        {
+            doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.4f).SetEase(Ease.OutBack);
+        }
+    }
+
     public override void ShowEmoji(bool show = true)
     {
         base.ShowEmoji(show);
     }
+
     public override void Tapped()
     {
         OnTapped?.Invoke();
     }
+
     public override void Stop()
     {
         transform.DOPause();
