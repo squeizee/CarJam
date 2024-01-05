@@ -13,16 +13,16 @@ MonoBehaviour:
   m_Name: VehicleSo
   m_EditorClassIdentifier: 
   UpDirectionViewTransformData:
-    Position: {x: 0.49, y: 0, z: -1.21}
-    LocalScale: {x: 1.263125, y: 1, z: 0.9154966}
+    Position: {x: 0.47, y: 0, z: -1.01}
+    LocalScale: {x: 1, y: 1, z: 1}
   DownDirectionViewTransformData:
-    Position: {x: 0.507, y: 0, z: -0.86}
-    LocalScale: {x: 1.263125, y: 1, z: 0.9504687}
+    Position: {x: 0.47, y: 0, z: -1.01}
+    LocalScale: {x: 1, y: 1, z: 1}
   LeftDirectionViewTransformData:
-    Position: {x: 0.363, y: 0, z: -1.02}
-    LocalScale: {x: 1.158142, y: 1, z: 0.975}
+    Position: {x: 0.47, y: 0, z: -1.01}
+    LocalScale: {x: 1, y: 1, z: 1}
   RightDirectionViewTransformData:
-    Position: {x: 0.68, y: 0, z: -1.022}
-    LocalScale: {x: 1.05, y: 1, z: 0.975}
+    Position: {x: 0.47, y: 0, z: -1.01}
+    LocalScale: {x: 1, y: 1, z: 1}
   VehicleOvershoot: 0.4
   CompleteDuration: 1
