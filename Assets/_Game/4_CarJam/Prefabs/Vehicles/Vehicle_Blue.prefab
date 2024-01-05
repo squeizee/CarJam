@@ -872,6 +872,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CartoonCar_A01_no_setup
       objectReference: {fileID: 0}
+    - target: {fileID: 188242, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 432072, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.0459212
@@ -903,6 +907,18 @@ PrefabInstance:
     - target: {fileID: 432804, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.624
+      objectReference: {fileID: 0}
+    - target: {fileID: 450922, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 450922, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.233
+      objectReference: {fileID: 0}
+    - target: {fileID: 450922, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.887
       objectReference: {fileID: 0}
     - target: {fileID: 462190, guid: ea0578c4aa4b3e543b3dc86d4075cffb, type: 3}
       propertyPath: m_LocalScale.x
