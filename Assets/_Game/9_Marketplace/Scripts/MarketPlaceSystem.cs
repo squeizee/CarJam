@@ -13,6 +13,7 @@ namespace _Game._9_Marketplace.Scripts
 {
     public class MarketPlaceSystem : BaseCraftSystem, ICraftSystem
     {
+        private bool _isEnabled = false;
         public readonly List<int> UnlockLevels = new List<int>()
         {
             41, 48, 62, 76, 90, 111
@@ -41,6 +42,8 @@ namespace _Game._9_Marketplace.Scripts
 
         public bool ShouldShowLevelButton()
         {
+            if (!_isEnabled) return false;
+            
             return Craft.Get<LinearLevelSystem>().GetProgress(LinearLevelType.Normal) >= LevelButtonShowProgress;
         }
 
@@ -101,6 +104,7 @@ namespace _Game._9_Marketplace.Scripts
 
         public bool ShouldShowOnRoadMap(int level)
         {
+            if (!_isEnabled) return false;
             return UnlockLevels.Contains(level);
         }
 
@@ -113,6 +117,8 @@ namespace _Game._9_Marketplace.Scripts
 
         public bool ShouldOffer(int level)
         {
+            if (!_isEnabled) return false;
+            
             return UnlockLevels.Contains(level);
         }
     }

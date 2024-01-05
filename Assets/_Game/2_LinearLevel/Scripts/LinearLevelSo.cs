@@ -40,8 +40,11 @@ namespace _Game._2_LinearLevel.Scripts
         public int AdditionalTime = 30;
         public int ReviveCost = 250;
 
+        public bool isEnable = false;
         public bool ShouldOfferBossLevel(int progress)
         {
+            if(!isEnable) return false;
+            
             return progress >= OfferStartProgress && (progress - OfferStartProgress) % OfferPeriod == 0;
         }
 

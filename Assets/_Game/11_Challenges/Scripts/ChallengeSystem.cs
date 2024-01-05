@@ -18,6 +18,7 @@ namespace _Game._2_LinearLevel.Scripts.ChallangeLevel
     {
         private int _hardLevelCount = 21;
         private int _epicLevelCount = 3;
+        private bool _isEnabled = false;
         ChallengeSystemSo So => ChallengeSystemSo.Instance;
         LinearLevelSystem LinearLevelSystem => Craft.Get<LinearLevelSystem>();
 
@@ -376,6 +377,8 @@ namespace _Game._2_LinearLevel.Scripts.ChallangeLevel
 
         public bool IsChallengeLevel(int levelIndex)
         {
+            if (!_isEnabled) return false;
+            
             int startLevel = 31;
             int period = 7;
             int maxLevel = _hardLevelCount * period + startLevel;
@@ -384,6 +387,8 @@ namespace _Game._2_LinearLevel.Scripts.ChallangeLevel
 
         public bool ShouldShowLevelButton()
         {
+            if (!_isEnabled) return false;
+            
             int levelProgress = LinearLevelSystem.GetProgress(LinearLevelType.Normal);
             return levelProgress > 30;
         }
