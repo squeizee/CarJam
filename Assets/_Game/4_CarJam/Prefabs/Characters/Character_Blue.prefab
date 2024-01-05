@@ -192,7 +192,7 @@ Animator:
   m_GameObject: {fileID: 1907874564558602611}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4ba3a120023d24332b6c2b296a2dc86c, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 362e189e0cebc2e4b8d3634d337202dc, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -801,6 +801,7 @@ MonoBehaviour:
   dimension: {x: 1, y: 1}
   emoji: {fileID: 3451516981050625170}
   indicator: {fileID: 598188760749531947}
+  characterViewParent: {fileID: 0}
 --- !u!1 &6369487210050940216
 GameObject:
   m_ObjectHideFlags: 0

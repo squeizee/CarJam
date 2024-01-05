@@ -13,7 +13,6 @@ namespace _Game._4_CarJam.Scripts
         [Header("Derived Class")] [SerializeField]
         private Transform indicator;
         [SerializeField] private Transform characterViewParent;
-        //public Action OnCorrectAction;
 
         public Dictionary<VehicleController, List<Vector2Int>> VehicleDoorPositions = new();
 
