@@ -146,7 +146,8 @@ public class VehicleController : GameElement
                 ShowEmoji(true, GetElementDirection());
                 break;
             case GameElementState.Completed:
-                gameObject.SetActive(false);
+                vehicleViewParent.gameObject.SetActive(false);
+                
                 break;
         }
     }
