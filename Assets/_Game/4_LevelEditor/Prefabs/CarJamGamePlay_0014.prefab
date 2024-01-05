@@ -566,6 +566,7 @@ MonoBehaviour:
     CurrentMoveCount: 0
     CurrentTimeInSeconds: 0
   gridController: {fileID: 3732044512543107883}
+  vehicleDoorHint: {fileID: 8528878956332241867, guid: c2784ea81c45b3945ab93b5c6d318333, type: 3}
 --- !u!1001 &64052750089673666
 PrefabInstance:
   m_ObjectHideFlags: 0

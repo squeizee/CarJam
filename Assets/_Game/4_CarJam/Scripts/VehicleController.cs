@@ -23,7 +23,7 @@ public class VehicleController : GameElement
 
     private Collider _lastCollider;
     private Vector3[] _doorPositions; // 0 -> left, 1 -> right
-    private int _doorAngle = 55;
+    private int _doorAngle = 90;
     private Dictionary<DoorSide, Vector2Int> _dictDoor = new();
 
     public Action<VehicleController> OnBeforeMove;
@@ -36,7 +36,7 @@ public class VehicleController : GameElement
         {
             vehicleViewParent.transform.DOComplete();
             vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
-            ShowEmoji(true, GetElementDirection());
+            ShowEmoji(true);
         };
         OnCrash += () =>
         {
@@ -82,17 +82,7 @@ public class VehicleController : GameElement
         }
     }
 
-    private GameElementDirection GetElementDirection()
-    {
-        return transform.eulerAngles.y switch
-        {
-            0 => GameElementDirection.Up,
-            90 => GameElementDirection.Right,
-            180 => GameElementDirection.Down,
-            270 => GameElementDirection.Left,
-            _ => GameElementDirection.Up
-        };
-    }
+    
 
     public void Move()
     {
@@ -143,7 +133,7 @@ public class VehicleController : GameElement
                 break;
             case GameElementState.Waiting:
                 OnCrash?.Invoke();
-                ShowEmoji(true, GetElementDirection());
+                ShowEmoji(true);
                 break;
             case GameElementState.Completed:
                 vehicleViewParent.gameObject.SetActive(false);
@@ -157,25 +147,22 @@ public class VehicleController : GameElement
         return _centerPosition.position;
     }
 
-    public void OpenDoor(DoorSide doorSide, Action onComplete)
+    public Tween OpenDoor(DoorSide doorSide)
     {
-        doorsTransforms[(int)doorSide].DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .75f).SetEase(Ease.OutBack).OnComplete(()=>
-        {
-            onComplete?.Invoke();
-        });
+        return doorsTransforms[(int)doorSide].DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .15f);
     }
 
     private void CloseDoor()
     {
         foreach (var door in _dictDoor)
         {
-            doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.4f).SetEase(Ease.OutBack);
+            doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.15f);
         }
     }
 
-    public override void ShowEmoji(bool show, GameElementDirection direction = GameElementDirection.Up)
+    public override void ShowEmoji(bool show)
     {
-        base.ShowEmoji(show, direction);
+        base.ShowEmoji(show);
     }
 
     public override void Tapped()

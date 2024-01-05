@@ -72,9 +72,9 @@ public class GameElement : MonoBehaviour
         PositionInGrid = positionInGrid;
     }
 
-    public virtual void ShowEmoji(bool show,GameElementDirection direction = GameElementDirection.Up)
+    public virtual void ShowEmoji(bool show)
     {
-        switch (direction, show)
+        switch (GetElementDirection(), show)
         {
             case (GameElementDirection.Up, _):
                 emoji.DOLocalRotate(new Vector3(70, 0, 0), 0);
@@ -97,15 +97,23 @@ public class GameElement : MonoBehaviour
                     () => { emoji.gameObject.SetActive(false); });
     }
     
-    
+    protected GameElementDirection GetElementDirection()
+    {
+        return transform.eulerAngles.y switch
+        {
+            0 => GameElementDirection.Up,
+            90 => GameElementDirection.Right,
+            180 => GameElementDirection.Down,
+            270 => GameElementDirection.Left,
+            _ => GameElementDirection.Up
+        };
+    }
     public virtual void Tapped()
     {
         
     }
     public virtual void Stop()
     {
-    }
-    protected virtual void UpdatePositionInGrid(Vector3Int positionInGrid)
-    {
+        
     }
 }

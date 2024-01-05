@@ -19,6 +19,7 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
         
+        private List<GridItemView> _listGridItemViews;
         public Vector2Int GetCellPosition(Vector3 pos)
         {
             var cellPosition = grid.WorldToCell(pos);
@@ -33,7 +34,7 @@ namespace _Game._4_CarJam.Scripts
         
         public void Initialize(List<GameElement> listGameElements)
         {
-            
+            _listGridItemViews = new List<GridItemView>();
             _listGameElements = listGameElements;
 
             _minPoint = new Vector2Int(_mapSize.x,_mapSize.y);
@@ -41,7 +42,12 @@ namespace _Game._4_CarJam.Scripts
             
             foreach (Transform child in groundTileMapParent)
             {
+                
                 var cellPosition = grid.WorldToCell(child.position);
+                
+                var gridItemView = child.GetComponent<GridItemView>();
+                gridItemView.Initialize(new Vector2Int(cellPosition.x,cellPosition.y));
+                _listGridItemViews.Add(gridItemView);
                 
                 _maxPoint.x = cellPosition.x > _maxPoint.x ? cellPosition.x : _maxPoint.x;
                 _maxPoint.y = cellPosition.y > _maxPoint.y ? cellPosition.y : _maxPoint.y;
@@ -50,69 +56,8 @@ namespace _Game._4_CarJam.Scripts
                 _minPoint.y = cellPosition.y < _minPoint.y ? cellPosition.y : _minPoint.y;
             }
         }
+
         
-        public ElementType[,] GetMapDataElement()
-        {
-            ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];
-
-            foreach (Transform child in groundTileMapParent)
-            {
-                var cellPosition = grid.WorldToCell(child.position);
-                elementMap[cellPosition.x,cellPosition.y] = ElementType.Ground; 
-            }
-
-            foreach (var gameElement in _listGameElements.Where(gameElement =>
-                         gameElement.State is GameElement.GameElementState.Idle or GameElement.GameElementState.Waiting))
-            {
-                var pivotPoint = grid.WorldToCell(gameElement.transform.position);
-                
-                switch (gameElement.transform.eulerAngles.y)
-                {
-                    case 0:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.y; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.x; y++)
-                            {
-                                elementMap[pivotPoint.x + x, pivotPoint.y - y] = ElementType.Element;
-                            }
-                        }
-                        break;
-                    case 90:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.x; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.y; y++)
-                            {
-                                elementMap[pivotPoint.x - x, pivotPoint.y - y] = ElementType.Element;
-                            }
-                        }
-                        break;
-                    case 180:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.y; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.x; y++)
-                            {
-                                elementMap[pivotPoint.x - x, pivotPoint.y + y] = ElementType.Element;
-                            }
-                        }
-                        break;
-                    case 270:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.x; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.y; y++)
-                            {
-                                elementMap[pivotPoint.x + x, pivotPoint.y + y] = ElementType.Element;
-                            }
-                        }
-                        break;
-                }
-            }
-            
-            return elementMap;
-        }
         public bool FindPath(Vector3 pos, CharacterController character)
         {
             var des = grid.WorldToCell(pos);
@@ -186,16 +131,87 @@ namespace _Game._4_CarJam.Scripts
             
             vehicleController.MoveForward(path,isTargetReached);
         }
+private ElementType[,] GetMapDataElement()
+        {
+            ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];
 
+            foreach (Transform child in groundTileMapParent)
+            {
+                var cellPosition = grid.WorldToCell(child.position);
+                elementMap[cellPosition.x,cellPosition.y] = ElementType.Ground; 
+            }
+
+            foreach (var gameElement in _listGameElements.Where(gameElement =>
+                         gameElement.State is GameElement.GameElementState.Idle or GameElement.GameElementState.Waiting))
+            {
+                var pivotPoint = grid.WorldToCell(gameElement.transform.position);
+                
+                switch (gameElement.transform.eulerAngles.y)
+                {
+                    case 0:
+                        //check game element dimension and fill all cells with false with rotation
+                        for (int x = 0; x < gameElement.Dimension.y; x++)
+                        {
+                            for (int y = 0; y < gameElement.Dimension.x; y++)
+                            {
+                                elementMap[pivotPoint.x + x, pivotPoint.y - y] = ElementType.Element;
+                            }
+                        }
+                        break;
+                    case 90:
+                        //check game element dimension and fill all cells with false with rotation
+                        for (int x = 0; x < gameElement.Dimension.x; x++)
+                        {
+                            for (int y = 0; y < gameElement.Dimension.y; y++)
+                            {
+                                elementMap[pivotPoint.x - x, pivotPoint.y - y] = ElementType.Element;
+                            }
+                        }
+                        break;
+                    case 180:
+                        //check game element dimension and fill all cells with false with rotation
+                        for (int x = 0; x < gameElement.Dimension.y; x++)
+                        {
+                            for (int y = 0; y < gameElement.Dimension.x; y++)
+                            {
+                                elementMap[pivotPoint.x - x, pivotPoint.y + y] = ElementType.Element;
+                            }
+                        }
+                        break;
+                    case 270:
+                        //check game element dimension and fill all cells with false with rotation
+                        for (int x = 0; x < gameElement.Dimension.x; x++)
+                        {
+                            for (int y = 0; y < gameElement.Dimension.y; y++)
+                            {
+                                elementMap[pivotPoint.x + x, pivotPoint.y + y] = ElementType.Element;
+                            }
+                        }
+                        break;
+                }
+            }
+            
+            return elementMap;
+        }
         private bool IsEmptyOrNone(Vector3Int point)
         {
             ElementType[,] elementMap = GetMapDataElement();
             return elementMap[point.x, point.y] == ElementType.Ground || elementMap[point.x, point.y] == ElementType.None;
         }
-        private bool IsEmpty(Vector3Int point)
+        public bool IsEmpty(Vector3Int point)
         {
+            if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)
+                return false;
+            
             ElementType[,] elementMap = GetMapDataElement();
             return elementMap[point.x, point.y] == ElementType.Ground;
+        }
+        
+        public bool TryGetGridItemView(Vector2Int doorPosition, out GridItemView gridItemView)
+        {
+            gridItemView = _listGridItemViews.Find(gridItemView => gridItemView.PositionInGrid == doorPosition);
+
+            return gridItemView;
         }
     }
 }

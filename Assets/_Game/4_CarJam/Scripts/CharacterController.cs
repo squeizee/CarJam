@@ -5,6 +5,7 @@ using DG.Tweening;
 using DG.Tweening.Plugins.Core.PathCore;
 using PathFind;
 using UnityEngine;
+using Sequence = DG.Tweening.Sequence;
 
 namespace _Game._4_CarJam.Scripts
 {
@@ -17,24 +18,27 @@ namespace _Game._4_CarJam.Scripts
 
         public Dictionary<VehicleController, List<Vector2Int>> VehicleDoorPositions = new();
 
-        private Collider _lastCollider;
+        private Vector3 _indicatorDefaultPosition;
         private Animator _animator;
         private Vector3 LocalPosition => transform.localPosition;
 
         private Sequence _sequence;
+        private Sequence _enterCarSequence;
 
+        private bool _isSelected;
+        
         private void OnEnable()
         {
-            OnTapped += () =>
+            OnTapped += ()=>
             {
-                indicator.gameObject.SetActive(true);
-                indicator.DOComplete();
-                indicator.DOLocalMoveY(indicator.localPosition.y + .5f, 0.5f).SetLoops(6, LoopType.Yoyo)
-                    .SetEase(Ease.Linear).OnComplete(
-                        () => { indicator.gameObject.SetActive(false); });
+                _isSelected = !_isSelected;
+                ShowIndicator();
             };
         }
-
+        private void OnDisable()
+        {
+            OnGameElementStateChanged -= OnStateChange;
+        }
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
@@ -45,13 +49,8 @@ namespace _Game._4_CarJam.Scripts
             base.Initialize(positionInGrid, onStateChanged);
             State = GameElementState.Idle;
             OnGameElementStateChanged += OnStateChange;
+            _indicatorDefaultPosition = indicator.localPosition;
         }
-
-        private void OnDisable()
-        {
-            OnGameElementStateChanged -= OnStateChange;
-        }
-
         public void MoveAlongPath(List<Point> path)
         {
             transform.DOComplete();
@@ -107,14 +106,20 @@ namespace _Game._4_CarJam.Scripts
         public void PlayCompletedAnimation(VehicleController vehicleController, VehicleController.DoorSide doorSide)
         {
             transform.DOComplete();
+            
+            _enterCarSequence?.Kill();
+            _enterCarSequence = DOTween.Sequence();
+
             var targetPosition = vehicleController.GetCenterPosition();
-            vehicleController.OpenDoor(doorSide, () =>
+            targetPosition.y = transform.position.y;
+            
+            _enterCarSequence.Append(vehicleController.OpenDoor(doorSide));
+            _enterCarSequence.Append(transform.DOMove(targetPosition, 0.2f));
+            _enterCarSequence.Join(characterViewParent.DOScale(Vector3.one * 0.5f, 0.2f));
+            _enterCarSequence.AppendCallback(() =>
             {
-                transform.DOMove(targetPosition, 0.3f).OnComplete(() =>
-                {
-                    State = GameElementState.Completed;
-                    vehicleController.Move();
-                }).SetEase(Ease.InBack);
+                State = GameElementState.Completed;
+                vehicleController.Move();
             });
         }
 
@@ -136,9 +141,24 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
-        public override void ShowEmoji(bool show, GameElementDirection direction = GameElementDirection.Up)
+        private void ShowIndicator()
         {
-            base.ShowEmoji(show, direction);
+            if (_isSelected)
+            {
+                indicator.gameObject.SetActive(true);
+                indicator.DOComplete();
+                indicator.DOLocalMoveY(_indicatorDefaultPosition.y + .5f, 0.5f).SetLoops(-1, LoopType.Yoyo)
+                    .SetEase(Ease.Linear);
+            }
+            else
+            {
+                indicator.DOComplete();
+                indicator.gameObject.SetActive(false);
+            }
+        }
+        public override void ShowEmoji(bool show)
+        {
+            base.ShowEmoji(show);
             indicator.gameObject.SetActive(!show);
         }
 
@@ -151,10 +171,6 @@ namespace _Game._4_CarJam.Scripts
         {
             transform.DOComplete();
             _animator.Play("Idle");
-        }
-
-        protected override void UpdatePositionInGrid(Vector3Int positionInGrid)
-        {
         }
     }
 }
