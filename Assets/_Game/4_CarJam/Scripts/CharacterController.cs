@@ -112,8 +112,6 @@ namespace _Game._4_CarJam.Scripts
                     break;
             }
         }
-
-        
         public override void ShowEmoji(bool show, GameElementDirection direction = GameElementDirection.Up)
         {
             base.ShowEmoji(show, direction);

@@ -84,7 +84,17 @@ namespace _Game._4_CarJam.Scripts
             Craft.Get<CraftTimeSystem>().Dispatcher.Unsubscribe(TimeIntervals.OnSecond, CheckCompleted);
         }
         
-
+        private void ShowDoorPositions()
+        {
+            // foreach (var gameElement in _listGameElements)
+            // {
+            //     if (gameElement is VehicleController vehicleController)
+            //     {
+            //         vehicleController.ShowDoorPositions();
+            //     }
+            // }
+        }
+        
         #region Input Handling
 
         private void OnUserButtonDown(Vector3 obj)
