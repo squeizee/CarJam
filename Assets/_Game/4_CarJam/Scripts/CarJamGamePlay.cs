@@ -188,8 +188,11 @@ namespace _Game._4_CarJam.Scripts
         {
             if (touchedObject.transform.parent.TryGetComponent<CharacterController>(out var characterController))
             {
-                if(_selectedCharacter)
+                if (_selectedCharacter)
+                {
                     _selectedCharacter.Tapped();
+                    UnselectCharacter();
+                }
                 
                 _selectedCharacter = characterController;
                 _selectedCharacter.Tapped();

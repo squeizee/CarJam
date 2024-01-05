@@ -276,7 +276,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3841031782133404777}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fee59a4427ea074382931f8921ba9b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 8a9fb61293ae4a8aa66e3c38cacfdc76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   childCubeRenderer: {fileID: 7647774011733078084}

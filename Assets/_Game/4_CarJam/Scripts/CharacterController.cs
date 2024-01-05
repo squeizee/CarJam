@@ -156,9 +156,9 @@ namespace _Game._4_CarJam.Scripts
                 indicator.gameObject.SetActive(false);
             }
         }
-        public override void ShowEmoji(bool show)
+        public override void ShowEmoji(bool show, int repeat = 4)
         {
-            base.ShowEmoji(show);
+            base.ShowEmoji(show,repeat);
             indicator.gameObject.SetActive(!show);
         }
 

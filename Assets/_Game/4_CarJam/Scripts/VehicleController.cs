@@ -36,7 +36,6 @@ public class VehicleController : GameElement
         {
             vehicleViewParent.transform.DOComplete();
             vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
-            ShowEmoji(true);
         };
         OnCrash += () =>
         {
@@ -160,9 +159,9 @@ public class VehicleController : GameElement
         }
     }
 
-    public override void ShowEmoji(bool show)
+    public override void ShowEmoji(bool show, int repeat = -1)
     {
-        base.ShowEmoji(show);
+        base.ShowEmoji(show,repeat);
     }
 
     public override void Tapped()

@@ -207,7 +207,7 @@ private ElementType[,] GetMapDataElement()
             return elementMap[point.x, point.y] == ElementType.Ground;
         }
         
-        public bool TryGetGridItemView(Vector2Int doorPosition, out GridItemView gridItemView)
+        public GridItemView TryGetGridItemView(Vector2Int doorPosition, out GridItemView gridItemView)
         {
             gridItemView = _listGridItemViews.Find(gridItemView => gridItemView.PositionInGrid == doorPosition);
 

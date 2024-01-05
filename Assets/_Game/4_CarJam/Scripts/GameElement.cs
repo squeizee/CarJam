@@ -72,7 +72,7 @@ public class GameElement : MonoBehaviour
         PositionInGrid = positionInGrid;
     }
 
-    public virtual void ShowEmoji(bool show)
+    public virtual void ShowEmoji(bool show, int repeat = 4)
     {
         switch (GetElementDirection(), show)
         {
@@ -92,9 +92,15 @@ public class GameElement : MonoBehaviour
         emoji.gameObject.SetActive(show);
 
         if (show)
-            emoji.DOLocalMoveY(emoji.localPosition.y + .5f, 0.5f).SetLoops(4, LoopType.Yoyo)
+        {
+            emoji.DOLocalMoveY(emoji.localPosition.y + .5f, 0.5f).SetLoops(repeat, LoopType.Yoyo)
                 .SetEase(Ease.Linear).OnComplete(
                     () => { emoji.gameObject.SetActive(false); });
+        }
+        else
+        {
+            emoji.DOKill();
+        }
     }
     
     protected GameElementDirection GetElementDirection()
