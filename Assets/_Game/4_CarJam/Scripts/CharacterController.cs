@@ -12,6 +12,7 @@ namespace _Game._4_CarJam.Scripts
     {
         [Header("Derived Class")] [SerializeField]
         private Transform indicator;
+
         [SerializeField] private Transform characterViewParent;
 
         public Dictionary<VehicleController, List<Vector2Int>> VehicleDoorPositions = new();
@@ -19,6 +20,8 @@ namespace _Game._4_CarJam.Scripts
         private Collider _lastCollider;
         private Animator _animator;
         private Vector3 LocalPosition => transform.localPosition;
+
+        private Sequence _sequence;
 
         private void OnEnable()
         {
@@ -37,9 +40,9 @@ namespace _Game._4_CarJam.Scripts
             _animator = GetComponentInChildren<Animator>();
         }
 
-        public override void Initialize(Vector2Int positionInGrid,Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid, Action onStateChanged)
         {
-            base.Initialize(positionInGrid,onStateChanged);
+            base.Initialize(positionInGrid, onStateChanged);
             State = GameElementState.Idle;
             OnGameElementStateChanged += OnStateChange;
         }
@@ -52,15 +55,36 @@ namespace _Game._4_CarJam.Scripts
         public void MoveAlongPath(List<Point> path)
         {
             transform.DOComplete();
+
+            Vector3 lastPosition = transform.localPosition;
+
             State = GameElementState.Moving;
             List<Vector3> pathVector3 = path.ConvertAll(point =>
                 new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
-            transform.DOLocalPath(pathVector3.ToArray(), 0.2f * pathVector3.Count).SetEase(Ease.Linear)
-                .OnComplete(() =>
-                {
-                    PositionInGrid = new Vector2Int(path[^1].x, path[^1].y);
-                    CheckPosition();
-                });
+
+            _sequence?.Kill();
+            _sequence = DOTween.Sequence();
+
+            for (int i = 0; i < path.Count; i++)
+            {
+                float angle = 0;
+
+                angle = Vector3.SignedAngle(pathVector3[i] - lastPosition, Vector3.forward, Vector3.down) +180f;
+                lastPosition = pathVector3[i];
+
+                _sequence.Insert(i * 0.2f, transform.DOLocalMove(pathVector3[i], .2f).SetEase(Ease.Linear));
+                _sequence.InsertCallback(i * 0.2f,
+                    () => { characterViewParent.DOLocalRotate(new Vector3(0, angle, 0), 0.1f).SetEase(Ease.Linear); });
+            }
+
+            _sequence.AppendCallback(() =>
+            {
+                PositionInGrid = new Vector2Int(path[^1].x, path[^1].y);
+                CheckPosition();
+            });
+            
+            _sequence.Append(characterViewParent.transform.DOLocalRotate(Vector3.zero, .1f).SetEase(Ease.Linear));
+
         }
 
         private void CheckPosition()
@@ -69,10 +93,10 @@ namespace _Game._4_CarJam.Scripts
 
             foreach (var vehicle in VehicleDoorPositions)
             {
-                if(PositionInGrid == vehicle.Value[0])
-                    PlayCompletedAnimation(vehicle.Key,VehicleController.DoorSide.Left);
+                if (PositionInGrid == vehicle.Value[0])
+                    PlayCompletedAnimation(vehicle.Key, VehicleController.DoorSide.Left);
                 else if (PositionInGrid == vehicle.Value[1])
-                    PlayCompletedAnimation(vehicle.Key,VehicleController.DoorSide.Right);
+                    PlayCompletedAnimation(vehicle.Key, VehicleController.DoorSide.Right);
                 else
                 {
                     State = GameElementState.Idle;
@@ -80,7 +104,7 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
-        public void PlayCompletedAnimation(VehicleController vehicleController,VehicleController.DoorSide doorSide)
+        public void PlayCompletedAnimation(VehicleController vehicleController, VehicleController.DoorSide doorSide)
         {
             transform.DOComplete();
             var targetPosition = vehicleController.GetCenterPosition();
@@ -92,7 +116,6 @@ namespace _Game._4_CarJam.Scripts
                     vehicleController.Move();
                 }).SetEase(Ease.InBack);
             });
-            
         }
 
         private void OnStateChange()
@@ -112,23 +135,26 @@ namespace _Game._4_CarJam.Scripts
                     break;
             }
         }
+
         public override void ShowEmoji(bool show, GameElementDirection direction = GameElementDirection.Up)
         {
             base.ShowEmoji(show, direction);
             indicator.gameObject.SetActive(!show);
         }
+
         public override void Tapped()
         {
             OnTapped?.Invoke();
         }
+
         public override void Stop()
         {
             transform.DOComplete();
             _animator.Play("Idle");
         }
+
         protected override void UpdatePositionInGrid(Vector3Int positionInGrid)
         {
-            
         }
     }
 }
