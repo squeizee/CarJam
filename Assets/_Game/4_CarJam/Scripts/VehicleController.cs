@@ -36,7 +36,12 @@ public class VehicleController : GameElement
         {
             vehicleViewParent.transform.DOComplete();
             vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
-            ShowEmoji();
+            ShowEmoji(true, GetElementDirection());
+        };
+        OnCrash += () =>
+        {
+            vehicleViewParent.transform.DOComplete();
+            vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
         };
     }
 
@@ -137,7 +142,8 @@ public class VehicleController : GameElement
                 ShowEmoji(false);
                 break;
             case GameElementState.Waiting:
-                ShowEmoji();
+                OnCrash?.Invoke();
+                ShowEmoji(true, GetElementDirection());
                 break;
             case GameElementState.Completed:
                 gameObject.SetActive(false);
@@ -166,9 +172,9 @@ public class VehicleController : GameElement
         }
     }
 
-    public override void ShowEmoji(bool show = true)
+    public override void ShowEmoji(bool show, GameElementDirection direction = GameElementDirection.Up)
     {
-        base.ShowEmoji(show);
+        base.ShowEmoji(show, direction);
     }
 
     public override void Tapped()

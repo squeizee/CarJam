@@ -72,8 +72,23 @@ public class GameElement : MonoBehaviour
         PositionInGrid = positionInGrid;
     }
 
-    public virtual void ShowEmoji(bool show = true)
+    public virtual void ShowEmoji(bool show,GameElementDirection direction = GameElementDirection.Up)
     {
+        switch (direction, show)
+        {
+            case (GameElementDirection.Up, _):
+                emoji.DOLocalRotate(new Vector3(70, 0, 0), 0);
+                break;
+            case (GameElementDirection.Down, _):
+                emoji.DOLocalRotate(new Vector3(-70, 0, 0), 0);
+                break;
+            case (GameElementDirection.Left, _):
+                emoji.DOLocalRotate(new Vector3(70, 90, 0), 0);
+                break;
+            case (GameElementDirection.Right, _):
+                emoji.DOLocalRotate(new Vector3(70, -90, 0), 0);
+                break;
+        }
         emoji.gameObject.SetActive(show);
 
         if (show)

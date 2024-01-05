@@ -109,7 +109,7 @@ namespace _Game._4_CarJam.Scripts
                 {
                     bool isValidClick = gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
                     if(!isValidClick)
-                        _selectedCharacter.ShowEmoji();
+                        _selectedCharacter.ShowEmoji(true);
                     _selectedCharacter = null;
                 }
             }

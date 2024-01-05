@@ -115,9 +115,9 @@ namespace _Game._4_CarJam.Scripts
         }
 
         
-        public override void ShowEmoji(bool show = true)
+        public override void ShowEmoji(bool show, GameElementDirection direction = GameElementDirection.Up)
         {
-            base.ShowEmoji(show);
+            base.ShowEmoji(show, direction);
             indicator.gameObject.SetActive(!show);
         }
         public override void Tapped()
