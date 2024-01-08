@@ -351,13 +351,13 @@ MonoBehaviour:
   offset: {x: 0.5, y: 0, z: 0.5}
   dimension: {x: 3, y: 2}
   emoji: {fileID: 8510455325993264620}
-  doorCount: 2
+  vehicleView: {fileID: 5257840215229610858}
+  capacity: 0
   _centerPosition: {fileID: 5794086170765039758}
   vehicleViewParent: {fileID: 3712455997839396948}
   doorsTransforms:
   - {fileID: 3712455997839382828}
   - {fileID: 3712455997839457780}
-  VehicleView: {fileID: 5257840215229610858}
 --- !u!114 &5257840215229610858
 MonoBehaviour:
   m_ObjectHideFlags: 0

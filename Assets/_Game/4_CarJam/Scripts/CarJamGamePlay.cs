@@ -16,24 +16,33 @@ namespace _Game._4_CarJam.Scripts
     {
         [SerializeField] private GridController gridController;
         [SerializeField] private GameObject vehicleDoorHint;
-        
+
         private List<GameElement> _listGameElements;
         private List<CharacterController> _listCharacters;
         private List<VehicleController> _listVehicles;
         private CharacterController _selectedCharacter;
 
         private List<GameElement> _waitingGameElements = new();
+
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
             base.Initialize(baseGamePlayStartArgs);
-            
+
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
             gridController.Initialize(_listGameElements);
-            
+
+            SetVehiclesToCharacters();
+
+            SubscribeEvents();
+            GamePlayState = GamePlayState.Started;
+        }
+
+        private void SetVehiclesToCharacters()
+        {
             foreach (var gameElement in _listGameElements)
             {
-                gameElement.Initialize(gridController.GetCellPosition(gameElement.transform.position),OnStateChange);
-                
+                gameElement.Initialize(gridController.GetCellPosition(gameElement.transform.position), OnStateChange);
+
                 switch (gameElement)
                 {
                     case VehicleController vehicle:
@@ -41,29 +50,28 @@ namespace _Game._4_CarJam.Scripts
                         break;
                     case CharacterController character:
                     {
-                        var vehicleController = _listGameElements.Find(x => x.GameElementColor == character.GameElementColor && x is VehicleController) as VehicleController;
-                    
+                        var vehicleController = _listGameElements.Find(x =>
+                            x.GameElementColor == character.GameElementColor &&
+                            x is VehicleController) as VehicleController;
                         if (vehicleController)
+                        {
                             character.VehicleDoorPositions.Add(vehicleController, vehicleController.DoorPositions);
+                        }
                         break;
                     }
                 }
             }
-            
-            SubscribeEvents();
-            GamePlayState = GamePlayState.Started;
         }
-
         private void SubscribeEvents()
         {
             Craft.Get<CraftInputSystem>().UserButtonDown += OnUserButtonDown;
             Craft.Get<CraftTimeSystem>().Dispatcher.Subscribe(TimeIntervals.OnSecond, CheckCompleted);
-            
         }
 
         private void OnStateChange()
         {
-            foreach (var waitingGameElement in _listGameElements.Where(x=>x.State == GameElement.GameElementState.Waiting))
+            foreach (var waitingGameElement in _listGameElements.Where(x =>
+                         x.State == GameElement.GameElementState.Waiting))
             {
                 if (waitingGameElement is VehicleController vehicleController)
                 {
@@ -71,6 +79,7 @@ namespace _Game._4_CarJam.Scripts
                 }
             }
         }
+
         private void CheckCompleted()
         {
             if (_listGameElements.All(x => x.State == GameElement.GameElementState.Completed))
@@ -84,7 +93,7 @@ namespace _Game._4_CarJam.Scripts
             Craft.Get<CraftInputSystem>().UserButtonDown -= OnUserButtonDown;
             Craft.Get<CraftTimeSystem>().Dispatcher.Unsubscribe(TimeIntervals.OnSecond, CheckCompleted);
         }
-        
+
         private void ShowDoorPositions()
         {
             foreach (var vehicle in _selectedCharacter.VehicleDoorPositions)
@@ -93,16 +102,18 @@ namespace _Game._4_CarJam.Scripts
                 {
                     if (gridController.TryGetGridItemView(doorPosition, out var gridItemView))
                     {
-                        gridItemView.HighlightGrid(gridController.IsEmpty(new Vector3Int(doorPosition.x,doorPosition.y,0)));
+                        gridItemView.HighlightGrid(
+                            gridController.IsEmpty(new Vector3Int(doorPosition.x, doorPosition.y, 0)));
                     }
                 }
             }
         }
+
         private void UnselectCharacter()
         {
-            if(!_selectedCharacter) 
+            if (!_selectedCharacter)
                 return;
-            
+
             foreach (var vehicle in _selectedCharacter.VehicleDoorPositions)
             {
                 foreach (var doorPosition in vehicle.Value)
@@ -113,10 +124,10 @@ namespace _Game._4_CarJam.Scripts
                     }
                 }
             }
-            
+
             _selectedCharacter = null;
         }
-        
+
         #region Input Handling
 
         private void OnUserButtonDown(Vector3 obj)
@@ -132,7 +143,7 @@ namespace _Game._4_CarJam.Scripts
             }
 
             LayerMask layerMask = LayerMask.GetMask("GameElement");
-            
+
             if (_selectedCharacter)
             {
                 layerMask = LayerMask.GetMask("GameElement");
@@ -146,6 +157,7 @@ namespace _Game._4_CarJam.Scripts
                         _selectedCharacter.ShowEmoji(true);
                         UnselectCharacter();
                     }
+
                     if (gameElement is CharacterController)
                     {
                         if (_selectedCharacter != gameElement)
@@ -156,6 +168,7 @@ namespace _Game._4_CarJam.Scripts
                             UnselectCharacter();
                         }
                     }
+
                     return;
                 }
 
@@ -164,16 +177,16 @@ namespace _Game._4_CarJam.Scripts
                     .GetGameObjectUnderMouse(layerMask, out var touchedGround, out var hit2))
                 {
                     bool isValidClick = gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
-                    
-                    if(!isValidClick)
+
+                    if (!isValidClick)
                         _selectedCharacter.ShowEmoji(true);
-                    
+
                     _selectedCharacter.Tapped();
                     UnselectCharacter();
                 }
             }
             else if (Craft.Get<CraftInputSystem>()
-                .GetGameObjectUnderMouse(layerMask, out var objectUnderMouse, out var hit))
+                     .GetGameObjectUnderMouse(layerMask, out var objectUnderMouse, out var hit))
             {
                 OnObjectTouched(objectUnderMouse);
             }
@@ -193,17 +206,17 @@ namespace _Game._4_CarJam.Scripts
                     _selectedCharacter.Tapped();
                     UnselectCharacter();
                 }
-                
+
                 _selectedCharacter = characterController;
                 _selectedCharacter.Tapped();
                 ShowDoorPositions();
             }
-            else if(touchedObject.transform.parent.TryGetComponent<VehicleController>(out var vehicleController))
+            else if (touchedObject.transform.parent.TryGetComponent<VehicleController>(out var vehicleController))
             {
                 vehicleController.Tapped();
             }
-            
         }
+
         #endregion
     }
 }
