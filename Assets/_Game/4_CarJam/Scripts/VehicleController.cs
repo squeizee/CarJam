@@ -205,6 +205,10 @@ namespace _Game._4_CarJam.Scripts
             // }
         }
 
+        public bool IsCorrectSeat(GameObject seat)
+        {
+            return _listSeats.Any(x => x.gameObject == seat);
+        }
         public override void ShowEmoji(bool show, int repeat = -1)
         {
             base.ShowEmoji(show, repeat);

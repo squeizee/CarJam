@@ -92,38 +92,12 @@ namespace _Game._4_CarJam.Scripts
             Craft.Get<CraftInputSystem>().UserButtonDown -= OnUserButtonDown;
             Craft.Get<CraftTimeSystem>().Dispatcher.Unsubscribe(TimeIntervals.OnSecond, CheckCompleted);
         }
-
-        private void ShowDoorPositions()
-        {
-            // foreach (var vehicle in _selectedCharacter.VehicleDoorPositions)
-            // {
-            //     foreach (var doorPosition in vehicle.Value)
-            //     {
-            //         if (gridController.TryGetGridItemView(doorPosition, out var gridItemView))
-            //         {
-            //             gridItemView.HighlightGrid(
-            //                 gridController.IsEmpty(new Vector3Int(doorPosition.x, doorPosition.y, 0)));
-            //         }
-            //     }
-            // }
-        }
-
+        
         private void UnselectCharacter()
         {
             if (!_selectedCharacter)
                 return;
-
-            foreach (var vehicle in _selectedCharacter.VehicleDoorPositions)
-            {
-                foreach (var doorPosition in vehicle.Value)
-                {
-                    if (gridController.TryGetGridItemView(doorPosition, out var gridItemView))
-                    {
-                        gridItemView.UnHighlightGrid();
-                    }
-                }
-            }
-
+            
             _selectedCharacter = null;
         }
 
@@ -140,119 +114,82 @@ namespace _Game._4_CarJam.Scripts
             {
                 return;
             }
-
-            LayerMask layerMask = LayerMask.GetMask("GameElement");
-
-            if (_selectedCharacter)
+            
+            if (Craft.Get<CraftInputSystem>()
+                .GetGameObjectUnderMouse(LayerMask.GetMask("GameElement"), out var touchedGameElement, out var hit))
             {
-                layerMask = LayerMask.GetMask("GameElement");
-                if (Craft.Get<CraftInputSystem>()
-                    .GetGameObjectUnderMouse(layerMask, out var touchedGameElement, out var hit))
-                {
-                    
-                    var gameElement = touchedGameElement.GetComponentInParent<GameElement>();
-
-                    if (gameElement is VehicleController vehicle)
-                    {
-                        if (touchedGameElement.transform.parent.TryGetComponent<Seat>(out var seat))
-                        {
-                            if (seat.IsEmpty)
-                            {
-                                _selectedCharacter.Tapped();
-                                bool isValidClick = gridController.FindPathToVehicle(vehicle, _selectedCharacter,seat);
-                                
-                                if(!isValidClick)
-                                    _selectedCharacter.ShowEmoji(true);
-                                UnselectCharacter();
-                            }
-                            else
-                            {
-                                _selectedCharacter.Tapped();
-                                _selectedCharacter.ShowEmoji(true);
-                                UnselectCharacter();
-                            }
-                        
-                        }
-                        else if (_selectedCharacter.VehicleSeatPositions.ContainsKey(vehicle))
-                        {
-                            if (vehicle.IsSeatAvailable())
-                            {
-                                _selectedCharacter.Tapped();
-                                bool isValidClick = gridController.FindPathToVehicle(vehicle, _selectedCharacter,vehicle.GetAvailableSeat());
-                                if(!isValidClick)
-                                    _selectedCharacter.ShowEmoji(true);
-                                UnselectCharacter();
-                            }
-                            
-                        }
-                        else
-                        {
-                            _selectedCharacter.Tapped();
-                            _selectedCharacter.ShowEmoji(true);
-                            UnselectCharacter();
-                        }
-                        
-                    }
-
-                    if (gameElement is CharacterController)
-                    {
-                        if (_selectedCharacter != gameElement)
-                            OnObjectTouched(touchedGameElement);
-                        else
-                        {
-                            _selectedCharacter.Tapped();
-                            UnselectCharacter();
-                        }
-                    }
-
-                    return;
-                }
-
-                layerMask = LayerMask.GetMask("Ground");
-                if (Craft.Get<CraftInputSystem>()
-                    .GetGameObjectUnderMouse(layerMask, out var touchedGround, out var hit2))
-                {
-                    bool isValidClick = gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
-
-                    if (!isValidClick)
-                        _selectedCharacter.ShowEmoji(true);
-
-                    _selectedCharacter.Tapped();
-                    UnselectCharacter();
-                }
+                OnObjectTouched(touchedGameElement);
             }
             else if (Craft.Get<CraftInputSystem>()
-                     .GetGameObjectUnderMouse(layerMask, out var objectUnderMouse, out var hit))
+                         .GetGameObjectUnderMouse(LayerMask.GetMask("Ground"), out var touchedGround, out var hit2) 
+                     && _selectedCharacter)
             {
-                OnObjectTouched(objectUnderMouse);
-            }
-            else if (Craft.Get<CraftInputSystem>()
-                     .GetGameObjectUnderMouseSphere(out var objectUnderMouse2, out var hit1, 0.05f, layerMask))
-            {
-                OnObjectTouched(objectUnderMouse2);
+               bool isValidClick = gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
+               
+               _selectedCharacter.ShowEmoji(!isValidClick);
+               _selectedCharacter.Tapped();
+               UnselectCharacter();
             }
         }
 
         private void OnObjectTouched(GameObject touchedObject)
         {
-            if (touchedObject.transform.parent.TryGetComponent<CharacterController>(out var characterController))
+            var gameElement = touchedObject.GetComponentInParent<GameElement>();
+
+            switch (gameElement)
             {
-                if (_selectedCharacter)
-                {
+                case VehicleController vehicle:
+                    bool isValidClick = false;
+                    
+                    if (!_selectedCharacter)
+                    {
+                        vehicle.Tapped();
+                        break;
+                    }
+                    
+                    var seat = touchedObject.GetComponentInParent<Seat>();
+
+                    if (!seat)
+                    {
+                        seat = vehicle.GetAvailableSeat();
+                    }
+
+                    if (!seat)
+                    {
+                        _selectedCharacter.Tapped();
+                        _selectedCharacter.ShowEmoji(!isValidClick);
+                        UnselectCharacter();
+                        break;
+                    }
+                    
+                    if (seat.IsEmpty)
+                    {
+                        isValidClick = gridController.FindPathToVehicle(vehicle, _selectedCharacter,seat);
+                    }
+                    _selectedCharacter.Tapped();
+                    _selectedCharacter.ShowEmoji(!isValidClick);
+                    UnselectCharacter();
+                    break;
+                case  CharacterController character:
+
+                    if (!_selectedCharacter)
+                    {
+                        _selectedCharacter = character;
+                        _selectedCharacter.Tapped();
+                        break;
+                    }
+                    
+                    if(_selectedCharacter == character)
+                        break;
+                    
                     _selectedCharacter.Tapped();
                     UnselectCharacter();
-                }
-
-                _selectedCharacter = characterController;
-                _selectedCharacter.Tapped();
-                ShowDoorPositions();
-            }
-            else if (touchedObject.transform.parent.TryGetComponent<VehicleController>(out var vehicleController))
-            {
-                vehicleController.Tapped();
+                    
+                    _selectedCharacter = character;
+                    _selectedCharacter.Tapped();
+                    break;
             }
         }
-
         #endregion
     }
 }
