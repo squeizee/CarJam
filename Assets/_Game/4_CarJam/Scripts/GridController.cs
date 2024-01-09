@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cysharp.Threading.Tasks.Triggers;
 using PathFind;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using Grid = UnityEngine.Grid;
 
 namespace _Game._4_CarJam.Scripts
@@ -22,7 +19,7 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
 
-        private List<GridItemView> _listGridItemViews;
+        
 
         public Vector2Int GetCellPosition(Vector3 pos)
         {
@@ -30,6 +27,7 @@ namespace _Game._4_CarJam.Scripts
             return new Vector2Int(cellPosition.x, cellPosition.y);
         }
 
+        private List<GridItemView> _listGridItemViews;
         private Vector2Int _mapSize = new Vector2Int(15, 15);
         private List<GameElement> _listGameElements;
 
@@ -47,11 +45,11 @@ namespace _Game._4_CarJam.Scripts
             foreach (Transform child in groundTileMapParent)
             {
                 var cellPosition = grid.WorldToCell(child.position);
-
                 var gridItemView = child.GetComponent<GridItemView>();
+                
                 gridItemView.Initialize(new Vector2Int(cellPosition.x, cellPosition.y));
                 _listGridItemViews.Add(gridItemView);
-
+                
                 _maxPoint.x = cellPosition.x > _maxPoint.x ? cellPosition.x : _maxPoint.x;
                 _maxPoint.y = cellPosition.y > _maxPoint.y ? cellPosition.y : _maxPoint.y;
 
@@ -72,10 +70,10 @@ namespace _Game._4_CarJam.Scripts
 
             PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
 
-            PathFind.Point from = new PathFind.Point(start.x, start.y);
-            PathFind.Point to = new PathFind.Point(des.x, des.y);
+            Point from = new Point(start.x, start.y);
+            Point to = new Point(des.x, des.y);
 
-            List<PathFind.Point> path = PathFind.Pathfinding.FindPath(pathFindGrid, from, to);
+            List<Point> path = Pathfinding.FindPath(pathFindGrid, from, to);
 
             if (path.Count == 0)
                 return false;

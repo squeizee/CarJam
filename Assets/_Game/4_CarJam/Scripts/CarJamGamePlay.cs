@@ -15,17 +15,13 @@ namespace _Game._4_CarJam.Scripts
     public class CarJamGamePlay : BaseGamePlay
     {
         [SerializeField] private GridController gridController;
-        [SerializeField] private GameObject vehicleDoorHint;
-
+        
         private List<GameElement> _listGameElements;
-        private List<CharacterController> _listCharacters;
-        private List<VehicleController> _listVehicles;
         private CharacterController _selectedCharacter;
-
-        private List<GameElement> _waitingGameElements = new();
-
+        
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
+            
             base.Initialize(baseGamePlayStartArgs);
 
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
@@ -41,7 +37,9 @@ namespace _Game._4_CarJam.Scripts
         {
             foreach (var gameElement in _listGameElements)
             {
-                gameElement.Initialize(gridController.GetCellPosition(gameElement.transform.position), OnStateChange);
+                var position = gridController.GetCellPosition(gameElement.transform.position);
+                
+                gameElement.Initialize(position, OnStateChange);
 
                 switch (gameElement)
                 {
@@ -83,7 +81,7 @@ namespace _Game._4_CarJam.Scripts
 
         private void CheckCompleted()
         {
-            if (_listGameElements.All(x => x.State == GameElement.GameElementState.Completed))
+            if (_listGameElements.TrueForAll(x => x.State == GameElement.GameElementState.Completed))
             {
                 OnGamePlayCompleted?.Invoke();
             }
@@ -133,7 +131,7 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnUserButtonDown(Vector3 obj)
         {
-            if (ConstrainsController.CanMakeAMove() == false)
+            if (!ConstrainsController.CanMakeAMove())
             {
                 return;
             }
