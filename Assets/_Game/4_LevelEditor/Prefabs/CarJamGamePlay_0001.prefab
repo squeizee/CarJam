@@ -246,6 +246,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4765692218930055460}
+  - {fileID: 1746819714426740849}
   m_Father: {fileID: 1393949392}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -613,6 +614,122 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1272868510}
     m_Modifications:
+    - target: {fileID: 438798432059649353, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 976723664043687193, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1185909261798047807, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221164205782577493, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0168
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221164205782577493, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.2766
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221164205782577493, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.2492
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221164205782577493, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221164205782577493, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 1221164205782577493, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 2143677811352532893, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844690931538158588, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0165
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844690931538158588, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.2806
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844690931538158588, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.2535
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844690931538158588, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844690931538158588, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 2844690931538158588, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454933725215418897, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0177
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454933725215418897, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 1.1931
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454933725215418897, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 1.1428
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454933725215418897, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454933725215418897, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3454933725215418897, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882773499098052098, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0204
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882773499098052098, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.3449
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882773499098052098, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.3098
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882773499098052098, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882773499098052098, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3882773499098052098, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4201514534333999035, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4846345186008134374, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
       propertyPath: offset.x
       value: -1.5
@@ -620,6 +737,54 @@ PrefabInstance:
     - target: {fileID: 4846345186008134374, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
       propertyPath: offset.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676353642723314552, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0164
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676353642723314552, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.2714
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676353642723314552, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.2445
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676353642723314552, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676353642723314552, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 5676353642723314552, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251967157398924981, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0181
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251967157398924981, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.9034
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251967157398924981, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.8357
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251967157398924981, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251967157398924981, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251967157398924981, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 31
       objectReference: {fileID: 0}
     - target: {fileID: 6347617376403802637, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
       propertyPath: m_RootOrder
@@ -665,6 +830,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7393727377559472871, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770510480759131183, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0182
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770510480759131183, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.3226
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770510480759131183, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.2904
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770510480759131183, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770510480759131183, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770510480759131183, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 31
+      objectReference: {fileID: 0}
     - target: {fileID: 8646197476305887558, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
       propertyPath: m_Name
       value: Vehicle_Blue
@@ -672,6 +865,10 @@ PrefabInstance:
     - target: {fileID: 8646197476305887558, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021546393644781619, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9e5d875684b354d4e82d65320a1b5fd5, type: 3}
@@ -2105,6 +2302,68 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 6814390507789683146, guid: 710967dad53627a4db2813353006c2ee, type: 3}
   m_PrefabInstance: {fileID: 5686376448984097292}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6493857049021671459
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1963300575}
+    m_Modifications:
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5942885479183792649, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+      propertyPath: m_Name
+      value: Character_Blue (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+--- !u!4 &1746819714426740849 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
+  m_PrefabInstance: {fileID: 6493857049021671459}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6611093489244683583
 PrefabInstance:

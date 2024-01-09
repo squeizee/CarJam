@@ -56,6 +56,7 @@ namespace _Game._4_CarJam.Scripts
                         if (vehicleController)
                         {
                             character.VehicleDoorPositions.Add(vehicleController, vehicleController.DoorPositions);
+                            character.VehicleSeatPositions.Add(vehicleController, vehicleController.SeatPositions);
                         }
                         break;
                     }
@@ -96,17 +97,17 @@ namespace _Game._4_CarJam.Scripts
 
         private void ShowDoorPositions()
         {
-            foreach (var vehicle in _selectedCharacter.VehicleDoorPositions)
-            {
-                foreach (var doorPosition in vehicle.Value)
-                {
-                    if (gridController.TryGetGridItemView(doorPosition, out var gridItemView))
-                    {
-                        gridItemView.HighlightGrid(
-                            gridController.IsEmpty(new Vector3Int(doorPosition.x, doorPosition.y, 0)));
-                    }
-                }
-            }
+            // foreach (var vehicle in _selectedCharacter.VehicleDoorPositions)
+            // {
+            //     foreach (var doorPosition in vehicle.Value)
+            //     {
+            //         if (gridController.TryGetGridItemView(doorPosition, out var gridItemView))
+            //         {
+            //             gridItemView.HighlightGrid(
+            //                 gridController.IsEmpty(new Vector3Int(doorPosition.x, doorPosition.y, 0)));
+            //         }
+            //     }
+            // }
         }
 
         private void UnselectCharacter()
@@ -154,7 +155,9 @@ namespace _Game._4_CarJam.Scripts
 
                     if (gameElement is VehicleController)
                     {
-                        _selectedCharacter.ShowEmoji(true);
+                        bool isValidClick = gridController.FindPath2(gameElement.transform.position, _selectedCharacter);
+                        
+                        //_selectedCharacter.ShowEmoji(true);
                         UnselectCharacter();
                     }
 

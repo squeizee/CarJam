@@ -16,6 +16,7 @@ namespace _Game._4_CarJam.Scripts
 
         public Action<VehicleController> OnBeforeMove; 
         public List<Vector2Int> DoorPositions => _dictDoor.Values.ToList();
+        public List<Vector2Int> SeatPositions => _dictSeat.Values.ToList();
         public GameElementDirection GetDirection => GetElementDirection();
         
         
@@ -25,10 +26,13 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Transform _centerPosition;
         [SerializeField] private Transform vehicleViewParent;
         [SerializeField] private Transform[] doorsTransforms;
+        
     
         private int _doorAngle = 90;
         private Dictionary<DoorSide, Vector2Int> _dictDoor = new();
-    
+        private Dictionary<Seat,Vector2Int> _dictSeat = new();
+        private Seat[] _listSeats;
+        
         private void OnEnable()
         {
             OnTapped += () =>
@@ -50,6 +54,9 @@ namespace _Game._4_CarJam.Scripts
             vehicleView.Initialize(GetElementDirection());
             SetDoorPositions();
             OnGameElementStateChanged += OnStateChange;
+
+            _listSeats = GetComponentsInChildren<Seat>().ToArray();
+            SetSeatPositions();
         }
 
         private void OnDisable()
@@ -57,6 +64,28 @@ namespace _Game._4_CarJam.Scripts
             OnGameElementStateChanged -= OnStateChange;
         }
 
+        private void SetSeatPositions()
+        {
+            switch (GetElementDirection())
+            {
+                case GameElementDirection.Up:
+                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(0, -1));
+                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(1, -1));
+                    break;
+                case GameElementDirection.Right:
+                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(-1, 0));
+                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(-1, -1));
+                    break;
+                case GameElementDirection.Down:
+                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(0, 1));
+                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(-1, 1));
+                    break;
+                case GameElementDirection.Left:
+                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(1, 0));
+                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(1, 1));
+                    break;
+            }
+        }
         private void SetDoorPositions()
         {
             switch (GetElementDirection())
@@ -93,7 +122,14 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-
+            
+            //check seats is none of them is empty
+            if (_listSeats.Any(seat => seat.IsEmpty))
+            {
+                State = GameElementState.Waiting;
+                return;
+            }
+            
             transform.DOComplete();
             State = GameElementState.Moving;
 

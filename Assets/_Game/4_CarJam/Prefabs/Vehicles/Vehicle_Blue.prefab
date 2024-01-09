@@ -105,18 +105,18 @@ MonoBehaviour:
     Apply:
       Name: Apply
       Updated: 0
-      Average: 0.4658
-      UpdatedAtFrame: 5793
+      Average: 0.2606
+      UpdatedAtFrame: 442
     Topology:
       Name: Topology
       Updated: 1
-      Average: 0.4382
-      UpdatedAtFrame: 5793
+      Average: 0.2354
+      UpdatedAtFrame: 442
     Size:
       Name: Size
       Updated: 1
-      Average: 0.0164
-      UpdatedAtFrame: 5793
+      Average: 0.0162
+      UpdatedAtFrame: 442
     TextureCoordinates:
       Name: Texture coordinates
       Updated: 0
@@ -460,18 +460,18 @@ MonoBehaviour:
     Apply:
       Name: Apply
       Updated: 0
-      Average: 0.5329
-      UpdatedAtFrame: 5793
+      Average: 0.2604
+      UpdatedAtFrame: 442
     Topology:
       Name: Topology
       Updated: 1
-      Average: 0.4958
-      UpdatedAtFrame: 5793
+      Average: 0.2352
+      UpdatedAtFrame: 442
     Size:
       Name: Size
       Updated: 1
-      Average: 0.0236
-      UpdatedAtFrame: 5793
+      Average: 0.0161
+      UpdatedAtFrame: 442
     TextureCoordinates:
       Name: Texture coordinates
       Updated: 0
@@ -815,18 +815,18 @@ MonoBehaviour:
     Apply:
       Name: Apply
       Updated: 0
-      Average: 0.4433
-      UpdatedAtFrame: 5793
+      Average: 0.2961
+      UpdatedAtFrame: 442
     Topology:
       Name: Topology
       Updated: 1
-      Average: 0.4122
-      UpdatedAtFrame: 5793
+      Average: 0.2654
+      UpdatedAtFrame: 442
     Size:
       Name: Size
       Updated: 1
-      Average: 0.0164
-      UpdatedAtFrame: 5793
+      Average: 0.0192
+      UpdatedAtFrame: 442
     TextureCoordinates:
       Name: Texture coordinates
       Updated: 0
@@ -1454,7 +1454,7 @@ MonoBehaviour:
   dimension: {x: 3, y: 2}
   emoji: {fileID: 8510455325993264620}
   vehicleView: {fileID: 5257840215229610858}
-  capacity: 0
+  capacity: 2
   _centerPosition: {fileID: 5794086170765039758}
   vehicleViewParent: {fileID: 3712455997839396948}
   doorsTransforms:
@@ -1480,9 +1480,65 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 332102564563128373}
     m_Modifications:
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 1.5885
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 10.071
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 6.1309
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813232520229614985, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2320057213481985430, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
       propertyPath: m_Name
       value: Seat (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0171
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.2733
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.2468
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 8765344525763891751, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9203777451600516285, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
       propertyPath: m_RootOrder
@@ -1530,6 +1586,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+--- !u!1 &4543417589723577686 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2320057213481985430, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+  m_PrefabInstance: {fileID: 2251528816710195392}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3743908321139176636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4543417589723577686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9672e113cd5849adaf1902eb99bea299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seatSide: 1
 --- !u!4 &6955083205984062589 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9203777451600516285, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
@@ -1794,9 +1868,65 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 332102564563128373}
     m_Modifications:
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0164
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.2742
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.2485
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 1138702515337341333, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 1813232520229614985, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2320057213481985430, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
       propertyPath: m_Name
       value: Seat (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.Average
+      value: 0.0172
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.Average
+      value: 0.2852
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.Average
+      value: 0.2587
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Size.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Apply.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 3088739730038927042, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: Statistic.Topology.UpdatedAtFrame
+      value: 442
+      objectReference: {fileID: 0}
+    - target: {fileID: 8765344525763891751, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+      propertyPath: m_Mesh
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9203777451600516285, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
       propertyPath: m_RootOrder
@@ -1849,6 +1979,24 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9203777451600516285, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
   m_PrefabInstance: {fileID: 7213392193424172474}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4911564917228863532 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2320057213481985430, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+  m_PrefabInstance: {fileID: 7213392193424172474}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2947095104121152705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4911564917228863532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9672e113cd5849adaf1902eb99bea299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seatSide: 0
 --- !u!1001 &9063798370442511035
 PrefabInstance:
   m_ObjectHideFlags: 0

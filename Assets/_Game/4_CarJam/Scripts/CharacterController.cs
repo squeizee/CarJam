@@ -17,6 +17,7 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Transform characterViewParent;
 
         public Dictionary<VehicleController, List<Vector2Int>> VehicleDoorPositions = new();
+        public Dictionary<VehicleController, List<Vector2Int>> VehicleSeatPositions = new();
 
         private Vector3 _indicatorDefaultPosition;
         private Animator _animator;

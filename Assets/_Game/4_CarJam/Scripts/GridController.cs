@@ -10,7 +10,8 @@ namespace _Game._4_CarJam.Scripts
     {
         None = 0,
         Ground = 1,
-        Element = 2
+        Element = 2,
+        Seat = 3,
     }
 
     public class GridController : MonoBehaviour
@@ -81,15 +82,14 @@ namespace _Game._4_CarJam.Scripts
             return true;
         }
 
-        public bool FindPath(Vector3 destinationPosition, GameElement gameElement)
+        public bool FindPath2(Vector3 pos, CharacterController character)
         {
-            //Find path with gameElement dimension
-            var des = grid.WorldToCell(destinationPosition);
-            if (!IsEmpty(des)) return false;
+            var des = grid.WorldToCell(pos);
+            if (!IsEmpty2(des)) return false;
 
             ElementType[,] elementMap = GetMapDataElement();
 
-            var start = gameElement.PositionInGrid;
+            var start = grid.WorldToCell(character.transform.position);
 
             PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
 
@@ -101,7 +101,8 @@ namespace _Game._4_CarJam.Scripts
             if (path.Count == 0)
                 return false;
 
-            //gameElement.MoveAlongPath(path);
+            character.MoveAlongPath(path);
+
             return true;
         }
 
@@ -181,7 +182,17 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
-                                elementMap[pivotPoint.x + x, pivotPoint.y - y] = ElementType.Element;
+                                if (gameElement is VehicleController vehicleController)
+                                {
+                                    foreach (var seat in vehicleController.SeatPositions)
+                                    {
+                                        elementMap[seat.x, seat.y] = ElementType.Seat;
+                                    }
+                                }
+                                else
+                                {
+                                    elementMap[pivotPoint.x + x, pivotPoint.y - y] = ElementType.Element;
+                                }
                             }
                         }
 
@@ -192,7 +203,17 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
-                                elementMap[pivotPoint.x - x, pivotPoint.y - y] = ElementType.Element;
+                                if (gameElement is VehicleController vehicleController)
+                                {
+                                    foreach (var seat in vehicleController.SeatPositions)
+                                    {
+                                        elementMap[seat.x, seat.y] = ElementType.Seat;
+                                    }
+                                }
+                                else
+                                {
+                                    elementMap[pivotPoint.x - x, pivotPoint.y - y] = ElementType.Element;
+                                }
                             }
                         }
 
@@ -203,7 +224,17 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.x; y++)
                             {
-                                elementMap[pivotPoint.x - x, pivotPoint.y + y] = ElementType.Element;
+                                if (gameElement is VehicleController vehicleController)
+                                {
+                                    foreach (var seat in vehicleController.SeatPositions)
+                                    {
+                                        elementMap[seat.x, seat.y] = ElementType.Seat;
+                                    }
+                                }
+                                else
+                                {
+                                    elementMap[pivotPoint.x - x, pivotPoint.y + y] = ElementType.Element;
+                                }
                             }
                         }
 
@@ -214,7 +245,17 @@ namespace _Game._4_CarJam.Scripts
                         {
                             for (int y = 0; y < gameElement.Dimension.y; y++)
                             {
-                                elementMap[pivotPoint.x + x, pivotPoint.y + y] = ElementType.Element;
+                                if (gameElement is VehicleController vehicleController)
+                                {
+                                    foreach (var seat in vehicleController.SeatPositions)
+                                    {
+                                        elementMap[seat.x, seat.y] = ElementType.Seat;
+                                    }
+                                }
+                                else
+                                {
+                                    elementMap[pivotPoint.x + x, pivotPoint.y + y] = ElementType.Element;
+                                }
                             }
                         }
 
@@ -239,6 +280,16 @@ namespace _Game._4_CarJam.Scripts
 
             ElementType[,] elementMap = GetMapDataElement();
             return elementMap[point.x, point.y] == ElementType.Ground;
+        }
+
+        public bool IsEmpty2(Vector3Int point)
+        {
+            if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)
+                return false;
+
+            ElementType[,] elementMap = GetMapDataElement();
+            return elementMap[point.x, point.y] == ElementType.Ground ||
+                   elementMap[point.x, point.y] == ElementType.Seat;
         }
 
         public GridItemView TryGetGridItemView(Vector2Int doorPosition, out GridItemView gridItemView)
