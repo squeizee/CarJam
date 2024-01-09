@@ -67,7 +67,7 @@ namespace PathFind
             {
                 for (int y = 0; y < height; y++)
                 {
-                    nodes[x, y] = new Node(walkable_tiles[x, y] == ElementType.Ground ? 1.0f : 0.0f, x, y);
+                    nodes[x, y] = new Node(walkable_tiles[x, y] == ElementType.Ground || walkable_tiles[x, y] == ElementType.Seat ? 1.0f : 0.0f, x, y);
                 }
             }
         }

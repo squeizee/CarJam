@@ -151,14 +151,40 @@ namespace _Game._4_CarJam.Scripts
                 if (Craft.Get<CraftInputSystem>()
                     .GetGameObjectUnderMouse(layerMask, out var touchedGameElement, out var hit))
                 {
+                    
                     var gameElement = touchedGameElement.GetComponentInParent<GameElement>();
 
-                    if (gameElement is VehicleController)
+                    if (gameElement is VehicleController vehicle)
                     {
-                        bool isValidClick = gridController.FindPath2(gameElement.transform.position, _selectedCharacter);
+                        if (touchedGameElement.transform.parent.TryGetComponent<Seat>(out var seat))
+                        {
+                            if (seat.IsEmpty)
+                            {
+                                _selectedCharacter.Tapped();
+                                bool isValidClick = gridController.FindPath2(vehicle, _selectedCharacter,seat);
+                                UnselectCharacter();
+                            }
+                            else
+                            {
+                                _selectedCharacter.Tapped();
+                                _selectedCharacter.ShowEmoji(true);
+                                UnselectCharacter();
+                            }
                         
-                        //_selectedCharacter.ShowEmoji(true);
-                        UnselectCharacter();
+                        }
+                        else if (_selectedCharacter.VehicleSeatPositions.ContainsKey(vehicle))
+                        {
+                            _selectedCharacter.Tapped();
+                            bool isValidClick = gridController.FindPath2(vehicle, _selectedCharacter);
+                            UnselectCharacter();
+                        }
+                        else
+                        {
+                            _selectedCharacter.Tapped();
+                            _selectedCharacter.ShowEmoji(true);
+                            UnselectCharacter();
+                        }
+                        
                     }
 
                     if (gameElement is CharacterController)

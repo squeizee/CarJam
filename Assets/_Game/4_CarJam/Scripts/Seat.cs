@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,14 +12,29 @@ namespace _Game._4_CarJam.Scripts
             Right = 1,
             Middle = 2
         }
-        public bool IsEmpty => Character == null;
+
+        public bool IsEmpty { get; private set; }
+
+        public SeatSide GetSeatSide => seatSide;
         
         [SerializeField] private SeatSide seatSide;
-        private CharacterController Character { get; set; }
-        
-        public void SetCharacter(CharacterController character)
+
+        private void Start()
         {
-            Character = character;
+            IsEmpty = true;
+        }
+
+        public bool SetCharacter(Transform character)
+        {
+            if (!IsEmpty) return false;
+            
+            character.SetParent(transform);
+            character.localPosition = Vector3.zero;
+            character.localRotation = Quaternion.identity;
+            character.localScale = Vector3.one;
+            IsEmpty = false;
+            
+            return true;
         }
         
         
