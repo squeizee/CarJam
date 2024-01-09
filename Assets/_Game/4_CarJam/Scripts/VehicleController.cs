@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game._4_CarJam.Scripts
@@ -14,25 +15,20 @@ namespace _Game._4_CarJam.Scripts
             Right = 1,
         }
 
-        public Action<VehicleController> OnBeforeMove; 
+        public Action<VehicleController> OnBeforeMove;
         public List<Vector2Int> DoorPositions => _dictDoor.Values.ToList();
-        public List<Vector2Int> SeatPositions => _dictSeat.Values.ToList();
         public GameElementDirection GetDirection => GetElementDirection();
-        
-        
-    
+
+
         [SerializeField] private VehicleView vehicleView;
         [SerializeField] private int capacity;
         [SerializeField] private Transform _centerPosition;
         [SerializeField] private Transform vehicleViewParent;
         [SerializeField] private Transform[] doorsTransforms;
-        
-    
+
         private int _doorAngle = 90;
         private Dictionary<DoorSide, Vector2Int> _dictDoor = new();
-        private Dictionary<Seat,Vector2Int> _dictSeat = new();
-        private Seat[] _listSeats;
-        
+
         private void OnEnable()
         {
             OnTapped += () =>
@@ -47,16 +43,19 @@ namespace _Game._4_CarJam.Scripts
             };
         }
 
-        public override void Initialize(Vector2Int positionInGrid,Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid, Action onStateChanged)
         {
-            base.Initialize(positionInGrid,onStateChanged);
+            base.Initialize(positionInGrid, onStateChanged);
             State = GameElementState.Idle;
-            vehicleView.Initialize(GetElementDirection());
             SetDoorPositions();
             OnGameElementStateChanged += OnStateChange;
+            UpdateColor();
+        }
 
-            _listSeats = GetComponentsInChildren<Seat>().ToArray();
-            SetSeatPositions();
+        [Button]
+        public void UpdateColor()
+        {
+            vehicleView.SetColor(GameElementColor);
         }
 
         private void OnDisable()
@@ -64,35 +63,13 @@ namespace _Game._4_CarJam.Scripts
             OnGameElementStateChanged -= OnStateChange;
         }
 
-        private void SetSeatPositions()
-        {
-            switch (GetElementDirection())
-            {
-                case GameElementDirection.Up:
-                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(0, -1));
-                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(1, -1));
-                    break;
-                case GameElementDirection.Right:
-                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(-1, 0));
-                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(-1, -1));
-                    break;
-                case GameElementDirection.Down:
-                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(0, 1));
-                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(-1, 1));
-                    break;
-                case GameElementDirection.Left:
-                    _dictSeat.Add(_listSeats[0],PositionInGrid + new Vector2Int(1, 0));
-                    _dictSeat.Add(_listSeats[1],PositionInGrid + new Vector2Int(1, 1));
-                    break;
-            }
-        }
         private void SetDoorPositions()
         {
             switch (GetElementDirection())
             {
                 case GameElementDirection.Up:
                     _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(-1, -1));
-                    _dictDoor.Add(DoorSide.Right, PositionInGrid +new Vector2Int(2, -1));
+                    _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(2, -1));
                     break;
                 case GameElementDirection.Right:
                     _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(-1, 1));
@@ -108,6 +85,7 @@ namespace _Game._4_CarJam.Scripts
                     break;
             }
         }
+
         public void Move()
         {
             CloseDoor();
@@ -122,14 +100,7 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-            
-            //check seats is none of them is empty
-            if (_listSeats.Any(seat => seat.IsEmpty))
-            {
-                State = GameElementState.Waiting;
-                return;
-            }
-            
+
             transform.DOComplete();
             State = GameElementState.Moving;
 
@@ -147,7 +118,7 @@ namespace _Game._4_CarJam.Scripts
             {
                 transform.DOLocalPath(pathVector3.ToArray(), 0.2f * path.Count).SetEase(Ease.Linear).OnComplete(() =>
                 {
-                    PositionInGrid = new Vector2Int((int) path[^1].x, (int) path[^1].y);
+                    PositionInGrid = new Vector2Int((int)path[^1].x, (int)path[^1].y);
                     State = GameElementState.Waiting;
                 });
             }
@@ -168,7 +139,7 @@ namespace _Game._4_CarJam.Scripts
                     break;
                 case GameElementState.Completed:
                     vehicleViewParent.gameObject.SetActive(false);
-                
+
                     break;
             }
         }
@@ -180,7 +151,8 @@ namespace _Game._4_CarJam.Scripts
 
         public Tween OpenDoor(DoorSide doorSide)
         {
-            return doorsTransforms[(int)doorSide].DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .15f);
+            return doorsTransforms[(int)doorSide]
+                .DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .15f);
         }
 
         private void CloseDoor()
@@ -193,7 +165,7 @@ namespace _Game._4_CarJam.Scripts
 
         public override void ShowEmoji(bool show, int repeat = -1)
         {
-            base.ShowEmoji(show,repeat);
+            base.ShowEmoji(show, repeat);
         }
 
         public override void Tapped()
