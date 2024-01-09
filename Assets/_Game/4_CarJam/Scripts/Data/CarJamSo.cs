@@ -1,0 +1,11 @@
+using Library.Utility.Scripts.Singleton;
+using UnityEngine;
+
+namespace _Game._4_CarJam.Scripts
+{
+    [CreateAssetMenu(fileName = "CarJamSo", menuName = "Craft/CarJam/CarJamSo")]
+    public class CarJamSo : ScriptableSingleton<CarJamSo>
+    {
+        public Transform GridFillItem;
+    }
+}
