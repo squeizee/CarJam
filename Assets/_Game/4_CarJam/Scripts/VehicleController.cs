@@ -219,5 +219,15 @@ namespace _Game._4_CarJam.Scripts
         {
             transform.DOPause();
         }
+
+        public bool IsSeatAvailable()
+        {
+            return _dictSeat.Any(x => x.Key.IsEmpty);
+        }
+
+        public Seat GetAvailableSeat()
+        {
+            return _dictSeat.FirstOrDefault(x => x.Key.IsEmpty).Key;
+        }
     }
 }

@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks.Triggers;
+using PathFind;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Grid = UnityEngine.Grid;
 
 namespace _Game._4_CarJam.Scripts
 {
@@ -82,43 +85,48 @@ namespace _Game._4_CarJam.Scripts
             return true;
         }
 
-        public bool FindPath2(VehicleController vehicle, CharacterController character, Seat selectedSeat = null)
+        public bool FindPathToVehicle(VehicleController vehicle, CharacterController character, Seat selectedSeat)
         {
-            
             var seatPositions = vehicle.SeatPositions;
+            var doorPositions = vehicle.DoorPositions;
             var characterPosition = character.PositionInGrid;
             var start = characterPosition;
-            
+            var selectedSeatPosition = vehicle.GetSelectedSeatPosition(selectedSeat);
+
             ElementType[,] elementMap = GetMapDataElement();
             PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
-            List<PathFind.Point> closestPath = new();
-            
-            if (selectedSeat)
+            List<Point> closestPath = new();
+
+            // if I am in door position
+            if (doorPositions.Contains(characterPosition))
             {
-                var selectedSeatPosition = vehicle.GetSelectedSeatPosition(selectedSeat);
-                
-                PathFind.Point from = new PathFind.Point(start.x, start.y);
-                PathFind.Point to = new PathFind.Point(selectedSeatPosition.x, selectedSeatPosition.y);
-                
-                closestPath = PathFind.Pathfinding.FindPath(pathFindGrid, from, to);
+                closestPath.Add(new Point(selectedSeatPosition.x, selectedSeatPosition.y));
+                character.MoveAlongPath(closestPath);
+
+                return true;
             }
-            else
+            
+            foreach (var door in doorPositions)
             {
-                foreach (var seat in seatPositions)
+                if (!IsEmpty(door))
                 {
-                    PathFind.Point from = new PathFind.Point(start.x, start.y);
-                    PathFind.Point to = new PathFind.Point(seat.x, seat.y);
-                
-                    List<PathFind.Point> path = PathFind.Pathfinding.FindPath(pathFindGrid, from, to);
-                
-                    if(closestPath.Count == 0 || path.Count < closestPath.Count)
-                        closestPath = path;
+                    continue;
                 }
+
+                Point from = new Point(start.x, start.y);
+                Point to = new Point(door.x, door.y);
+
+                List<Point> path = Pathfinding.FindPath(pathFindGrid, from, to);
+
+                if (closestPath.Count == 0 || path.Count < closestPath.Count)
+                    closestPath = path;
             }
-            
-            
+
+
             if (closestPath.Count == 0)
                 return false;
+
+            closestPath.Add(new Point(selectedSeatPosition.x, selectedSeatPosition.y));
 
             character.MoveAlongPath(closestPath);
 
@@ -240,7 +248,7 @@ namespace _Game._4_CarJam.Scripts
 
                         break;
                 }
-                
+
                 if (gameElement is VehicleController vehicleController)
                 {
                     foreach (var seat in vehicleController.SeatPositions)
@@ -261,6 +269,15 @@ namespace _Game._4_CarJam.Scripts
         }
 
         public bool IsEmpty(Vector3Int point)
+        {
+            if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)
+                return false;
+
+            ElementType[,] elementMap = GetMapDataElement();
+            return elementMap[point.x, point.y] == ElementType.Ground;
+        }
+
+        public bool IsEmpty(Vector2Int point)
         {
             if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)
                 return false;

@@ -161,7 +161,10 @@ namespace _Game._4_CarJam.Scripts
                             if (seat.IsEmpty)
                             {
                                 _selectedCharacter.Tapped();
-                                bool isValidClick = gridController.FindPath2(vehicle, _selectedCharacter,seat);
+                                bool isValidClick = gridController.FindPathToVehicle(vehicle, _selectedCharacter,seat);
+                                
+                                if(!isValidClick)
+                                    _selectedCharacter.ShowEmoji(true);
                                 UnselectCharacter();
                             }
                             else
@@ -174,9 +177,15 @@ namespace _Game._4_CarJam.Scripts
                         }
                         else if (_selectedCharacter.VehicleSeatPositions.ContainsKey(vehicle))
                         {
-                            _selectedCharacter.Tapped();
-                            bool isValidClick = gridController.FindPath2(vehicle, _selectedCharacter);
-                            UnselectCharacter();
+                            if (vehicle.IsSeatAvailable())
+                            {
+                                _selectedCharacter.Tapped();
+                                bool isValidClick = gridController.FindPathToVehicle(vehicle, _selectedCharacter,vehicle.GetAvailableSeat());
+                                if(!isValidClick)
+                                    _selectedCharacter.ShowEmoji(true);
+                                UnselectCharacter();
+                            }
+                            
                         }
                         else
                         {

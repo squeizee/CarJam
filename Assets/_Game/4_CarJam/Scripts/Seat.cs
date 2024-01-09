@@ -31,7 +31,7 @@ namespace _Game._4_CarJam.Scripts
             character.SetParent(transform);
             character.localPosition = Vector3.zero;
             character.localRotation = Quaternion.identity;
-            character.localScale = Vector3.one;
+            character.localScale = Vector3.one * .9f;
             IsEmpty = false;
             
             return true;

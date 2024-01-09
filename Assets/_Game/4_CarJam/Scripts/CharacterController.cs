@@ -93,12 +93,12 @@ namespace _Game._4_CarJam.Scripts
         {
             if (VehicleSeatPositions.Count == 0) return;
             bool isEmptySeatFind = false;
-
+            
             foreach (var vehicle in VehicleSeatPositions)
             {
                 if (isEmptySeatFind)
                     break;
-
+            
                 for (int i = 0; i < vehicle.Value.Count; i++)
                 {
                     if (PositionInGrid == vehicle.Value[i])
@@ -106,15 +106,13 @@ namespace _Game._4_CarJam.Scripts
                         _animator.Play("Sit");
                         State = GameElementState.Completed;
                         isEmptySeatFind = vehicle.Key.FillSeat(i, transform);
-
+            
                         if (!isEmptySeatFind)
                         {
                             isEmptySeatFind = vehicle.Key.FillSeat(i == 0 ? i+1 : i-1, transform);
                         }
-                            
-                        
                         vehicle.Key.Move();
-
+            
                         break;
                     }
                 }
