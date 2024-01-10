@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using _Game._0_CraftCore.Scripts.Core;
 using _Game._3_GamePlay.Scripts;
 using _Game.Library.CraftTime;
 using DG.Tweening;
 using Modules.Shared.Controller;
-using Sirenix.OdinInspector;
-using Sirenix.Utilities;
 using UnityEngine;
 
 namespace _Game._4_CarJam.Scripts
@@ -17,6 +13,8 @@ namespace _Game._4_CarJam.Scripts
     {
         [SerializeField] private GridController gridController;
         [SerializeField] private RoadController roadController;
+        [SerializeField] private EnvironmentController environmentController;
+        
 
         private List<GameElement> _listGameElements;
         private CharacterController _selectedCharacter;
@@ -32,6 +30,15 @@ namespace _Game._4_CarJam.Scripts
             SetVehiclesToCharacters();
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
+            CreateEnvironment();
+        }
+        
+        // create environment
+        private  void CreateEnvironment()
+        {
+            var environment = Instantiate(CarJamSo.Instance.EnvironmentPrefab, transform);
+            environmentController = environment.GetComponent<EnvironmentController>();
+            environmentController.Initialize(gridController);
         }
 
         private void SetVehiclesToCharacters()
