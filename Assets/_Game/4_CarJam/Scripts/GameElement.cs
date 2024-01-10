@@ -12,7 +12,7 @@ namespace _Game._4_CarJam.Scripts
             Red,
             Orange,
             Green,
-            Gray,
+            Purple,
             Yellow
         }
 

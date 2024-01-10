@@ -22,12 +22,12 @@ namespace _Game._4_CarJam.Scripts
         public Vector2Int GetSelectedSeatPosition(Seat seat) => _dictSeat.FirstOrDefault(x => x.Key == seat).Value;
         public GameElementDirection GetDirection => GetElementDirection();
 
-        
-        public bool FillSeat(int index,Transform character) => _dictSeat.ElementAt(index).Key.SetCharacter(character);
 
-        
+        public bool FillSeat(int index, Transform character) => _dictSeat.ElementAt(index).Key.SetCharacter(character);
+
+
         [SerializeField] private VehicleView vehicleView;
-       
+
         [SerializeField] private Transform _centerPosition;
         [SerializeField] private Transform vehicleViewParent;
         [SerializeField] private Seat[] seats;
@@ -60,14 +60,20 @@ namespace _Game._4_CarJam.Scripts
 
             _listSeats = GetComponentsInChildren<Seat>().ToArray();
             SetSeatPositions();
-            
+
             UpdateColor();
         }
 
-        [Button]
         public void UpdateColor()
         {
-            vehicleView.SetColor(GameElementColor);
+            SetColor(GameElementColor);
+        }
+
+        [Button]
+        public void SetColor(GameElement.Colors color)
+        {
+            GameElementColor = color;
+            vehicleView.SetColor(color);
         }
 
         private void OnDisable()
@@ -97,6 +103,7 @@ namespace _Game._4_CarJam.Scripts
                     break;
             }
         }
+
         private void SetDoorPositions()
         {
             switch (GetElementDirection())
@@ -123,7 +130,7 @@ namespace _Game._4_CarJam.Scripts
         public void Move()
         {
             //CloseDoor();
-            if(_dictSeat.Any(x => x.Key.IsEmpty)) return;
+            if (_dictSeat.Any(x => x.Key.IsEmpty)) return;
             OnBeforeMove?.Invoke(this);
         }
 
@@ -135,8 +142,7 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-            
-            
+
             // if seat is none of them empty
             if (Array.Exists(_listSeats, x => x.IsEmpty))
             {
@@ -144,7 +150,7 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-            
+
             transform.DOComplete();
             State = GameElementState.Moving;
 
@@ -205,7 +211,7 @@ namespace _Game._4_CarJam.Scripts
             //     doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.15f);
             // }
         }
-        
+
         public override void ShowEmoji(bool show, int repeat = 4)
         {
             repeat = -1;

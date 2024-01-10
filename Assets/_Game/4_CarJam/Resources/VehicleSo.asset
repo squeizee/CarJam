@@ -12,18 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85cf9cd3c21c4c53b10bd4477d048e18, type: 3}
   m_Name: VehicleSo
   m_EditorClassIdentifier: 
-  UpDirectionViewTransformData:
-    Position: {x: 0.47, y: 0, z: -1.01}
-    LocalScale: {x: 1, y: 1, z: 1}
-  DownDirectionViewTransformData:
-    Position: {x: 0.47, y: 0, z: -1.01}
-    LocalScale: {x: 1, y: 1, z: 1}
-  LeftDirectionViewTransformData:
-    Position: {x: 0.47, y: 0, z: -1.01}
-    LocalScale: {x: 1, y: 1, z: 1}
-  RightDirectionViewTransformData:
-    Position: {x: 0.47, y: 0, z: -1.01}
-    LocalScale: {x: 1, y: 1, z: 1}
   VehicleOvershoot: 0.4
   CompleteDuration: 1
   VehicleColorData:
@@ -36,6 +24,6 @@ MonoBehaviour:
   - Color: 3
     Material: {fileID: 2100000, guid: 8ad576e377f9449289d49f43c2dc311a, type: 2}
   - Color: 4
-    Material: {fileID: 2100000, guid: 460dc7332ae624d1b84dc1860c4d45d2, type: 2}
+    Material: {fileID: 2100000, guid: 979c509fde3a54fa6a7a5e177859dd09, type: 2}
   - Color: 5
     Material: {fileID: 2100000, guid: e460762b23f2b4b5c9c5bf7af21eff38, type: 2}
