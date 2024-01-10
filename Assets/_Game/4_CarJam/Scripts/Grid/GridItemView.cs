@@ -23,7 +23,7 @@ public class GridItemView : MonoBehaviour
         PositionInGrid = positionInGrid;
         _defaultColor = childCubeRenderer.material.color;
         _indicatorDefaultPosition = indicator.localPosition;
-        UnHighlightGrid();
+      //  UnHighlightGrid();
     }
     public void SetColor(Color color)
     {
