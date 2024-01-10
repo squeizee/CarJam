@@ -31,7 +31,6 @@ namespace PathFind
                 for (int y = 0; y < height; y++)
                 {
                     nodes[x, y] = new Node(tiles_costs[x, y], x, y);
-
                 }
             }
         }
@@ -62,15 +61,16 @@ namespace PathFind
             gridSizeX = width;
             gridSizeY = height;
             nodes = new Node[width, height];
-            
+
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    nodes[x, y] = new Node(walkable_tiles[x, y] == ElementType.Ground ? 1.0f : 0.0f, x, y);
+                    nodes[x, y] = new Node(walkable_tiles[x, y] == ElementType.Ground  ? 1.0f : 0.0f, x, y);
                 }
             }
         }
+
         public List<Node> GetNeighbours(Node node)
         {
             List<Node> neighbours = new List<Node>();
@@ -84,12 +84,15 @@ namespace PathFind
 
                     int checkX = node.gridX + x;
                     int checkY = node.gridY + y;
-                    
+
                     if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                     {
                         // block diagonal movement
-                        if(!nodes[checkX,node.gridY].walkable && !nodes[node.gridX,checkY].walkable)
+                        if (!nodes[checkX, node.gridY].walkable && !nodes[node.gridX, checkY].walkable)
+                        {
                             continue;
+                        }
+                        
                         neighbours.Add(nodes[checkX, checkY]);
                     }
                 }

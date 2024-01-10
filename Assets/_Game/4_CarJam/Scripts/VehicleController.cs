@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -17,17 +18,24 @@ namespace _Game._4_CarJam.Scripts
 
         public Action<VehicleController> OnBeforeMove;
         public List<Vector2Int> DoorPositions => _dictDoor.Values.ToList();
+        public List<Vector2Int> SeatPositions => _dictSeat.Values.ToList();
+        public Vector2Int GetSelectedSeatPosition(Seat seat) => _dictSeat.FirstOrDefault(x => x.Key == seat).Value;
         public GameElementDirection GetDirection => GetElementDirection();
 
+        
+        public bool FillSeat(int index,Transform character) => _dictSeat.ElementAt(index).Key.SetCharacter(character);
 
+        
         [SerializeField] private VehicleView vehicleView;
-        [SerializeField] private int capacity;
+       
         [SerializeField] private Transform _centerPosition;
         [SerializeField] private Transform vehicleViewParent;
-        [SerializeField] private Transform[] doorsTransforms;
+        [SerializeField] private Seat[] seats;
 
         private int _doorAngle = 90;
+        private Seat[] _listSeats;
         private Dictionary<DoorSide, Vector2Int> _dictDoor = new();
+        private Dictionary<Seat, Vector2Int> _dictSeat = new();
 
         private void OnEnable()
         {
@@ -49,6 +57,10 @@ namespace _Game._4_CarJam.Scripts
             State = GameElementState.Idle;
             SetDoorPositions();
             OnGameElementStateChanged += OnStateChange;
+
+            _listSeats = GetComponentsInChildren<Seat>().ToArray();
+            SetSeatPositions();
+            
             UpdateColor();
         }
 
@@ -63,6 +75,28 @@ namespace _Game._4_CarJam.Scripts
             OnGameElementStateChanged -= OnStateChange;
         }
 
+        private void SetSeatPositions()
+        {
+            switch (GetElementDirection())
+            {
+                case GameElementDirection.Up:
+                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(0, -1));
+                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(1, -1));
+                    break;
+                case GameElementDirection.Right:
+                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(-1, 0));
+                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(-1, -1));
+                    break;
+                case GameElementDirection.Down:
+                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(0, 1));
+                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(-1, 1));
+                    break;
+                case GameElementDirection.Left:
+                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(1, 0));
+                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(1, 1));
+                    break;
+            }
+        }
         private void SetDoorPositions()
         {
             switch (GetElementDirection())
@@ -88,7 +122,8 @@ namespace _Game._4_CarJam.Scripts
 
         public void Move()
         {
-            CloseDoor();
+            //CloseDoor();
+            if(_dictSeat.Any(x => x.Key.IsEmpty)) return;
             OnBeforeMove?.Invoke(this);
         }
 
@@ -100,7 +135,16 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-
+            
+            
+            // if seat is none of them empty
+            if (Array.Exists(_listSeats, x => x.IsEmpty))
+            {
+                if (State != GameElementState.Waiting)
+                    State = GameElementState.Waiting;
+                return;
+            }
+            
             transform.DOComplete();
             State = GameElementState.Moving;
 
@@ -134,12 +178,11 @@ namespace _Game._4_CarJam.Scripts
                     ShowEmoji(false);
                     break;
                 case GameElementState.Waiting:
-                    OnCrash?.Invoke();
-                    ShowEmoji(true);
+                    // OnCrash?.Invoke();
+                    // ShowEmoji(true);
                     break;
                 case GameElementState.Completed:
                     vehicleViewParent.gameObject.SetActive(false);
-
                     break;
             }
         }
@@ -149,22 +192,23 @@ namespace _Game._4_CarJam.Scripts
             return _centerPosition.position;
         }
 
-        public Tween OpenDoor(DoorSide doorSide)
-        {
-            return doorsTransforms[(int)doorSide]
-                .DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .15f);
-        }
+        // public Tween OpenDoor(DoorSide doorSide)
+        // {
+        //     return doorsTransforms[(int)doorSide]
+        //         .DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .15f);
+        // }
 
         private void CloseDoor()
         {
-            foreach (var door in _dictDoor)
-            {
-                doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.15f);
-            }
+            // foreach (var door in _dictDoor)
+            // {
+            //     doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.15f);
+            // }
         }
-
-        public override void ShowEmoji(bool show, int repeat = -1)
+        
+        public override void ShowEmoji(bool show, int repeat = 4)
         {
+            repeat = -1;
             base.ShowEmoji(show, repeat);
         }
 
@@ -176,6 +220,16 @@ namespace _Game._4_CarJam.Scripts
         public override void Stop()
         {
             transform.DOPause();
+        }
+
+        public bool IsSeatAvailable()
+        {
+            return _dictSeat.Any(x => x.Key.IsEmpty);
+        }
+
+        public Seat GetAvailableSeat()
+        {
+            return _dictSeat.FirstOrDefault(x => x.Key.IsEmpty).Key;
         }
     }
 }

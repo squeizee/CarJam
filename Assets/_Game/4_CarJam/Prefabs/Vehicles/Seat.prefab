@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9203777451600516285}
+  - component: {fileID: 8936581229366696949}
   m_Layer: 7
   m_Name: Seat
   m_TagString: Untagged
@@ -33,6 +34,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8936581229366696949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2320057213481985430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9672e113cd5849adaf1902eb99bea299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seatSide: 0
 --- !u!1 &6342283048748803432
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,6 +59,8 @@ GameObject:
   - component: {fileID: 1813232520229614985}
   - component: {fileID: 6532817464609632168}
   - component: {fileID: 1138702515337341333}
+  - component: {fileID: 8222882447681262879}
+  - component: {fileID: 5576907480358286459}
   m_Layer: 7
   m_Name: Bottom
   m_TagString: Untagged
@@ -60,7 +76,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6342283048748803432}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.108, y: 0.548, z: -0.934}
+  m_LocalPosition: {x: 0.108, y: 0.548, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -138,18 +154,18 @@ MonoBehaviour:
     Apply:
       Name: Apply
       Updated: 0
-      Average: 0.5109
-      UpdatedAtFrame: 4189
+      Average: 0.3521
+      UpdatedAtFrame: 67
     Topology:
       Name: Topology
       Updated: 1
-      Average: 0.4684
-      UpdatedAtFrame: 4189
+      Average: 0.3146
+      UpdatedAtFrame: 67
     Size:
       Name: Size
       Updated: 1
-      Average: 0.0214
-      UpdatedAtFrame: 4189
+      Average: 0.022
+      UpdatedAtFrame: 67
     TextureCoordinates:
       Name: Texture coordinates
       Updated: 0
@@ -388,6 +404,32 @@ MonoBehaviour:
         e31: 0
         e32: 0
         e33: 1
+--- !u!114 &8222882447681262879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6342283048748803432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf5ad5f764c4030ba0f849ff1332377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tone: 1
+--- !u!65 &5576907480358286459
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6342283048748803432}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.65, y: 0.5, z: 0.7}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8211190135716016618
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,6 +442,7 @@ GameObject:
   - component: {fileID: 8765344525763891751}
   - component: {fileID: 4889100273280823911}
   - component: {fileID: 3088739730038927042}
+  - component: {fileID: 606584445420986331}
   m_Layer: 7
   m_Name: Back
   m_TagString: Untagged
@@ -415,7 +458,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8211190135716016618}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.108, y: 0.773, z: -1.204}
+  m_LocalPosition: {x: 0.108, y: 0.773, z: -0.316}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -493,18 +536,18 @@ MonoBehaviour:
     Apply:
       Name: Apply
       Updated: 0
-      Average: 0.4284
-      UpdatedAtFrame: 4189
+      Average: 0.3089
+      UpdatedAtFrame: 67
     Topology:
       Name: Topology
       Updated: 1
-      Average: 0.3876
-      UpdatedAtFrame: 4189
+      Average: 0.2788
+      UpdatedAtFrame: 67
     Size:
       Name: Size
       Updated: 1
-      Average: 0.0169
-      UpdatedAtFrame: 4189
+      Average: 0.0181
+      UpdatedAtFrame: 67
     TextureCoordinates:
       Name: Texture coordinates
       Updated: 0
@@ -743,3 +786,16 @@ MonoBehaviour:
         e31: 0
         e32: 0
         e33: 1
+--- !u!114 &606584445420986331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8211190135716016618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daf5ad5f764c4030ba0f849ff1332377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tone: 1
