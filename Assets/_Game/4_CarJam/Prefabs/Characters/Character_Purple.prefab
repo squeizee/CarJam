@@ -14,7 +14,7 @@ PrefabInstance:
     - target: {fileID: 915783678700935526, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: f6142989110b92e42b5cc1f225609f20, type: 2}
+      objectReference: {fileID: 2100000, guid: 043795b98f5314884a55770da2cde1c2, type: 2}
     - target: {fileID: 4765692219566082130, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -65,7 +65,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f6142989110b92e42b5cc1f225609f20, type: 2}
     - target: {fileID: 5942885479183792649, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}
       propertyPath: m_Name
-      value: Character_Gray
+      value: Character_Purple
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c91fe3d795d9f1419fb6f9399d1ee7a, type: 3}

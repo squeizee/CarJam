@@ -59,14 +59,20 @@ namespace _Game._4_CarJam.Scripts
 
             _listSeats = GetComponentsInChildren<Seat>().ToArray();
             SetSeatPositions();
-            
+
             UpdateColor();
         }
 
-        [Button]
         public void UpdateColor()
         {
-            vehicleView.SetColor(GameElementColor);
+            SetColor(GameElementColor);
+        }
+
+        [Button]
+        public void SetColor(GameElement.Colors color)
+        {
+            GameElementColor = color;
+            vehicleView.SetColor(color);
         }
 
         private void OnDisable()
@@ -96,6 +102,7 @@ namespace _Game._4_CarJam.Scripts
                     break;
             }
         }
+
         private void SetDoorPositions()
         {
             switch (GetElementDirection())
@@ -134,8 +141,7 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-            
-            
+
             // if seat is none of them empty
             if (Array.Exists(_listSeats, x => x.IsEmpty))
             {
@@ -143,7 +149,7 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-            
+
             transform.DOComplete();
             State = GameElementState.Moving;
 
