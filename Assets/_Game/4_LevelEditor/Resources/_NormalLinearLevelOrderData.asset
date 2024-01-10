@@ -17,64 +17,40 @@ MonoBehaviour:
   Name: 
   _testLevel: {fileID: 0}
   TutorialsReferences:
-  - m_AssetGUID: 4300813e4fe6a32488e9a25d75a1122a
+  - m_AssetGUID: 5cc7e5e1d922f418cb0f58381f33e607
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: f36b5a1a2ecd7f54d8b6317d4d549f6b
+  - m_AssetGUID: 374f87bf0ea9b49faaba23e4e6516926
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: fc8dae09e6fc6d348b23cce6c3535d7a
+  - m_AssetGUID: 9fb58ea6efc7f4fb8ae752896b441d43
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   LevelAssetReferences:
-  - m_AssetGUID: c66ae1daaf34d9e438f0bb803f52b8d0
+  - m_AssetGUID: 054fafc76d14e4f4989b99799cda836d
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: 9093b74bbe658a7489b0e43350099e5d
+  - m_AssetGUID: 5087a8225f62c479892c66c053b0ba43
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: 27ff60bbac941490e94d40972dddd25a
+  - m_AssetGUID: 5f2cd0981d93f457d9fd135554abddff
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: 13053e60805574a41b2822ff0b3af990
+  - m_AssetGUID: a7d1700b72bb8445c98e22abc434c80f
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: e2a8ffd09e2104cd8bc1109b99529fa0
+  - m_AssetGUID: 9ce67b1bf9d784abfb76a827a866c3ec
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  - m_AssetGUID: db1a021c16850954786c31fe3fb1531b
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: 3b5ad7d45264f4695a1bd55075c2eec8
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: 4da1000d2da6f9d4a9e1ce035be8c0e4
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: b060e33a2982b40d88d028ff752d3392
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: 43ad903412baf1845877b6672e1298f9
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: a0c0e653b35c94344ac2b432e26c8752
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: cb12ef4bdd1f24b3e95ae263c53f4850
+  - m_AssetGUID: d493f440fd8b04f08a69220c5f6e8ff0
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
