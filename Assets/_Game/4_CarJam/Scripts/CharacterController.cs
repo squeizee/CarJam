@@ -55,7 +55,7 @@ namespace _Game._4_CarJam.Scripts
             _indicatorDefaultPosition = indicator.localPosition;
         }
 
-        public void MoveAlongPath(List<Point> path, Seat seat = null)
+        public Sequence MoveAlongPath(List<Point> path, Seat seat = null)
         {
             transform.DOComplete();
 
@@ -93,6 +93,8 @@ namespace _Game._4_CarJam.Scripts
             });
 
             _sequence.Append(characterViewParent.transform.DOLocalRotate(Vector3.zero, .1f).SetEase(Ease.Linear));
+            
+            return _sequence;
         }
 
         private void CheckPosition(Seat seat)
@@ -115,11 +117,11 @@ namespace _Game._4_CarJam.Scripts
 
             if (!isCorrectSeat)
             {
-                ShowEmoji(true,-1);
+                ShowEmoji(-1);
             }
             else
             {
-                ShowEmoji(false);
+                HideEmoji();
             }
         }
 
@@ -177,12 +179,15 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
-        public override void ShowEmoji(bool show, int repeat = 4)
+        public override void ShowEmoji(int repeat = 4)
         {
-            base.ShowEmoji(show, repeat);
-            indicator.gameObject.SetActive(!show);
+            base.ShowEmoji(repeat);
         }
-
+        public override void HideEmoji()
+        {
+            base.HideEmoji();
+        }
+        
         public override void Tapped()
         {
             OnTapped?.Invoke();
@@ -192,6 +197,20 @@ namespace _Game._4_CarJam.Scripts
         {
             transform.DOComplete();
             _animator.Play("Idle");
+        }
+
+        public Tween MoveToVehicle(VehicleController vehicle, Seat seat)
+        {
+            transform.DOComplete();
+            Vector3 targetPosition = vehicle.GetCenterPosition();
+            targetPosition.y = transform.position.y;
+            return transform.DOMove(targetPosition, 0.2f).OnComplete(() =>
+            {
+                _animator.Play("Sit");
+                State = GameElementState.Completed;
+                seat.SetCharacter(transform);
+                vehicle.Move();
+            });
         }
     }
 }

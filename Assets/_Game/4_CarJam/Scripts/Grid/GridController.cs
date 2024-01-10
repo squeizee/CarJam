@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using PathFind;
 using UnityEngine;
 using Grid = UnityEngine.Grid;
@@ -18,7 +19,7 @@ namespace _Game._4_CarJam.Scripts
     {
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
-        
+
         public Vector2Int GetCellPosition(Vector3 pos)
         {
             var cellPosition = grid.WorldToCell(pos);
@@ -44,10 +45,10 @@ namespace _Game._4_CarJam.Scripts
             {
                 var cellPosition = grid.WorldToCell(child.position);
                 var gridItemView = child.GetComponent<GridItemView>();
-                
+
                 gridItemView.Initialize(new Vector2Int(cellPosition.x, cellPosition.y));
                 _listGridItemViews.Add(gridItemView);
-                
+
                 _maxPoint.x = cellPosition.x > _maxPoint.x ? cellPosition.x : _maxPoint.x;
                 _maxPoint.y = cellPosition.y > _maxPoint.y ? cellPosition.y : _maxPoint.y;
 
@@ -57,7 +58,7 @@ namespace _Game._4_CarJam.Scripts
         }
 
 
-        public bool FindPath(Vector3 pos, CharacterController character)
+        public bool FindPath3(Vector3 pos, CharacterController character)
         {
             var des = grid.WorldToCell(pos);
             if (!IsEmpty(des)) return false;
@@ -81,29 +82,64 @@ namespace _Game._4_CarJam.Scripts
             return true;
         }
 
-        public bool FindPathToVehicle(VehicleController vehicle, CharacterController character, Seat selectedSeat)
+        public bool FindPath(Vector2Int from, Vector2Int to, out List<Point> path)
+        {
+            return FindPath(new Point(from.x, from.y), new Point(to.x, to.y), out path);
+        }
+
+        public bool FindPath(Point from, Point to, out List<Point> path)
+        {
+            // check if from and to same
+            if (from == to)
+            {
+                path = new List<Point>();
+                return true;
+            }
+
+            // check if from and to on map
+            if (from.x < _minPoint.x || from.x > _maxPoint.x || from.y < _minPoint.y || from.y > _maxPoint.y)
+            {
+                path = new List<Point>();
+                return false;
+            }
+
+            ElementType[,] elementMap = GetMapDataElement();
+
+            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
+            path = Pathfinding.FindPath(pathFindGrid, from, to);
+
+            return path.Count > 0;
+        }
+
+        public bool MoveToPosition(CharacterController character, Vector3 destination, out Sequence sequence)
+        {
+            var characterPosition = character.PositionInGrid;
+            var des = WorldToGridPosition(destination);
+            if (FindPath(characterPosition, des, out List<Point> path))
+            {
+                sequence = character.MoveAlongPath(path);
+                return true;
+            }
+            else
+            {
+                sequence = null;
+                return false;
+            }
+        }
+        
+        public Vector2Int WorldToGridPosition(Vector3 pos)
+        {
+            var cellPosition = grid.WorldToCell(pos);
+            return new Vector2Int(cellPosition.x, cellPosition.y);
+        }
+        public bool CanCharacterReachVehicle(CharacterController character, VehicleController vehicle, out List<Point> closestPath)
         {
             var doorPositions = vehicle.DoorPositions;
             var characterPosition = character.PositionInGrid;
-            var start = characterPosition;
-            var selectedSeatPosition = vehicle.GetSelectedSeatPosition(selectedSeat);
-
-            ElementType[,] elementMap = GetMapDataElement();
-            bool[,] seatMap = GetSeatMapData();
+            bool isPathFound = false;
             
-            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap, seatMap);
-            
-            List<Point> closestPath = new();
+            closestPath = new();
 
-            // if I am in door position
-            if (doorPositions.Contains(characterPosition))
-            {
-                closestPath.Add(new Point(selectedSeatPosition.x, selectedSeatPosition.y));
-                character.MoveAlongPath(closestPath,selectedSeat);
-
-                return true;
-            }
-            
             foreach (var door in doorPositions)
             {
                 if (!IsEmpty(door))
@@ -111,26 +147,18 @@ namespace _Game._4_CarJam.Scripts
                     continue;
                 }
 
-                Point from = new Point(start.x, start.y);
-                Point to = new Point(door.x, door.y);
-
-                List<Point> path = Pathfinding.FindPath(pathFindGrid, from, to);
-
-                if (closestPath.Count == 0 || path.Count < closestPath.Count)
-                    closestPath = path;
+                if (FindPath(characterPosition, door, out var path))
+                {
+                    if (isPathFound == false || path.Count < closestPath.Count)
+                    {
+                        closestPath = path;
+                        isPathFound = true;
+                    }
+                }
             }
-
-
-            if (closestPath.Count == 0)
-                return false;
-
-            closestPath.Add(new Point(selectedSeatPosition.x, selectedSeatPosition.y));
-
-            character.MoveAlongPath(closestPath, selectedSeat);
-
-            return true;
+            
+            return isPathFound;
         }
-
         public void CheckForwardPath(VehicleController vehicleController)
         {
             var pivotPoint = grid.WorldToCell(vehicleController.transform.position);
@@ -186,7 +214,7 @@ namespace _Game._4_CarJam.Scripts
         private ElementType[,] GetMapDataElement()
         {
             ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];
-            
+
             foreach (var pos in _listGridItemViews.Select(ground => ground.PositionInGrid))
             {
                 elementMap[pos.x, pos.y] = ElementType.Ground;
@@ -199,7 +227,7 @@ namespace _Game._4_CarJam.Scripts
                 var pivotPoint = gameElement.PositionInGrid;
                 int xSign = 0, ySign = 0;
                 int dim1 = 0, dim2 = 0;
-                
+
                 switch (gameElement.GetElementDirection())
                 {
                     case GameElement.GameElementDirection.Up:
@@ -235,9 +263,9 @@ namespace _Game._4_CarJam.Scripts
                         elementMap[pivotPoint.x + x * xSign, pivotPoint.y + y * ySign] = ElementType.Element;
                     }
                 }
-                
+
                 if (gameElement is not VehicleController vehicle) continue;
-                
+
                 foreach (var seat in vehicle.SeatPositions)
                 {
                     elementMap[seat.x, seat.y] = ElementType.Seat;
@@ -246,16 +274,17 @@ namespace _Game._4_CarJam.Scripts
 
             return elementMap;
         }
+
         private bool[,] GetSeatMapData()
         {
             bool[,] seatMap = new bool[_mapSize.x, _mapSize.y];
-            
+
             foreach (var gameElement in _listGameElements.Where(gameElement =>
-                gameElement.State is GameElement.GameElementState.Idle
-                or GameElement.GameElementState.Waiting))
+                         gameElement.State is GameElement.GameElementState.Idle
+                             or GameElement.GameElementState.Waiting))
             {
                 if (gameElement is not VehicleController vehicle) continue;
-                
+
                 foreach (var seatPos in vehicle.SeatPositions)
                 {
                     seatMap[seatPos.x, seatPos.y] = vehicle.IsSeatEmpty(seatPos);
@@ -264,6 +293,7 @@ namespace _Game._4_CarJam.Scripts
 
             return seatMap;
         }
+
         private bool IsEmptyOrNone(Vector3Int point)
         {
             ElementType[,] elementMap = GetMapDataElement();

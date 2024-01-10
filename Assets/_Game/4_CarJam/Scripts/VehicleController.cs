@@ -180,10 +180,10 @@ namespace _Game._4_CarJam.Scripts
                 case GameElementState.Idle:
                     break;
                 case GameElementState.Moving:
-                    ShowEmoji(false);
+                    HideEmoji();
                     break;
                 case GameElementState.Waiting:
-                    // OnCrash?.Invoke();
+                    //OnCrash?.Invoke();
                     // ShowEmoji(true);
                     break;
                 case GameElementState.Completed:
@@ -211,12 +211,15 @@ namespace _Game._4_CarJam.Scripts
             // }
         }
         
-        public override void ShowEmoji(bool show, int repeat = 4)
+        public override void ShowEmoji(int repeat = 4)
         {
             repeat = -1;
-            base.ShowEmoji(show, repeat);
+            base.ShowEmoji(repeat);
         }
-
+        public override void HideEmoji()
+        {
+            base.HideEmoji();
+        }
         public override void Tapped()
         {
             OnTapped?.Invoke();
@@ -235,6 +238,11 @@ namespace _Game._4_CarJam.Scripts
         public Seat GetAvailableSeat()
         {
             return _dictSeat.FirstOrDefault(x => x.Value.IsEmpty).Value;
+        }
+
+        public bool IsValidCharacter(CharacterController character)
+        {
+            return character.GameElementColor == GameElementColor;
         }
     }
 }

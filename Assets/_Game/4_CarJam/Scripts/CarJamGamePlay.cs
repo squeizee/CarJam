@@ -5,6 +5,7 @@ using System.Xml.Linq;
 using _Game._0_CraftCore.Scripts.Core;
 using _Game._3_GamePlay.Scripts;
 using _Game.Library.CraftTime;
+using DG.Tweening;
 using Modules.Shared.Controller;
 using Sirenix.OdinInspector;
 using Sirenix.Utilities;
@@ -15,13 +16,12 @@ namespace _Game._4_CarJam.Scripts
     public class CarJamGamePlay : BaseGamePlay
     {
         [SerializeField] private GridController gridController;
-        
+
         private List<GameElement> _listGameElements;
         private CharacterController _selectedCharacter;
-        
+
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
-            
             base.Initialize(baseGamePlayStartArgs);
 
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
@@ -38,7 +38,7 @@ namespace _Game._4_CarJam.Scripts
             foreach (var gameElement in _listGameElements)
             {
                 var position = gridController.GetCellPosition(gameElement.transform.position);
-                
+
                 gameElement.Initialize(position, OnStateChange);
 
                 switch (gameElement)
@@ -48,16 +48,13 @@ namespace _Game._4_CarJam.Scripts
                         break;
                     case CharacterController character:
                     {
-                        var vehicleController = _listGameElements.FindAll(x =>
-                            x.GameElementColor == character.GameElementColor &&
-                            x is VehicleController);
-
-                        foreach (var vElement in _listGameElements.Where(x=> x.GameElementColor == character.GameElementColor && x is VehicleController))
+                        foreach (var vElement in _listGameElements.Where(x =>
+                                     x.GameElementColor == character.GameElementColor && x is VehicleController))
                         {
                             var vehicle = vElement as VehicleController;
 
                             if (!vehicle) continue;
-                            
+
                             foreach (var doorPosition in vehicle.DoorPositions)
                             {
                                 character.VehicleDoorPositions.Add(doorPosition, vehicle);
@@ -68,11 +65,13 @@ namespace _Game._4_CarJam.Scripts
                                 character.VehicleSeatPositions.Add(seatPosition, vehicle);
                             }
                         }
+
                         break;
                     }
                 }
             }
         }
+
         private void SubscribeEvents()
         {
             Craft.Get<CraftInputSystem>().UserButtonDown += OnUserButtonDown;
@@ -104,12 +103,12 @@ namespace _Game._4_CarJam.Scripts
             Craft.Get<CraftInputSystem>().UserButtonDown -= OnUserButtonDown;
             Craft.Get<CraftTimeSystem>().Dispatcher.Unsubscribe(TimeIntervals.OnSecond, CheckCompleted);
         }
-        
+
         private void UnselectCharacter()
         {
             if (!_selectedCharacter)
                 return;
-            
+
             _selectedCharacter = null;
         }
 
@@ -126,21 +125,28 @@ namespace _Game._4_CarJam.Scripts
             {
                 return;
             }
-            
+
             if (Craft.Get<CraftInputSystem>()
                 .GetGameObjectUnderMouse(LayerMask.GetMask("GameElement"), out var touchedGameElement, out var hit))
             {
                 OnObjectTouched(touchedGameElement);
             }
             else if (Craft.Get<CraftInputSystem>()
-                         .GetGameObjectUnderMouse(LayerMask.GetMask("Ground"), out var touchedGround, out var hit2) 
+                         .GetGameObjectUnderMouse(LayerMask.GetMask("Ground"), out var touchedGround, out var hit2)
                      && _selectedCharacter)
             {
-               bool isValidClick = gridController.FindPath(touchedGround.transform.position, _selectedCharacter);
-               
-               _selectedCharacter.ShowEmoji(!isValidClick);
-               _selectedCharacter.Tapped();
-               UnselectCharacter();
+                if (gridController.MoveToPosition(_selectedCharacter,touchedGround.transform.position, out Sequence sequence))
+                {
+                    _selectedCharacter.HideEmoji();
+                    _selectedCharacter.Tapped();
+                    UnselectCharacter();
+                }
+                else
+                {
+                    _selectedCharacter.ShowEmoji();
+                    _selectedCharacter.Tapped();
+                    UnselectCharacter();
+                }
             }
         }
 
@@ -152,47 +158,77 @@ namespace _Game._4_CarJam.Scripts
             {
                 case VehicleController vehicle:
                     bool isValidClick = false;
-                    
+
                     if (!_selectedCharacter)
                     {
                         vehicle.Tapped();
                         break;
                     }
-                    
+
+                    if (vehicle.IsValidCharacter(_selectedCharacter) == false)
+                    {
+                        _selectedCharacter.Tapped();
+                        _selectedCharacter.ShowEmoji();
+                        UnselectCharacter();
+                        break;
+                    }
+
+                    if (vehicle.GetAvailableSeat() == null)
+                    {
+                        _selectedCharacter.Tapped();
+                        _selectedCharacter.ShowEmoji();
+                        UnselectCharacter();
+                        break;
+                    }
+
                     var seat = touchedObject.GetComponentInParent<Seat>();
 
-                    if (!seat)
+                    if (seat == null)
+                    {
+                        seat = vehicle.GetAvailableSeat();
+                    }
+                    else if (seat.IsEmpty == false)
                     {
                         seat = vehicle.GetAvailableSeat();
                     }
 
-                    if (!seat)
+                    if (gridController.CanCharacterReachVehicle(_selectedCharacter, vehicle, out List<PathFind.Point> path))
                     {
-                        _selectedCharacter.Tapped();
-                        _selectedCharacter.ShowEmoji(!isValidClick);
-                        UnselectCharacter();
-                        break;
-                    }
-                    
-                    if (seat.IsEmpty)
-                    {
-                        isValidClick = gridController.FindPathToVehicle(vehicle, _selectedCharacter,seat);
-                    }
-                    _selectedCharacter.Tapped();
-                    _selectedCharacter.ShowEmoji(!isValidClick);
-                    UnselectCharacter();
-                    break;
-                case  CharacterController character:
+                        Sequence moveSequence = DOTween.Sequence();
 
+                        moveSequence.Append(_selectedCharacter.MoveAlongPath(path));
+                        moveSequence.Append(_selectedCharacter.MoveToVehicle(vehicle, seat));
+                        
+                        _selectedCharacter.HideEmoji();
+                        _selectedCharacter.Tapped();
+                        UnselectCharacter();
+                    }
+                    else
+                    {
+                        _selectedCharacter.ShowEmoji();
+                        _selectedCharacter.Tapped();
+                        UnselectCharacter();
+                    }
+                    break;
+                case CharacterController character:
+
+                    if(character.State == GameElement.GameElementState.Completed)
+                        break;
+                    
                     if (!_selectedCharacter)
                     {
                         _selectedCharacter = character;
                         _selectedCharacter.Tapped();
                         break;
                     }
-                    
-                    if(_selectedCharacter == character)
+
+                    if (_selectedCharacter == character)
+                    {
+                        _selectedCharacter.Tapped();
+                        UnselectCharacter();
                         break;
+                    }
+                        
                     
                     _selectedCharacter.Tapped();
                     UnselectCharacter();
@@ -202,6 +238,7 @@ namespace _Game._4_CarJam.Scripts
                     break;
             }
         }
+
         #endregion
     }
 }
