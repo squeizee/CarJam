@@ -78,6 +78,13 @@ namespace _Game._4_CarJam.Scripts
 
         public bool FindPath(Vector2Int from, Vector2Int to, out List<Point> path)
         {
+            // boundary check for to
+            if (to.x < _minPoint.x || to.x > _maxPoint.x || to.y < _minPoint.y || to.y > _maxPoint.y)
+            {
+                path = new List<Point>();
+                return false;
+            }
+            
             return FindPath(new Point(from.x, from.y), new Point(to.x, to.y), out path);
         }
 

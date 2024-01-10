@@ -13,12 +13,13 @@ namespace _Game._4_CarJam.Scripts
             Middle = 2
         }
 
-        public bool IsEmpty => _sitingCharacter == null;
-
+        public bool IsEmpty => _reservedCharacter == null;
+        
         public SeatSide GetSeatSide => seatSide;
         
         [SerializeField] private SeatSide seatSide;
 
+        private Transform _reservedCharacter;
         private Transform _oldParent;
         private Vector3 _oldPosition;
         private Quaternion _oldRotation;
@@ -27,7 +28,7 @@ namespace _Game._4_CarJam.Scripts
         
         public void SetCharacter(Transform character)
         {
-            if (!IsEmpty) return;
+            if(_reservedCharacter != character) return;
             
             _sitingCharacter = character;
             
@@ -50,6 +51,10 @@ namespace _Game._4_CarJam.Scripts
             _sitingCharacter.localScale = _oldScale;
             
             _oldParent = null;
+        }
+        public void ReserveSeat(Transform character)
+        {
+            _reservedCharacter = character;
         }
         
     }

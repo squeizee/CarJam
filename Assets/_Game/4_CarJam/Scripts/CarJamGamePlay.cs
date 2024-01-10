@@ -226,6 +226,7 @@ namespace _Game._4_CarJam.Scripts
 
                     if (gridController.CanCharacterReachVehicle(_selectedCharacter, vehicle, out List<PathFind.Point> path))
                     {
+                        seat.ReserveSeat(_selectedCharacter.transform);
                         Sequence moveSequence = DOTween.Sequence();
 
                         moveSequence.Append(_selectedCharacter.MoveAlongPath(path));

@@ -102,6 +102,12 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
+        public void OnComplete()
+        {
+            _animator.Play("Sit");
+            State = GameElementState.Completed;
+            mainCollider.enabled = false;
+        }
         public override void ShowEmoji(int repeat = 4)
         {
             base.ShowEmoji(repeat);
@@ -136,9 +142,7 @@ namespace _Game._4_CarJam.Scripts
             targetPosition.y = transform.position.y;
             return transform.DOMove(targetPosition, 0.2f).OnComplete(() =>
             {
-                _animator.Play("Sit");
-                State = GameElementState.Completed;
-                mainCollider.enabled = false;
+                OnComplete();
                 seat.SetCharacter(transform);
                 vehicle.OnPassengerSit();
             });
