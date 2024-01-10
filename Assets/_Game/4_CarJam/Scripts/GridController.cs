@@ -85,7 +85,6 @@ namespace _Game._4_CarJam.Scripts
 
         public bool FindPathToVehicle(VehicleController vehicle, CharacterController character, Seat selectedSeat)
         {
-            var seatPositions = vehicle.SeatPositions;
             var doorPositions = vehicle.DoorPositions;
             var characterPosition = character.PositionInGrid;
             var start = characterPosition;
@@ -186,73 +185,61 @@ namespace _Game._4_CarJam.Scripts
         private ElementType[,] GetMapDataElement()
         {
             ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];
-
-            foreach (Transform child in groundTileMapParent)
+            
+            foreach (var pos in _listGridItemViews.Select(ground => ground.PositionInGrid))
             {
-                var cellPosition = grid.WorldToCell(child.position);
-                elementMap[cellPosition.x, cellPosition.y] = ElementType.Ground;
+                elementMap[pos.x, pos.y] = ElementType.Ground;
             }
 
             foreach (var gameElement in _listGameElements.Where(gameElement =>
                          gameElement.State is GameElement.GameElementState.Idle
                              or GameElement.GameElementState.Waiting))
             {
-                var pivotPoint = grid.WorldToCell(gameElement.transform.position);
-
-                switch (gameElement.transform.eulerAngles.y)
+                var pivotPoint = gameElement.PositionInGrid;
+                int xSign = 0, ySign = 0;
+                int dim1 = 0, dim2 = 0;
+                
+                switch (gameElement.GetElementDirection())
                 {
-                    case 0:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.y; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.x; y++)
-                            {
-                                elementMap[pivotPoint.x + x, pivotPoint.y - y] = ElementType.Element;
-                            }
-                        }
-
+                    case GameElement.GameElementDirection.Up:
+                        xSign = 1;
+                        ySign = -1;
+                        dim1 = gameElement.Dimension.y;
+                        dim2 = gameElement.Dimension.x;
                         break;
-                    case 90:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.x; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.y; y++)
-                            {
-                                elementMap[pivotPoint.x - x, pivotPoint.y - y] = ElementType.Element;
-                            }
-                        }
-
+                    case GameElement.GameElementDirection.Right:
+                        xSign = -1;
+                        ySign = -1;
+                        dim1 = gameElement.Dimension.x;
+                        dim2 = gameElement.Dimension.y;
                         break;
-                    case 180:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.y; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.x; y++)
-                            {
-                                elementMap[pivotPoint.x - x, pivotPoint.y + y] = ElementType.Element;
-                            }
-                        }
-
+                    case GameElement.GameElementDirection.Down:
+                        xSign = -1;
+                        ySign = 1;
+                        dim1 = gameElement.Dimension.y;
+                        dim2 = gameElement.Dimension.x;
                         break;
-                    case 270:
-                        //check game element dimension and fill all cells with false with rotation
-                        for (int x = 0; x < gameElement.Dimension.x; x++)
-                        {
-                            for (int y = 0; y < gameElement.Dimension.y; y++)
-                            {
-                                elementMap[pivotPoint.x + x, pivotPoint.y + y] = ElementType.Element;
-                            }
-                        }
-
+                    case GameElement.GameElementDirection.Left:
+                        xSign = 1;
+                        ySign = 1;
+                        dim1 = gameElement.Dimension.x;
+                        dim2 = gameElement.Dimension.y;
                         break;
                 }
 
-                if (gameElement is VehicleController vehicleController)
+                for (int x = 0; x < dim1; x++)
                 {
-                    foreach (var seat in vehicleController.SeatPositions)
+                    for (int y = 0; y < dim2; y++)
                     {
-                        elementMap[seat.x, seat.y] = ElementType.Seat;
+                        elementMap[pivotPoint.x + x * xSign, pivotPoint.y + y * ySign] = ElementType.Element;
                     }
+                }
+                
+                if (gameElement is not VehicleController vehicle) continue;
+                
+                foreach (var seat in vehicle.SeatPositions)
+                {
+                    elementMap[seat.x, seat.y] = ElementType.Seat;
                 }
             }
 

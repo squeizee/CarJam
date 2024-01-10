@@ -27,10 +27,10 @@ namespace _Game._4_CarJam.Scripts
 
         
         [SerializeField] private VehicleView vehicleView;
-        [SerializeField] private int capacity;
+       
         [SerializeField] private Transform _centerPosition;
         [SerializeField] private Transform vehicleViewParent;
-        //[SerializeField] private Transform[] doorsTransforms;
+        [SerializeField] private Seat[] seats;
 
         private int _doorAngle = 90;
         private Seat[] _listSeats;
@@ -136,8 +136,9 @@ namespace _Game._4_CarJam.Scripts
                 return;
             }
             
+            
             // if seat is none of them empty
-            if (_listSeats.Any(x => x.IsEmpty))
+            if (Array.Exists(_listSeats, x => x.IsEmpty))
             {
                 if (State != GameElementState.Waiting)
                     State = GameElementState.Waiting;
@@ -204,13 +205,10 @@ namespace _Game._4_CarJam.Scripts
             //     doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.15f);
             // }
         }
-
-        public bool IsCorrectSeat(GameObject seat)
+        
+        public override void ShowEmoji(bool show, int repeat = 4)
         {
-            return _listSeats.Any(x => x.gameObject == seat);
-        }
-        public override void ShowEmoji(bool show, int repeat = -1)
-        {
+            repeat = -1;
             base.ShowEmoji(show, repeat);
         }
 
