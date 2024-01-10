@@ -833,6 +833,7 @@ MonoBehaviour:
   emoji: {fileID: 3451516981050625170}
   indicator: {fileID: 598188760749531947}
   characterViewParent: {fileID: 7124528187731548349}
+  mainCollider: {fileID: 3489786534798800622}
 --- !u!1 &6369487210050940216
 GameObject:
   m_ObjectHideFlags: 0

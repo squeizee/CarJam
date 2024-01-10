@@ -16,6 +16,7 @@ namespace _Game._4_CarJam.Scripts
     public class CarJamGamePlay : BaseGamePlay
     {
         [SerializeField] private GridController gridController;
+        [SerializeField] private RoadController roadController;
 
         private List<GameElement> _listGameElements;
         private CharacterController _selectedCharacter;
@@ -26,9 +27,9 @@ namespace _Game._4_CarJam.Scripts
 
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
             gridController.Initialize(_listGameElements);
-
+            roadController.Initialize();
+            
             SetVehiclesToCharacters();
-
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
         }
@@ -44,7 +45,8 @@ namespace _Game._4_CarJam.Scripts
                 switch (gameElement)
                 {
                     case VehicleController vehicle:
-                        vehicle.OnBeforeMove += gridController.CheckForwardPath;
+                        //vehicle.OnBeforeMove += gridController.CheckForwardPath;
+                        vehicle.OnVehicleFull += OnVehicleFull;
                         break;
                     case CharacterController character:
                     {
@@ -85,7 +87,7 @@ namespace _Game._4_CarJam.Scripts
             {
                 if (waitingGameElement is VehicleController vehicleController)
                 {
-                    vehicleController.Move();
+                    vehicleController.TriggerOnBeforeMoveIfFull();
                 }
             }
         }
@@ -112,6 +114,36 @@ namespace _Game._4_CarJam.Scripts
             _selectedCharacter = null;
         }
 
+        private void OnVehicleFull(VehicleController vehicle)
+        {
+            if (roadController.FindRoadAhead(vehicle.transform.position,vehicle.transform.forward, out var road, out var intersection))
+            {
+                Vector3 lastPosition = transform.localPosition;
+                float angle = 0;
+                Sequence roadSequence = DOTween.Sequence();
+
+                roadSequence.AppendCallback(vehicle.OnMove);
+                roadSequence.Append(vehicle.MoveToPosition(intersection));
+                
+                
+                while (road.NextRoad != null)
+                {
+                    angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
+                    
+                    roadSequence.Append(vehicle.MoveToPosition(road.GetIntersectionPointToNextRoad()));
+                    roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+                    road = roadController.GetNextRoad(road);
+                }
+                
+                vehicle.PositionInGrid = gridController.GetCellPosition(road.End.position);
+                angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
+                roadSequence.Append(vehicle.MoveToPosition(road.End.position));
+                roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+                roadSequence.AppendCallback(vehicle.OnComplete);
+                
+            }
+        }
+        
         #region Input Handling
 
         private void OnUserButtonDown(Vector3 obj)

@@ -19,13 +19,7 @@ namespace _Game._4_CarJam.Scripts
     {
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
-
-        public Vector2Int GetCellPosition(Vector3 pos)
-        {
-            var cellPosition = grid.WorldToCell(pos);
-            return new Vector2Int(cellPosition.x, cellPosition.y);
-        }
-
+        
         private List<GridItemView> _listGridItemViews;
         private Vector2Int _mapSize = new Vector2Int(15, 15);
         private List<GameElement> _listGameElements;
@@ -142,6 +136,11 @@ namespace _Game._4_CarJam.Scripts
 
             foreach (var door in doorPositions)
             {
+                if(door == characterPosition)
+                {
+                    return true;
+                }
+                
                 if (!IsEmpty(door))
                 {
                     continue;
@@ -274,33 +273,13 @@ namespace _Game._4_CarJam.Scripts
 
             return elementMap;
         }
-
-        private bool[,] GetSeatMapData()
+        public Vector2Int GetCellPosition(Vector3 pos)
         {
-            bool[,] seatMap = new bool[_mapSize.x, _mapSize.y];
-
-            foreach (var gameElement in _listGameElements.Where(gameElement =>
-                         gameElement.State is GameElement.GameElementState.Idle
-                             or GameElement.GameElementState.Waiting))
-            {
-                if (gameElement is not VehicleController vehicle) continue;
-
-                foreach (var seatPos in vehicle.SeatPositions)
-                {
-                    seatMap[seatPos.x, seatPos.y] = vehicle.IsSeatEmpty(seatPos);
-                }
-            }
-
-            return seatMap;
+            
+            var cellPosition = grid.WorldToCell(pos);
+            return new Vector2Int(cellPosition.x, cellPosition.y);
         }
-
-        private bool IsEmptyOrNone(Vector3Int point)
-        {
-            ElementType[,] elementMap = GetMapDataElement();
-            return elementMap[point.x, point.y] == ElementType.Ground ||
-                   elementMap[point.x, point.y] == ElementType.None;
-        }
-
+        
         public bool IsEmpty(Vector3Int point)
         {
             if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)

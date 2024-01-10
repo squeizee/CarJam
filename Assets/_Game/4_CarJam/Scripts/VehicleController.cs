@@ -16,6 +16,7 @@ namespace _Game._4_CarJam.Scripts
             Right = 1,
         }
 
+        public Action<VehicleController> OnVehicleFull;
         public Action<VehicleController> OnBeforeMove;
         public List<Vector2Int> DoorPositions => _dictDoor.Keys.ToList();
         public List<Vector2Int> SeatPositions => _dictSeat.Keys.ToList();
@@ -55,8 +56,6 @@ namespace _Game._4_CarJam.Scripts
             base.Initialize(positionInGrid, onStateChanged);
             State = GameElementState.Idle;
             SetDoorPositions();
-            OnGameElementStateChanged += OnStateChange;
-
             _listSeats = GetComponentsInChildren<Seat>().ToArray();
             SetSeatPositions();
 
@@ -74,12 +73,7 @@ namespace _Game._4_CarJam.Scripts
             GameElementColor = color;
             vehicleView.SetColor(color);
         }
-
-        private void OnDisable()
-        {
-            OnGameElementStateChanged -= OnStateChange;
-        }
-
+        
         private void SetSeatPositions()
         {
             switch (GetElementDirection())
@@ -126,13 +120,33 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
-        public void Move()
+        public void OnPassengerSit()
         {
-            //CloseDoor();
-            if(_dictSeat.Any(x => x.Value.IsEmpty)) return;
-            OnBeforeMove?.Invoke(this);
+            if (IsVehicleFull())
+            {
+                OnVehicleFull?.Invoke(this);
+            }
+        }
+        public void TriggerOnBeforeMoveIfFull()
+        {
+            if (IsVehicleFull())
+            {
+                OnBeforeMove?.Invoke(this);
+            }
         }
 
+        public Tween MoveToPosition(Vector3 position)
+        {
+            
+            position.y = transform.position.y;
+            var distance = Vector3.Distance(transform.position, position);
+            return transform.DOMove(position, distance / VehicleSo.Instance.VehicleSpeed).SetEase(Ease.Linear);
+        }   
+        
+        public bool IsVehicleFull()
+        {
+            return !_dictSeat.Any(x=>x.Value.IsEmpty);
+        }
         public void MoveForward(List<Vector3> path, bool isTargetReached)
         {
             if (path.Count == 0)
@@ -149,10 +163,7 @@ namespace _Game._4_CarJam.Scripts
                     State = GameElementState.Waiting;
                 return;
             }
-
-            transform.DOComplete();
-            State = GameElementState.Moving;
-
+            
             List<Vector3> pathVector3 = path.ConvertAll(point =>
                 new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
 
@@ -172,45 +183,17 @@ namespace _Game._4_CarJam.Scripts
                 });
             }
         }
-
-        private void OnStateChange()
-        {
-            switch (State)
-            {
-                case GameElementState.Idle:
-                    break;
-                case GameElementState.Moving:
-                    HideEmoji();
-                    break;
-                case GameElementState.Waiting:
-                    //OnCrash?.Invoke();
-                    // ShowEmoji(true);
-                    break;
-                case GameElementState.Completed:
-                    vehicleViewParent.gameObject.SetActive(false);
-                    break;
-            }
-        }
-
+        
         public Vector3 GetCenterPosition()
         {
             return _centerPosition.position;
         }
-
-        // public Tween OpenDoor(DoorSide doorSide)
-        // {
-        //     return doorsTransforms[(int)doorSide]
-        //         .DOLocalRotate(new Vector3(0, _doorAngle * (doorSide == DoorSide.Left ? 1 : -1), 0), .15f);
-        // }
-
-        private void CloseDoor()
-        {
-            // foreach (var door in _dictDoor)
-            // {
-            //     doorsTransforms[(int)door.Key].DOLocalRotate(new Vector3(0, 0, 0), 0.15f);
-            // }
-        }
         
+        public void OnComplete()
+        {
+            State = GameElementState.Completed;
+            vehicleViewParent.gameObject.SetActive(false);
+        }
         public override void ShowEmoji(int repeat = 4)
         {
             repeat = -1;
@@ -225,9 +208,16 @@ namespace _Game._4_CarJam.Scripts
             OnTapped?.Invoke();
         }
 
+        public override void OnMove()
+        {
+            transform.DOComplete();
+            State = GameElementState.Moving;
+            HideEmoji();
+        }
         public override void Stop()
         {
             transform.DOPause();
+            ShowEmoji();
         }
 
         public bool IsSeatAvailable()

@@ -15,6 +15,7 @@ namespace _Game._4_CarJam.Scripts
         private Transform indicator;
 
         [SerializeField] private Transform characterViewParent;
+        [SerializeField] private Collider mainCollider;
 
         public Dictionary<Vector2Int,VehicleController> VehicleDoorPositions = new();
         public Dictionary<Vector2Int, VehicleController> VehicleSeatPositions = new();
@@ -36,12 +37,7 @@ namespace _Game._4_CarJam.Scripts
                 ShowIndicator();
             };
         }
-
-        private void OnDisable()
-        {
-            OnGameElementStateChanged -= OnStateChange;
-        }
-
+        
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
@@ -50,24 +46,18 @@ namespace _Game._4_CarJam.Scripts
         public override void Initialize(Vector2Int positionInGrid, Action onStateChanged)
         {
             base.Initialize(positionInGrid, onStateChanged);
-            State = GameElementState.Idle;
-            OnGameElementStateChanged += OnStateChange;
+            Stop();
             _indicatorDefaultPosition = indicator.localPosition;
         }
 
-        public Sequence MoveAlongPath(List<Point> path, Seat seat = null)
+        public Sequence MoveAlongPath(List<Point> path)
         {
             transform.DOComplete();
-
-            if (_currentSeat)
-            {
-                _currentSeat.RemoveCharacter();
-                _currentSeat = null;
-            }
             
             Vector3 lastPosition = transform.localPosition;
-
-            State = GameElementState.Moving;
+            
+            OnMove();
+            
             List<Vector3> pathVector3 = path.ConvertAll(point =>
                 new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
 
@@ -89,80 +79,13 @@ namespace _Game._4_CarJam.Scripts
             _sequence.AppendCallback(() =>
             {
                 PositionInGrid = new Vector2Int(path[^1].x, path[^1].y);
-                CheckPosition(seat);
+                Stop();
             });
 
             _sequence.Append(characterViewParent.transform.DOLocalRotate(Vector3.zero, .1f).SetEase(Ease.Linear));
             
             return _sequence;
         }
-
-        private void CheckPosition(Seat seat)
-        {
-            if (VehicleSeatPositions.Count == 0) return;
-            bool isCorrectSeat = false;
-
-            if (!seat)
-            {
-                State = GameElementState.Idle;
-                return;
-            }
-
-            _currentSeat = seat;
-            isCorrectSeat = VehicleSeatPositions.ContainsKey(PositionInGrid);
-           
-            _animator.Play("Sit");
-            State = GameElementState.Completed;
-            _currentSeat.SetCharacter(transform);
-
-            if (!isCorrectSeat)
-            {
-                ShowEmoji(-1);
-            }
-            else
-            {
-                HideEmoji();
-            }
-        }
-
-        public void PlayCompletedAnimation(VehicleController vehicleController, VehicleController.DoorSide doorSide)
-        {
-            transform.DOComplete();
-
-            _enterCarSequence?.Kill();
-            _enterCarSequence = DOTween.Sequence();
-
-            var targetPosition = vehicleController.GetCenterPosition();
-            targetPosition.y = transform.position.y;
-
-            //_enterCarSequence.Append(vehicleController.OpenDoor(doorSide));
-            _enterCarSequence.Append(transform.DOMove(targetPosition, 0.2f));
-            _enterCarSequence.Join(characterViewParent.DOScale(Vector3.one * 0.5f, 0.2f));
-            _enterCarSequence.AppendCallback(() =>
-            {
-                State = GameElementState.Completed;
-                vehicleController.Move();
-            });
-        }
-
-        private void OnStateChange()
-        {
-            switch (State)
-            {
-                case GameElementState.Idle:
-                case GameElementState.Waiting:
-                    Stop();
-                    break;
-                case GameElementState.Moving:
-                    _animator.Play("Run");
-                    indicator.DOComplete();
-                    break;
-                case GameElementState.Completed:
-                    //gameObject.SetActive(false);
-                    break;
-            }
-        }
-
         private void ShowIndicator()
         {
             if (_isSelected)
@@ -193,8 +116,15 @@ namespace _Game._4_CarJam.Scripts
             OnTapped?.Invoke();
         }
 
+        public override void OnMove()
+        {
+            State = GameElementState.Moving;
+            indicator.DOComplete();
+            _animator.Play("Run");
+        }
         public override void Stop()
         {
+            State = GameElementState.Idle;
             transform.DOComplete();
             _animator.Play("Idle");
         }
@@ -208,8 +138,9 @@ namespace _Game._4_CarJam.Scripts
             {
                 _animator.Play("Sit");
                 State = GameElementState.Completed;
+                mainCollider.enabled = false;
                 seat.SetCharacter(transform);
-                vehicle.Move();
+                vehicle.OnPassengerSit();
             });
         }
     }

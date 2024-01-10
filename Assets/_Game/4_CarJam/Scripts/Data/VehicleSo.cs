@@ -9,6 +9,7 @@ namespace _Game._4_CarJam.Scripts
     {
         public float VehicleOvershoot = 0.2f;
         public float CompleteDuration = 1f;
+        public float VehicleSpeed = 3f;
 
         public VehicleColorData[] VehicleColorData;
 
