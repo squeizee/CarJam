@@ -18,9 +18,7 @@ namespace _Game._4_CarJam.Scripts
     {
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
-
         
-
         public Vector2Int GetCellPosition(Vector3 pos)
         {
             var cellPosition = grid.WorldToCell(pos);
@@ -91,14 +89,17 @@ namespace _Game._4_CarJam.Scripts
             var selectedSeatPosition = vehicle.GetSelectedSeatPosition(selectedSeat);
 
             ElementType[,] elementMap = GetMapDataElement();
-            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
+            bool[,] seatMap = GetSeatMapData();
+            
+            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap, seatMap);
+            
             List<Point> closestPath = new();
 
             // if I am in door position
             if (doorPositions.Contains(characterPosition))
             {
                 closestPath.Add(new Point(selectedSeatPosition.x, selectedSeatPosition.y));
-                character.MoveAlongPath(closestPath);
+                character.MoveAlongPath(closestPath,selectedSeat);
 
                 return true;
             }
@@ -125,7 +126,7 @@ namespace _Game._4_CarJam.Scripts
 
             closestPath.Add(new Point(selectedSeatPosition.x, selectedSeatPosition.y));
 
-            character.MoveAlongPath(closestPath);
+            character.MoveAlongPath(closestPath, selectedSeat);
 
             return true;
         }
@@ -245,7 +246,24 @@ namespace _Game._4_CarJam.Scripts
 
             return elementMap;
         }
+        private bool[,] GetSeatMapData()
+        {
+            bool[,] seatMap = new bool[_mapSize.x, _mapSize.y];
+            
+            foreach (var gameElement in _listGameElements.Where(gameElement =>
+                gameElement.State is GameElement.GameElementState.Idle
+                or GameElement.GameElementState.Waiting))
+            {
+                if (gameElement is not VehicleController vehicle) continue;
+                
+                foreach (var seatPos in vehicle.SeatPositions)
+                {
+                    seatMap[seatPos.x, seatPos.y] = vehicle.IsSeatEmpty(seatPos);
+                }
+            }
 
+            return seatMap;
+        }
         private bool IsEmptyOrNone(Vector3Int point)
         {
             ElementType[,] elementMap = GetMapDataElement();

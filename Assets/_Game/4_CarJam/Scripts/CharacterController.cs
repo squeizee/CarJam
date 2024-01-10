@@ -16,8 +16,8 @@ namespace _Game._4_CarJam.Scripts
 
         [SerializeField] private Transform characterViewParent;
 
-        public Dictionary<VehicleController, List<Vector2Int>> VehicleDoorPositions = new();
-        public Dictionary<VehicleController, List<Vector2Int>> VehicleSeatPositions = new();
+        public Dictionary<Vector2Int,VehicleController> VehicleDoorPositions = new();
+        public Dictionary<Vector2Int, VehicleController> VehicleSeatPositions = new();
 
         private Vector3 _indicatorDefaultPosition;
         private Animator _animator;
@@ -27,7 +27,7 @@ namespace _Game._4_CarJam.Scripts
         private Sequence _enterCarSequence;
 
         private bool _isSelected;
-
+        private Seat _currentSeat;
         private void OnEnable()
         {
             OnTapped += () =>
@@ -55,10 +55,16 @@ namespace _Game._4_CarJam.Scripts
             _indicatorDefaultPosition = indicator.localPosition;
         }
 
-        public void MoveAlongPath(List<Point> path)
+        public void MoveAlongPath(List<Point> path, Seat seat = null)
         {
             transform.DOComplete();
 
+            if (_currentSeat)
+            {
+                _currentSeat.RemoveCharacter();
+                _currentSeat = null;
+            }
+            
             Vector3 lastPosition = transform.localPosition;
 
             State = GameElementState.Moving;
@@ -83,56 +89,38 @@ namespace _Game._4_CarJam.Scripts
             _sequence.AppendCallback(() =>
             {
                 PositionInGrid = new Vector2Int(path[^1].x, path[^1].y);
-                CheckPosition();
+                CheckPosition(seat);
             });
 
             _sequence.Append(characterViewParent.transform.DOLocalRotate(Vector3.zero, .1f).SetEase(Ease.Linear));
         }
 
-        private void CheckPosition()
+        private void CheckPosition(Seat seat)
         {
             if (VehicleSeatPositions.Count == 0) return;
-            bool isEmptySeatFind = false;
-            
-            foreach (var vehicle in VehicleSeatPositions)
-            {
-                if (isEmptySeatFind)
-                    break;
-            
-                for (int i = 0; i < vehicle.Value.Count; i++)
-                {
-                    if (PositionInGrid == vehicle.Value[i])
-                    {
-                        _animator.Play("Sit");
-                        State = GameElementState.Completed;
-                        isEmptySeatFind = vehicle.Key.FillSeat(i, transform);
-            
-                        if (!isEmptySeatFind)
-                        {
-                            isEmptySeatFind = vehicle.Key.FillSeat(i == 0 ? i+1 : i-1, transform);
-                        }
-                        vehicle.Key.Move();
-            
-                        break;
-                    }
-                }
-            }
-            if(!isEmptySeatFind)
-                State = GameElementState.Idle;
+            bool isCorrectSeat = false;
 
-            // if (VehicleDoorPositions.Count == 0) return;
-            //
-            // foreach (var vehicle in VehicleDoorPositions)
-            // {
-            //     if (PositionInGrid == vehicle.Value[0])
-            //         PlayCompletedAnimation(vehicle.Key, VehicleController.DoorSide.Left);
-            //     else if (PositionInGrid == vehicle.Value[1])
-            //         PlayCompletedAnimation(vehicle.Key, VehicleController.DoorSide.Right);
-            //     else
-            //     {
-            //         State = GameElementState.Idle;
-            //     }
-            // }
+            if (!seat)
+            {
+                State = GameElementState.Idle;
+                return;
+            }
+
+            _currentSeat = seat;
+            isCorrectSeat = VehicleSeatPositions.ContainsKey(PositionInGrid);
+           
+            _animator.Play("Sit");
+            State = GameElementState.Completed;
+            _currentSeat.SetCharacter(transform);
+
+            if (!isCorrectSeat)
+            {
+                ShowEmoji(true,-1);
+            }
+            else
+            {
+                ShowEmoji(false);
+            }
         }
 
         public void PlayCompletedAnimation(VehicleController vehicleController, VehicleController.DoorSide doorSide)

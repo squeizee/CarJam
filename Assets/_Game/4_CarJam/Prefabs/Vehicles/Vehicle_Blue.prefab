@@ -1313,7 +1313,9 @@ MonoBehaviour:
   vehicleView: {fileID: 5257840215229610858}
   _centerPosition: {fileID: 5794086170765039758}
   vehicleViewParent: {fileID: 8803556893513639260}
-  seats: []
+  seats:
+  - {fileID: 1920002552000059782}
+  - {fileID: 3234360436070020934}
 --- !u!114 &5257840215229610858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1432,6 +1434,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+--- !u!114 &3234360436070020934 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8936581229366696949, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+  m_PrefabInstance: {fileID: 5829871138378132659}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9672e113cd5849adaf1902eb99bea299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3413093264154343438 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9203777451600516285, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
@@ -1551,6 +1564,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9203777451600516285, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
   m_PrefabInstance: {fileID: 7394951692273173107}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1920002552000059782 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8936581229366696949, guid: e120d176c0cfe4ec48af36ff5ebd2526, type: 3}
+  m_PrefabInstance: {fileID: 7394951692273173107}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9672e113cd5849adaf1902eb99bea299, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9063798370442511035
 PrefabInstance:
   m_ObjectHideFlags: 0

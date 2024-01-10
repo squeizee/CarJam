@@ -48,13 +48,25 @@ namespace _Game._4_CarJam.Scripts
                         break;
                     case CharacterController character:
                     {
-                        var vehicleController = _listGameElements.Find(x =>
+                        var vehicleController = _listGameElements.FindAll(x =>
                             x.GameElementColor == character.GameElementColor &&
-                            x is VehicleController) as VehicleController;
-                        if (vehicleController)
+                            x is VehicleController);
+
+                        foreach (var vElement in _listGameElements.Where(x=> x.GameElementColor == character.GameElementColor && x is VehicleController))
                         {
-                            character.VehicleDoorPositions.Add(vehicleController, vehicleController.DoorPositions);
-                            character.VehicleSeatPositions.Add(vehicleController, vehicleController.SeatPositions);
+                            var vehicle = vElement as VehicleController;
+
+                            if (!vehicle) continue;
+                            
+                            foreach (var doorPosition in vehicle.DoorPositions)
+                            {
+                                character.VehicleDoorPositions.Add(doorPosition, vehicle);
+                            }
+
+                            foreach (var seatPosition in vehicle.SeatPositions)
+                            {
+                                character.VehicleSeatPositions.Add(seatPosition, vehicle);
+                            }
                         }
                         break;
                     }

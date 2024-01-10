@@ -13,30 +13,44 @@ namespace _Game._4_CarJam.Scripts
             Middle = 2
         }
 
-        public bool IsEmpty { get; private set; }
+        public bool IsEmpty => _sitingCharacter == null;
 
         public SeatSide GetSeatSide => seatSide;
         
         [SerializeField] private SeatSide seatSide;
 
-        private void Start()
+        private Transform _oldParent;
+        private Vector3 _oldPosition;
+        private Quaternion _oldRotation;
+        private Vector3 _oldScale;
+        private Transform _sitingCharacter;
+        
+        public void SetCharacter(Transform character)
         {
-            IsEmpty = true;
-        }
-
-        public bool SetCharacter(Transform character)
-        {
-            if (!IsEmpty) return false;
+            if (!IsEmpty) return;
             
-            character.SetParent(transform);
-            character.localPosition = Vector3.zero;
-            character.localRotation = Quaternion.identity;
-            character.localScale = Vector3.one * .9f;
-            IsEmpty = false;
+            _sitingCharacter = character;
             
-            return true;
+            _oldParent = _sitingCharacter.parent;
+            _oldPosition = _sitingCharacter.localPosition;
+            _oldRotation = _sitingCharacter.localRotation;
+            _oldScale = _sitingCharacter.localScale;
+            
+            _sitingCharacter.SetParent(transform);
+            _sitingCharacter.localPosition = Vector3.zero;
+            _sitingCharacter.localRotation = Quaternion.identity;
+            _sitingCharacter.localScale = Vector3.one;
         }
         
+        public void RemoveCharacter()
+        {
+            _sitingCharacter.SetParent(_oldParent);
+            _sitingCharacter.localPosition = _oldPosition;
+            _sitingCharacter.localRotation = _oldRotation;
+            _sitingCharacter.localScale = _oldScale;
+            
+            _oldParent = null;
+        }
         
     }
 }

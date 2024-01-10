@@ -17,13 +17,12 @@ namespace _Game._4_CarJam.Scripts
         }
 
         public Action<VehicleController> OnBeforeMove;
-        public List<Vector2Int> DoorPositions => _dictDoor.Values.ToList();
-        public List<Vector2Int> SeatPositions => _dictSeat.Values.ToList();
-        public Vector2Int GetSelectedSeatPosition(Seat seat) => _dictSeat.FirstOrDefault(x => x.Key == seat).Value;
+        public List<Vector2Int> DoorPositions => _dictDoor.Keys.ToList();
+        public List<Vector2Int> SeatPositions => _dictSeat.Keys.ToList();
+        public Vector2Int GetSelectedSeatPosition(Seat seat) => _dictSeat.FirstOrDefault(x => x.Value == seat).Key;
         public GameElementDirection GetDirection => GetElementDirection();
-
         
-        public bool FillSeat(int index,Transform character) => _dictSeat.ElementAt(index).Key.SetCharacter(character);
+        public bool IsSeatEmpty(Vector2Int seatPosition) => _dictSeat.FirstOrDefault(x => x.Key == seatPosition).Value.IsEmpty;
 
         
         [SerializeField] private VehicleView vehicleView;
@@ -34,8 +33,8 @@ namespace _Game._4_CarJam.Scripts
 
         private int _doorAngle = 90;
         private Seat[] _listSeats;
-        private Dictionary<DoorSide, Vector2Int> _dictDoor = new();
-        private Dictionary<Seat, Vector2Int> _dictSeat = new();
+        private Dictionary<Vector2Int,DoorSide> _dictDoor = new();
+        private Dictionary<Vector2Int,Seat> _dictSeat = new();
 
         private void OnEnable()
         {
@@ -80,20 +79,20 @@ namespace _Game._4_CarJam.Scripts
             switch (GetElementDirection())
             {
                 case GameElementDirection.Up:
-                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(0, -1));
-                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(1, -1));
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(0, -1),_listSeats[0]);
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(1, -1),_listSeats[1]);
                     break;
                 case GameElementDirection.Right:
-                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(-1, 0));
-                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(-1, -1));
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(-1, 0),_listSeats[0]);
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(-1, -1),_listSeats[1]);
                     break;
                 case GameElementDirection.Down:
-                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(0, 1));
-                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(-1, 1));
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(0, 1),_listSeats[0]);
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(-1, 1),_listSeats[1]);
                     break;
                 case GameElementDirection.Left:
-                    _dictSeat.Add(_listSeats[0], PositionInGrid + new Vector2Int(1, 0));
-                    _dictSeat.Add(_listSeats[1], PositionInGrid + new Vector2Int(1, 1));
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(1, 0),_listSeats[0]);
+                    _dictSeat.Add(PositionInGrid + new Vector2Int(1, 1),_listSeats[1]);
                     break;
             }
         }
@@ -102,20 +101,20 @@ namespace _Game._4_CarJam.Scripts
             switch (GetElementDirection())
             {
                 case GameElementDirection.Up:
-                    _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(-1, -1));
-                    _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(2, -1));
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(-1, -1),DoorSide.Left);
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(2, -1),DoorSide.Right);
                     break;
                 case GameElementDirection.Right:
-                    _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(-1, 1));
-                    _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(-1, -2));
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(-1, 1),DoorSide.Left);
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(-1, -2),DoorSide.Right);
                     break;
                 case GameElementDirection.Down:
-                    _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(1, 1));
-                    _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(-2, 1));
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(1, 1),DoorSide.Left);
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(-2, 1),DoorSide.Right);
                     break;
                 case GameElementDirection.Left:
-                    _dictDoor.Add(DoorSide.Left, PositionInGrid + new Vector2Int(1, -1));
-                    _dictDoor.Add(DoorSide.Right, PositionInGrid + new Vector2Int(1, 2));
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(1, -1),DoorSide.Left);
+                    _dictDoor.Add(PositionInGrid + new Vector2Int(1, 2),DoorSide.Right);
                     break;
             }
         }
@@ -123,7 +122,7 @@ namespace _Game._4_CarJam.Scripts
         public void Move()
         {
             //CloseDoor();
-            if(_dictSeat.Any(x => x.Key.IsEmpty)) return;
+            if(_dictSeat.Any(x => x.Value.IsEmpty)) return;
             OnBeforeMove?.Invoke(this);
         }
 
@@ -224,12 +223,12 @@ namespace _Game._4_CarJam.Scripts
 
         public bool IsSeatAvailable()
         {
-            return _dictSeat.Any(x => x.Key.IsEmpty);
+            return _dictSeat.Any(x => x.Value.IsEmpty);
         }
 
         public Seat GetAvailableSeat()
         {
-            return _dictSeat.FirstOrDefault(x => x.Key.IsEmpty).Key;
+            return _dictSeat.FirstOrDefault(x => x.Value.IsEmpty).Value;
         }
     }
 }
