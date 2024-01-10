@@ -304,7 +304,12 @@ namespace _Game._4_CarJam.Scripts
             ElementType[,] elementMap = GetMapDataElement();
             return elementMap[point.x, point.y] == ElementType.Ground;
         }
-
+        
+        public  Rect GetRect()
+        {
+            return new Rect(_minPoint.x, _minPoint.y, _maxPoint.x - _minPoint.x, _maxPoint.y - _minPoint.y);
+        }
+        
         public bool IsEmpty2(Vector3Int point)
         {
             if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)

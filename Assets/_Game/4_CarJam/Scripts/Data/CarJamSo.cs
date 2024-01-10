@@ -7,5 +7,6 @@ namespace _Game._4_CarJam.Scripts
     public class CarJamSo : ScriptableSingleton<CarJamSo>
     {
         public Transform GridFillItem;
+        public GameObject EnvironmentPrefab;
     }
 }

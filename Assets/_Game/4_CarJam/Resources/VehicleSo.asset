@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VehicleOvershoot: 0.4
   CompleteDuration: 1
+  VehicleSpeed: 5
   VehicleColorData:
   - Color: 0
     Material: {fileID: 2100000, guid: 032ff22b51ae5472e9851c3577734626, type: 2}

@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ef6c9968b1d4373826a92c1a0128681, type: 3}
+  m_Name: CarJamSo
+  m_EditorClassIdentifier: 
+  GridFillItem: {fileID: 0}
+  EnvironmentPrefab: {fileID: 3956988204825787745, guid: c769bbfeb3f184e2cbeb20aa4198435f, type: 3}

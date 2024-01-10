@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 using _Game._0_CraftCore.Scripts.Core;
 using _Game._3_GamePlay.Scripts;
 using _Game.Library.CraftTime;
 using DG.Tweening;
 using Modules.Shared.Controller;
-using Sirenix.OdinInspector;
-using Sirenix.Utilities;
 using UnityEngine;
 
 namespace _Game._4_CarJam.Scripts
@@ -17,6 +13,8 @@ namespace _Game._4_CarJam.Scripts
     {
         [SerializeField] private GridController gridController;
         [SerializeField] private RoadController roadController;
+        [SerializeField] private EnvironmentController environmentController;
+
 
         private List<GameElement> _listGameElements;
         private CharacterController _selectedCharacter;
@@ -27,11 +25,22 @@ namespace _Game._4_CarJam.Scripts
 
             _listGameElements = GetComponentsInChildren<GameElement>().ToList();
             gridController.Initialize(_listGameElements);
+
+            roadController = GetComponentInChildren<RoadController>();
             roadController.Initialize();
-            
+
             SetVehiclesToCharacters();
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
+            CreateEnvironment();
+        }
+
+        // create environment
+        private void CreateEnvironment()
+        {
+            var environment = Instantiate(CarJamSo.Instance.EnvironmentPrefab, transform);
+            environmentController = environment.GetComponent<EnvironmentController>();
+            environmentController.Initialize(gridController);
         }
 
         private void SetVehiclesToCharacters()
@@ -116,7 +125,8 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnVehicleFull(VehicleController vehicle)
         {
-            if (roadController.FindRoadAhead(vehicle.transform.position,vehicle.transform.forward, out var road, out var intersection))
+            if (roadController.FindRoadAhead(vehicle.transform.position, vehicle.transform.forward, out var road,
+                    out var intersection))
             {
                 Vector3 lastPosition = transform.localPosition;
                 float angle = 0;
@@ -124,26 +134,24 @@ namespace _Game._4_CarJam.Scripts
 
                 roadSequence.AppendCallback(vehicle.OnMove);
                 roadSequence.Append(vehicle.MoveToPosition(intersection));
-                
-                
+
                 while (road.NextRoad != null)
                 {
                     angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
-                    
+
                     roadSequence.Append(vehicle.MoveToPosition(road.GetIntersectionPointToNextRoad()));
                     roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
                     road = roadController.GetNextRoad(road);
                 }
-                
+
                 vehicle.PositionInGrid = gridController.GetCellPosition(road.End.position);
                 angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
                 roadSequence.Append(vehicle.MoveToPosition(road.End.position));
                 roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
                 roadSequence.AppendCallback(vehicle.OnComplete);
-                
             }
         }
-        
+
         #region Input Handling
 
         private void OnUserButtonDown(Vector3 obj)
@@ -167,7 +175,8 @@ namespace _Game._4_CarJam.Scripts
                          .GetGameObjectUnderMouse(LayerMask.GetMask("Ground"), out var touchedGround, out var hit2)
                      && _selectedCharacter)
             {
-                if (gridController.MoveToPosition(_selectedCharacter,touchedGround.transform.position, out Sequence sequence))
+                if (gridController.MoveToPosition(_selectedCharacter, touchedGround.transform.position,
+                        out Sequence sequence))
                 {
                     _selectedCharacter.HideEmoji();
                     _selectedCharacter.Tapped();
@@ -224,14 +233,15 @@ namespace _Game._4_CarJam.Scripts
                         seat = vehicle.GetAvailableSeat();
                     }
 
-                    if (gridController.CanCharacterReachVehicle(_selectedCharacter, vehicle, out List<PathFind.Point> path))
+                    if (gridController.CanCharacterReachVehicle(_selectedCharacter, vehicle,
+                            out List<PathFind.Point> path))
                     {
                         seat.ReserveSeat(_selectedCharacter.transform);
                         Sequence moveSequence = DOTween.Sequence();
 
                         moveSequence.Append(_selectedCharacter.MoveAlongPath(path));
                         moveSequence.Append(_selectedCharacter.MoveToVehicle(vehicle, seat));
-                        
+
                         _selectedCharacter.HideEmoji();
                         _selectedCharacter.Tapped();
                         UnselectCharacter();
@@ -242,12 +252,13 @@ namespace _Game._4_CarJam.Scripts
                         _selectedCharacter.Tapped();
                         UnselectCharacter();
                     }
+
                     break;
                 case CharacterController character:
 
-                    if(character.State == GameElement.GameElementState.Completed)
+                    if (character.State == GameElement.GameElementState.Completed)
                         break;
-                    
+
                     if (!_selectedCharacter)
                     {
                         _selectedCharacter = character;
@@ -261,11 +272,10 @@ namespace _Game._4_CarJam.Scripts
                         UnselectCharacter();
                         break;
                     }
-                        
-                    
+
                     _selectedCharacter.Tapped();
                     UnselectCharacter();
-                    
+
                     _selectedCharacter = character;
                     _selectedCharacter.Tapped();
                     break;
