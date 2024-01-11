@@ -1,4 +1,3 @@
-//#define LION_INSTALLED
 using _Game._0_CraftCore.Scripts.Core;
 using _Game._1_Ads.Scripts;
 using _Game._2_LinearLevel.Scripts;
@@ -16,7 +15,7 @@ namespace _Game._1_Analytics.Scripts
 
         public void OnInit()
         {
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender = new LionAnalyticsEventSender();
             _eventSender.Initialize();
 #endif
@@ -27,7 +26,7 @@ namespace _Game._1_Analytics.Scripts
             _marketPlaceAnalytics = new MarketPlaceAnalytics(Craft.Get<MarketPlaceSystem>().Dispatcher);
             Craft.Dispatcher.Subscribe(CoreEventId.GameStarted, SendGameStartedEvent);
             Craft.Get<AdsSystem>().RewardedAds.OnRewardedAdsShown += OnRewardedAdsShown;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             Craft.Get<CraftInventorySystem>().GetInventoryItem(ItemId.Currency1).OnAdded += _eventSender.OnCoinEarn;
             Craft.Get<CraftInventorySystem>().GetInventoryItem(ItemId.Currency1).OnSpent += _eventSender.OnCoinSpend;
 #endif
@@ -41,14 +40,14 @@ namespace _Game._1_Analytics.Scripts
 
         public void OnRewardedAdsShown(string placement, int progress)
         {
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.OnRewardedAdsShown(placement, progress);
 #endif
         }
 
         public void SendGameStartedEvent()
         {
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendGameStartedEvent();
 #endif
         }

@@ -11,7 +11,7 @@ namespace Modules.Ads.Scripts
     {
         private int ShowInterval => AdsSystemSo.Instance.Config.InterIntervalInSeconds;
 
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
         public static event Action<MaxSdkBase.AdInfo> OnDisplayStarted;
         public static event Action<MaxSdkBase.AdInfo> OnRevenuePaid;
 #endif
@@ -22,7 +22,7 @@ namespace Modules.Ads.Scripts
 
         public void Initialize()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             MaxSdkCallbacks.Interstitial.OnAdLoadedEvent += OnInterstitialLoadedEvent;
             MaxSdkCallbacks.Interstitial.OnAdLoadFailedEvent += OnInterstitialLoadFailedEvent;
             MaxSdkCallbacks.Interstitial.OnAdDisplayedEvent += OnInterstitialDisplayedEvent;
@@ -44,7 +44,7 @@ namespace Modules.Ads.Scripts
 
         public bool CanShowInterstitial()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             return (Time.time > _lastShowTime + ShowInterval) &&
                    MaxSdk.IsInterstitialReady(GetAdUnitId());
 #else
@@ -54,7 +54,7 @@ namespace Modules.Ads.Scripts
 
         public void ShowInterstitial(Action onCompleted)
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             if (MaxSdk.IsInterstitialReady(GetAdUnitId()))
             {
                 if (CanShowInterstitial())
@@ -70,7 +70,7 @@ namespace Modules.Ads.Scripts
 
         public void ForceShowInterstitial(Action onCompleted)
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             // SatoriEventsController.SatoriAdStartedEvent("inter");
             OnInterCompleted = onCompleted;
             Craft.GetUI<AdBreakUI>().Activate();
@@ -97,15 +97,15 @@ namespace Modules.Ads.Scripts
             }
             else
 #endif
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             {
                 MaxSdk.LoadInterstitial(GetAdUnitId());
             }
 #endif
         }
 
-        #region Event Methods (MAX_ADS)
-#if MAX_ADS
+        #region Event Methods 
+#if HAS_LION_APPLOVIN_SDK
         private void OnInterstitialLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             // Interstitial ad is ready for you to show. MaxSdk.IsInterstitialReady(adUnitId) now returns 'true'

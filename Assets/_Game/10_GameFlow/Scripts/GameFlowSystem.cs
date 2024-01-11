@@ -50,7 +50,7 @@ namespace _Game.Systems.GameFlow.Scripts
 
         private void StartGameWhenMAXInitialized()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             GetContext().Dispatcher.Unsubscribe(CoreEventId.CraftCoreInitialized, StartGameWhenMAXInitialized);
 
             if (MaxSdk.IsInitialized())
@@ -65,7 +65,7 @@ namespace _Game.Systems.GameFlow.Scripts
             StartGameWithDelay();
 #endif
         }
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
         private void OnMaxSdkInitialized(MaxSdkBase.SdkConfiguration obj)
         {
             MaxSdkCallbacks.OnSdkInitializedEvent -= OnMaxSdkInitialized;

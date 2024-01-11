@@ -1,6 +1,6 @@
 
     using System.ComponentModel;
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
     public partial class SROptions
     {
         [Category("Max")]

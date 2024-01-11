@@ -1,7 +1,8 @@
+
 using System.Collections.Generic;
 using _Game._3_GamePlay.Scripts;
 using DG.Tweening;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
 using Events.InGame.EventArgs;
 using Events.Mission.EventArgs;
 using LionStudios.Suite.Analytics;
@@ -13,7 +14,7 @@ namespace _Game._1_Analytics.Scripts
 {
     public class LionAnalyticsEventSender
     {
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
         private bool _isInitialized = false;
         private float _tryAgainDelay = 1f;
 

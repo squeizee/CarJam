@@ -10,7 +10,7 @@ namespace _Game._1_Ads.Scripts
     public class RewardedAdController
     {
         private const float RecentShowCheckInterval = 60;
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
         public event Action<MaxSdkBase.AdInfo> OnWatched;
         public event Action<MaxSdkBase.AdInfo> OnRevenuePaid;
 #endif
@@ -24,7 +24,7 @@ namespace _Game._1_Ads.Scripts
 
         public void Initialize()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             MaxSdkCallbacks.Rewarded.OnAdLoadedEvent += OnRewardedAdLoadedEvent;
             MaxSdkCallbacks.Rewarded.OnAdLoadFailedEvent += OnRewardedAdLoadFailedEvent;
             MaxSdkCallbacks.Rewarded.OnAdRevenuePaidEvent += OnRewardedAdRevenuePaidEvent;
@@ -51,7 +51,7 @@ namespace _Game._1_Ads.Scripts
 
         public bool IsRewardedLoaded()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             return MaxSdk.IsRewardedAdReady(GetAdUnitId());
 #else 
             return false;
@@ -62,7 +62,7 @@ namespace _Game._1_Ads.Scripts
         {
             OnCompleted = onComplete;
             _lastPlacement = placement;
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             if (IsRewardedLoaded())
             {
                 _lasShowTime = Time.time;
@@ -100,7 +100,7 @@ namespace _Game._1_Ads.Scripts
             }
             else
 #endif
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             {
                 MaxSdk.LoadRewardedAd(GetAdUnitId());
             }
@@ -108,7 +108,7 @@ namespace _Game._1_Ads.Scripts
         }
 
         #region Event Methods
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
         private void OnRewardedAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
             // Rewarded ad is ready for you to show. MaxSdk.IsRewardedAdReady(adUnitId) now returns 'true'.

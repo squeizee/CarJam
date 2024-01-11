@@ -96,7 +96,7 @@ namespace _Game.Systems.GameFlow.Scripts.Commands
             int levelProgress = linearLevelSystem.GetProgress(LinearLevelType.Normal);
             int bossProgress = linearLevelSystem.GetProgress(LinearLevelType.Boss);
             int levelIndex = levelProgress + bossProgress - 1;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             LionStudios.Suite.Analytics.LionAnalytics.RewardVideoShow("multiplyCoins", "unknown", levelIndex,
                 new Dictionary<string, object>()
                 {

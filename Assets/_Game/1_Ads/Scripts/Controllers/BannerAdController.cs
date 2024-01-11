@@ -8,7 +8,7 @@ namespace _Game._1_Ads.Scripts
     {
         private static readonly Color BannerColor = new(0.9960784f, 0.9764706f, 9372549f, 1);
 
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
         public static event Action<MaxSdkBase.AdInfo> OnRevenuePaid;
 #endif
 
@@ -24,7 +24,7 @@ namespace _Game._1_Ads.Scripts
 
         public void Initialize()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
             // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
             MaxSdk.CreateBanner(GetAdUnitId(), MaxSdkBase.BannerPosition.BottomCenter);
@@ -40,7 +40,7 @@ namespace _Game._1_Ads.Scripts
                 MaxSdk.CreateBanner(ADUnitId, MaxSdkBase.BannerPosition.BottomCenter);
             });
 #endif
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             MaxSdk.SetBannerBackgroundColor(GetAdUnitId(), BannerColor);
 
             MaxSdkCallbacks.Banner.OnAdLoadedEvent += OnBannerAdLoadedEvent;
@@ -61,7 +61,7 @@ namespace _Game._1_Ads.Scripts
             // Banners are automatically sized to 320×50 on phones and 728×90 on tablets
             // You may call the utility method MaxSdkUtils.isTablet() to help with view sizing adjustments
 
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             if (MaxSdkUtils.IsTablet())
             {
                 return 90;
@@ -75,7 +75,7 @@ namespace _Game._1_Ads.Scripts
 
         public void ShowBanner()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             try
             {
                 MaxSdk.ShowBanner(GetAdUnitId());
@@ -89,7 +89,7 @@ namespace _Game._1_Ads.Scripts
 
         public void HideBanner()
         {
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
             try
             {
                 MaxSdk.HideBanner(GetAdUnitId());
@@ -101,9 +101,9 @@ namespace _Game._1_Ads.Scripts
 #endif
         }
 
-        #region Event Methods (MAX_ADS)
+        #region Event Methods
 
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
         private void OnBannerAdLoadedEvent(string adUnitId, MaxSdkBase.AdInfo adInfo)
         {
         }
