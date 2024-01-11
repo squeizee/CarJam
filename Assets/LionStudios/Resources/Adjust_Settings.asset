@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EnableInitialization: 0
   iOSAdjustSdkKey: 
-  androidAdjustSdkKey: 
+  androidAdjustSdkKey: qfuc112tw64g
   AdjustEnvironment: 1
   AdjustLogLevel: 3
   AllowSuppressLogLevel: 1

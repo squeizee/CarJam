@@ -1,4 +1,3 @@
-// #define ADJUST_ADS
 using System;
 using System.Collections;
 using System.Collections.Generic;

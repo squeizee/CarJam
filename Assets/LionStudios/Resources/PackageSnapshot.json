@@ -1,4 +1,8 @@
 {
+  "com.lionstudios.release.adjust.unity-sdk": {
+    "version": "4.34.1",
+    "dependencies": null
+  },
   "com.lionstudios.release.bundle": {
     "version": "1.2.2",
     "dependencies": {

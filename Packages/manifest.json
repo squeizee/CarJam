@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.lionstudios.release.adjust.unity-sdk": "4.34.1",
     "com.lionstudios.release.bundle": "1.2.2",
     "com.lionstudios.release.facebook.unity-sdk": "14.1.0",
     "com.unity.2d.sprite": "1.0.0",

@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
 using _Game.Systems._CoreSystem.Scripts;
 using UnityEngine;
-#if ADJUST_ADS
+#if ADJUST_PRESENT_AND_ASMDEF_CREATED
 using com.adjust.sdk;
 
 public class AdjustSdkInitializer : BaseCraftSystemMono, ICraftSystem
 {
     // Mandatory - set your Android app token here
-    [SerializeField] private string appTokenAndroid = "mm924w4huqrk";
+    [SerializeField] private string appTokenAndroid = "qfuc112tw64g";
 
     // Mandatory - set your iOS app token here
     [SerializeField] private string appTokenIOS = "Token Value Here";
