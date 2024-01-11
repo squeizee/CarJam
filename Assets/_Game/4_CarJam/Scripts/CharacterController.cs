@@ -1,8 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
-using DG.Tweening.Plugins.Core.PathCore;
 using PathFind;
 using UnityEngine;
 using Sequence = DG.Tweening.Sequence;
@@ -14,10 +12,12 @@ namespace _Game._4_CarJam.Scripts
         [Header("Derived Class")] [SerializeField]
         private Transform indicator;
 
+        [SerializeField] private Transform happyIndicator;
+
         [SerializeField] private Transform characterViewParent;
         [SerializeField] private Collider mainCollider;
 
-        public Dictionary<Vector2Int,VehicleController> VehicleDoorPositions = new();
+        public Dictionary<Vector2Int, VehicleController> VehicleDoorPositions = new();
         public Dictionary<Vector2Int, VehicleController> VehicleSeatPositions = new();
 
         private Vector3 _indicatorDefaultPosition;
@@ -29,6 +29,7 @@ namespace _Game._4_CarJam.Scripts
 
         private bool _isSelected;
         private Seat _currentSeat;
+
         private void OnEnable()
         {
             OnTapped += () =>
@@ -37,7 +38,7 @@ namespace _Game._4_CarJam.Scripts
                 ShowIndicator();
             };
         }
-        
+
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
@@ -53,11 +54,11 @@ namespace _Game._4_CarJam.Scripts
         public Sequence MoveAlongPath(List<Point> path)
         {
             transform.DOComplete();
-            
+
             Vector3 lastPosition = transform.localPosition;
-            
+
             OnMove();
-            
+
             List<Vector3> pathVector3 = path.ConvertAll(point =>
                 new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
 
@@ -83,14 +84,16 @@ namespace _Game._4_CarJam.Scripts
             });
 
             _sequence.Append(characterViewParent.transform.DOLocalRotate(Vector3.zero, .1f).SetEase(Ease.Linear));
-            
+
             return _sequence;
         }
+
         private void ShowIndicator()
         {
             if (_isSelected)
             {
                 indicator.gameObject.SetActive(true);
+                indicator.localPosition = _indicatorDefaultPosition;
                 indicator.DOComplete();
                 indicator.DOLocalMoveY(_indicatorDefaultPosition.y + .5f, 0.5f).SetLoops(-1, LoopType.Yoyo)
                     .SetEase(Ease.Linear);
@@ -102,21 +105,35 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
+        private void ShowHappyIndicator()
+        {
+            happyIndicator.gameObject.SetActive(true);
+            happyIndicator.localPosition = _indicatorDefaultPosition - Vector3.up * 0.5f;
+            happyIndicator.localScale = Vector3.one * 0.1f;
+            happyIndicator.DOComplete();
+            happyIndicator.DOScale(0.15f, 0.3f).SetLoops(4, LoopType.Yoyo)
+                .SetEase(Ease.Linear).OnUpdate((() => { happyIndicator.LookAt(Camera.main.transform); }))
+                .OnComplete(() => happyIndicator.gameObject.SetActive(false));
+        }
+
         public void OnComplete()
         {
             _animator.Play("Sit");
             State = GameElementState.Completed;
             mainCollider.enabled = false;
+            ShowHappyIndicator();
         }
+
         public override void ShowEmoji(int repeat = 4)
         {
             base.ShowEmoji(repeat);
         }
+
         public override void HideEmoji()
         {
             base.HideEmoji();
         }
-        
+
         public override void Tapped()
         {
             OnTapped?.Invoke();
@@ -128,6 +145,7 @@ namespace _Game._4_CarJam.Scripts
             indicator.DOComplete();
             _animator.Play("Run");
         }
+
         public override void Stop()
         {
             State = GameElementState.Idle;

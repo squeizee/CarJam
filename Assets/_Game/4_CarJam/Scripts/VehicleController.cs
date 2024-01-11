@@ -39,12 +39,12 @@ namespace _Game._4_CarJam.Scripts
             OnTapped += () =>
             {
                 vehicleViewParent.transform.DOComplete();
-                vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
+                vehicleViewParent.transform.DOShakeRotation(.3f, 4.5f);
             };
             OnCrash += () =>
             {
                 vehicleViewParent.transform.DOComplete();
-                vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
+                vehicleViewParent.transform.DOShakeRotation(.3f, 4.5f);
             };
         }
 
