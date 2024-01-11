@@ -45,7 +45,7 @@ namespace _Game._4_CarJam.Scripts
 
 
         private Vector2Int _targetPosition;
-        private GameElementState _state;
+        public GameElementState _state;
 
         public GameElementState State
         {

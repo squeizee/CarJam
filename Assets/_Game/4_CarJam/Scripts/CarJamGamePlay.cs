@@ -230,11 +230,14 @@ namespace _Game._4_CarJam.Scripts
                     {
                         seat = vehicle.GetAvailableSeat();
                     }
-                    else if (seat.IsEmpty == false)
+                    else if (seat.IsEmpty() == false)
                     {
                         seat = vehicle.GetAvailableSeat();
                     }
-
+                    if (seat.IsReserved())
+                    {
+                        return;
+                    }
                     if (gridController.CanCharacterReachVehicle(_selectedCharacter, vehicle,
                             out List<PathFind.Point> path))
                     {

@@ -13,18 +13,19 @@ namespace _Game._4_CarJam.Scripts
             Middle = 2
         }
 
-        public bool IsEmpty => _reservedCharacter == null;
+        public bool IsEmpty() => _sitingCharacter == null;
+        public bool IsReserved() => _reservedCharacter != null;
         
         public SeatSide GetSeatSide => seatSide;
         
         [SerializeField] private SeatSide seatSide;
 
-        private Transform _reservedCharacter;
+        public Transform _reservedCharacter = null;
+        public Transform _sitingCharacter = null;
         private Transform _oldParent;
         private Vector3 _oldPosition;
         private Quaternion _oldRotation;
         private Vector3 _oldScale;
-        private Transform _sitingCharacter;
         
         public void SetCharacter(Transform character)
         {
@@ -54,7 +55,8 @@ namespace _Game._4_CarJam.Scripts
         }
         public void ReserveSeat(Transform character)
         {
-            _reservedCharacter = character;
+            if(_reservedCharacter == null)
+                _reservedCharacter = character;
         }
         
     }

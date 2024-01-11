@@ -20,10 +20,7 @@ namespace _Game._4_CarJam.Scripts
         public Action<VehicleController> OnBeforeMove;
         public List<Vector2Int> DoorPositions => _dictDoor.Keys.ToList();
         public List<Vector2Int> SeatPositions => _dictSeat.Keys.ToList();
-        public Vector2Int GetSelectedSeatPosition(Seat seat) => _dictSeat.FirstOrDefault(x => x.Value == seat).Key;
         public GameElementDirection GetDirection => GetElementDirection();
-        
-        public bool IsSeatEmpty(Vector2Int seatPosition) => _dictSeat.FirstOrDefault(x => x.Key == seatPosition).Value.IsEmpty;
 
         
         [SerializeField] private VehicleView vehicleView;
@@ -145,7 +142,7 @@ namespace _Game._4_CarJam.Scripts
         
         public bool IsVehicleFull()
         {
-            return !_dictSeat.Any(x=>x.Value.IsEmpty);
+            return !_dictSeat.Any(x=>x.Value.IsEmpty());
         }
         public void MoveForward(List<Vector3> path, bool isTargetReached)
         {
@@ -157,7 +154,7 @@ namespace _Game._4_CarJam.Scripts
             }
 
             // if seat is none of them empty
-            if (Array.Exists(_listSeats, x => x.IsEmpty))
+            if (Array.Exists(_listSeats, x => x.IsEmpty()))
             {
                 if (State != GameElementState.Waiting)
                     State = GameElementState.Waiting;
@@ -220,14 +217,9 @@ namespace _Game._4_CarJam.Scripts
             ShowEmoji();
         }
 
-        public bool IsSeatAvailable()
-        {
-            return _dictSeat.Any(x => x.Value.IsEmpty);
-        }
-
         public Seat GetAvailableSeat()
         {
-            return _dictSeat.FirstOrDefault(x => x.Value.IsEmpty).Value;
+            return _dictSeat.FirstOrDefault(x => x.Value.IsEmpty() && !x.Value.IsReserved()).Value;
         }
 
         public bool IsValidCharacter(CharacterController character)
