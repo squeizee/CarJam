@@ -19,7 +19,7 @@ namespace _Game._4_CarJam.Scripts
     {
         [SerializeField] private Grid grid;
         [SerializeField] private Transform groundTileMapParent;
-        
+
         private List<GridItemView> _listGridItemViews;
         private Vector2Int _mapSize = new Vector2Int(15, 15);
         private List<GameElement> _listGameElements;
@@ -84,7 +84,7 @@ namespace _Game._4_CarJam.Scripts
                 path = new List<Point>();
                 return false;
             }
-            
+
             return FindPath(new Point(from.x, from.y), new Point(to.x, to.y), out path);
         }
 
@@ -127,27 +127,29 @@ namespace _Game._4_CarJam.Scripts
                 return false;
             }
         }
-        
+
         public Vector2Int WorldToGridPosition(Vector3 pos)
         {
             var cellPosition = grid.WorldToCell(pos);
             return new Vector2Int(cellPosition.x, cellPosition.y);
         }
-        public bool CanCharacterReachVehicle(CharacterController character, VehicleController vehicle, out List<Point> closestPath)
+
+        public bool CanCharacterReachVehicle(CharacterController character, VehicleController vehicle,
+            out List<Point> closestPath)
         {
             var doorPositions = vehicle.DoorPositions;
             var characterPosition = character.PositionInGrid;
             bool isPathFound = false;
-            
+
             closestPath = new();
 
             foreach (var door in doorPositions)
             {
-                if(door == characterPosition)
+                if (door == characterPosition)
                 {
                     return true;
                 }
-                
+
                 if (!IsEmpty(door))
                 {
                     continue;
@@ -162,9 +164,10 @@ namespace _Game._4_CarJam.Scripts
                     }
                 }
             }
-            
+
             return isPathFound;
         }
+
         public void CheckForwardPath(VehicleController vehicleController)
         {
             var pivotPoint = grid.WorldToCell(vehicleController.transform.position);
@@ -280,13 +283,13 @@ namespace _Game._4_CarJam.Scripts
 
             return elementMap;
         }
+
         public Vector2Int GetCellPosition(Vector3 pos)
         {
-            
             var cellPosition = grid.WorldToCell(pos);
             return new Vector2Int(cellPosition.x, cellPosition.y);
         }
-        
+
         public bool IsEmpty(Vector3Int point)
         {
             if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)
@@ -304,12 +307,19 @@ namespace _Game._4_CarJam.Scripts
             ElementType[,] elementMap = GetMapDataElement();
             return elementMap[point.x, point.y] == ElementType.Ground;
         }
-        
-        public  Rect GetRect()
+
+        public Rect GetLocalRect()
         {
             return new Rect(_minPoint.x, _minPoint.y, _maxPoint.x - _minPoint.x, _maxPoint.y - _minPoint.y);
         }
-        
+
+        public Rect GetWorldRect()
+        {
+            Vector3 transformPosition = transform.position;
+            return new Rect(_minPoint.x + transformPosition.x, _minPoint.y + transformPosition.z,
+                _maxPoint.x - _minPoint.x, _maxPoint.y - _minPoint.y);
+        }
+
         public bool IsEmpty2(Vector3Int point)
         {
             if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)

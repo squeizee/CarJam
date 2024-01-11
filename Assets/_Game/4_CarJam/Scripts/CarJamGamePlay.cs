@@ -33,6 +33,8 @@ namespace _Game._4_CarJam.Scripts
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
             CreateEnvironment();
+
+            CarJamCameraController.Instance.UpdateCameraPosition(gridController.GetWorldRect());
         }
 
         // create environment

@@ -8,5 +8,9 @@ namespace _Game._4_CarJam.Scripts
     {
         public Transform GridFillItem;
         public GameObject EnvironmentPrefab;
+        public float CameraCoefficient = 10;
+        public float DefaultCameraDistance = 10;
+        public Vector3 CameraOffset = new Vector3(0, 0, 0);
     }
+    
 }

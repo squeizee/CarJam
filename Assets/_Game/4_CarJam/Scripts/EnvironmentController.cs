@@ -12,7 +12,7 @@ namespace _Game._4_CarJam.Scripts
 
         public void Initialize(GridController gridController)
         {
-            var rect = gridController.GetRect();
+            var rect = gridController.GetLocalRect();
             _topTransform.localPosition = new Vector3(0, 0, rect.yMax + 1);
             _bottomTransform.localPosition = new Vector3(0, 0, rect.yMin);
             _leftTransform.localPosition = new Vector3(rect.xMin, 0, 0);
