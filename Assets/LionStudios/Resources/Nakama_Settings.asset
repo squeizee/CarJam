@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cb1103056b714d2cb2ca8b743226f7f, type: 3}
+  m_Name: Nakama_Settings
+  m_EditorClassIdentifier: 
+  ReleaseServer:
+    Server: 0
+    Scheme: https
+    Host: lioncore.us-east1.nakamacloud.io
+    Port: 443
+    ServerKey: jX4QtFguXpR5
+  UseSameServerForDebugBuilds: 0
+  DebugServer:
+    Server: 1
+    Scheme: https
+    Host: lion-staging.us-east1.nakamacloud.io
+    Port: 443
+    ServerKey: mG49xsEE8436

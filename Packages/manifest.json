@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.lionstudios.release.bundle": "1.2.2",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
     "com.unity.2d.tilemap.extras": "2.2.7",
@@ -46,5 +47,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "Lion Studios",
+      "url": "http://packages.lionstudios.cc:4873",
+      "scopes": [
+        "com.lionstudios.release"
+      ]
+    }
+  ]
 }
