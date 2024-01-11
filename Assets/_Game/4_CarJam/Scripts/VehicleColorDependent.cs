@@ -8,9 +8,7 @@ namespace _Game._4_CarJam.Scripts
 
         public void Initialize(GameElement.Colors color)
         {
-            Debug.Log(color);
             var vehicleColorData = VehicleSo.Instance.GetColorData(color);
-            Debug.Log($"VehicleColorDependent.Initialize() vehicleColorData: {vehicleColorData.Material.name}");
             var vehicleRenderer = GetComponent<Renderer>();
             if (Tone == Tone.Dark)
             {
