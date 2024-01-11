@@ -239,13 +239,13 @@ PlayerSettings:
   clonedFromGUID: c0afd0d1d80e3634a9dac47e8a0426ea
   templatePackageId: com.unity.template.3d@8.1.3
   templateDefaultScene: Assets/Scenes/SampleScene.unity
-  useCustomMainManifest: 0
+  useCustomMainManifest: 1
   useCustomLauncherManifest: 0
-  useCustomMainGradleTemplate: 0
+  useCustomMainGradleTemplate: 1
   useCustomLauncherGradleManifest: 0
-  useCustomBaseGradleTemplate: 0
-  useCustomGradlePropertiesTemplate: 0
-  useCustomProguardFile: 0
+  useCustomBaseGradleTemplate: 1
+  useCustomGradlePropertiesTemplate: 1
+  useCustomProguardFile: 1
   AndroidTargetArchitectures: 3
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
@@ -807,9 +807,9 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: ODIN_INSPECTOR;ODIN_INSPECTOR_3;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;LK_HAS_LION_ANALYTICS;HAS_LION_APPLOVIN_SDK
+    Android: ODIN_INSPECTOR;ODIN_INSPECTOR_3;MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;LK_HAS_LION_ANALYTICS;HAS_LION_APPLOVIN_SDK;FACEBOOK_PRESENT_AND_ASMDEF_CREATED
     Standalone: MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;ODIN_INSPECTOR;ODIN_INSPECTOR_3
-    iPhone: MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;ODIN_INSPECTOR;ODIN_INSPECTOR_3;LK_HAS_LION_ANALYTICS;HAS_LION_APPLOVIN_SDK
+    iPhone: MOREMOUNTAINS_NICEVIBRATIONS_INSTALLED;ODIN_INSPECTOR;ODIN_INSPECTOR_3;LK_HAS_LION_ANALYTICS;HAS_LION_APPLOVIN_SDK;FACEBOOK_PRESENT_AND_ASMDEF_CREATED
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:

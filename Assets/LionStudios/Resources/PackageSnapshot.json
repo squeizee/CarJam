@@ -230,5 +230,9 @@
         }
       }
     }
+  },
+  "com.lionstudios.release.facebook.unity-sdk": {
+    "version": "14.1.0",
+    "dependencies": null
   }
 }

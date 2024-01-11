@@ -27,6 +27,13 @@
       },
       "url": "http://packages.lionstudios.cc:4873"
     },
+    "com.lionstudios.release.facebook.unity-sdk": {
+      "version": "14.1.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "http://packages.lionstudios.cc:4873"
+    },
     "com.lionstudios.release.heroiclabs.nakama-unity": {
       "version": "3.8.0",
       "depth": 1,

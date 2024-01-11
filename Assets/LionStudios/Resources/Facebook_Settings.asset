@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38bf353a10e6146579355de69b83bbdf, type: 3}
   m_Name: Facebook_Settings
   m_EditorClassIdentifier: 
-  EnableInitialization: 0
-  AppId: 
-  ClientToken: 
+  EnableInitialization: 1
+  AppId: 1910731689342027
+  ClientToken: 2a4110923ec8e95d12792f78147f5183
