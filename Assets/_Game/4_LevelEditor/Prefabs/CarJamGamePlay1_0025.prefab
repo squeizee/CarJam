@@ -2848,7 +2848,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 456267700542768174, guid: 334b83991e95a4860a127d8b87159a5a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.16
+      value: 6.57
       objectReference: {fileID: 0}
     - target: {fileID: 2331197187342283022, guid: 334b83991e95a4860a127d8b87159a5a, type: 3}
       propertyPath: m_RootOrder
@@ -2901,6 +2901,10 @@ PrefabInstance:
     - target: {fileID: 5756522639956243483, guid: 334b83991e95a4860a127d8b87159a5a, type: 3}
       propertyPath: m_Name
       value: VerticalRoadLine (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5756522639956243483, guid: 334b83991e95a4860a127d8b87159a5a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8752635033904277635, guid: 334b83991e95a4860a127d8b87159a5a, type: 3}
       propertyPath: m_IsActive
