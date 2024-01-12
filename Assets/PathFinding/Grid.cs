@@ -70,33 +70,6 @@ namespace PathFind
                 }
             }
         }
-        public Grid(int width, int height, ElementType[,] elemenTiles, bool[,] seats)
-        {
-            gridSizeX = width;
-            gridSizeY = height;
-            nodes = new Node[width, height];
-
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    switch (elemenTiles[x,y])
-                    {
-                        case ElementType.None:
-                        case ElementType.Element:
-                            nodes[x, y] = new Node(0.0f, x, y);
-                            break;
-                        case ElementType.Ground:
-                            nodes[x, y] = new Node(1.0f, x, y);
-                            break;
-                        case ElementType.Seat:
-                            nodes[x, y] = new Node(seats[x, y] ? 1.0f : 0.0f, x, y);
-                            break;
-                    }
-                    nodes[x, y] = new Node(elemenTiles[x, y] == ElementType.Ground  ? 1.0f : 0.0f, x, y);
-                }
-            }
-        }
 
         public List<Node> GetNeighbours(Node node)
         {

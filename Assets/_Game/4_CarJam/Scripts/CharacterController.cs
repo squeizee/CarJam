@@ -168,6 +168,7 @@ namespace _Game._4_CarJam.Scripts
             Vector3 targetPosition = seat.transform.position;
             targetPosition.y = transform.position.y;
 
+            sequence.AppendCallback(() => _animator.Play("Sit"));
             sequence.AppendCallback(() => seat.SetCharacter(transform));
             sequence.Append(transform.DOLocalMove(Vector3.zero, 0.2f));
             sequence.Join(transform.DOLocalRotate(Vector3.zero, 0.2f));
