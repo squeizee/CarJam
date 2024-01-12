@@ -1,4 +1,7 @@
+using Sirenix.OdinInspector;
 using DG.Tweening;
+using DG.Tweening;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game._4_CarJam.Scripts
@@ -9,6 +12,9 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Transform _bottomTransform;
         [SerializeField] private Transform _leftTransform;
         [SerializeField] private Transform _rightTransform;
+        [SerializeField] private ParticleSystem _leftParticleSystem;
+        [SerializeField] private ParticleSystem _rightParticleSystem;
+
         [SerializeField] private Transform _barrierTransform;
 
         private Vector3 _barrierDefaultRotation;
@@ -31,6 +37,13 @@ namespace _Game._4_CarJam.Scripts
 
             _barrierSequence.Append(_barrierTransform.DORotate(_barrierDefaultRotation + Vector3.right * 60, .75f).SetEase(Ease.OutBack));
             return _barrierSequence.Append(_barrierTransform.DORotate(_barrierDefaultRotation, 1.25f).SetEase(Ease.OutBack).SetDelay(0.35f));
+        }
+
+        [Button]
+        public void PlayParticles()
+        {
+            _leftParticleSystem.Play();
+            _rightParticleSystem.Play();
         }
     }
 }

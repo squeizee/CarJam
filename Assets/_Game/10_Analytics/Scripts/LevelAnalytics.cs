@@ -62,7 +62,7 @@ namespace _Game._1_Analytics.Scripts
             string levelName = GetNameWithIndex("Normal_", levelProgress);
 
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelStartedEvent(levelProgress + bossProgress, levelName, args.Attempts, args.Score);
 #endif
         }
@@ -74,7 +74,7 @@ namespace _Game._1_Analytics.Scripts
             string levelName = GetNameWithIndex("Normal_", levelProgress);
 
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelFailedEvent(levelProgress + bossProgress, levelName, args.FailReason, args.Attempts,
                 args.Score);
 #endif
@@ -87,7 +87,7 @@ namespace _Game._1_Analytics.Scripts
             string levelName = GetNameWithIndex("Normal_", levelProgress);
 
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendReviveUsedEvent(levelProgress + bossProgress, levelName, args.FailReason, args.Attempts,
                 args.Score);
 #endif
@@ -100,7 +100,7 @@ namespace _Game._1_Analytics.Scripts
             string levelName = GetNameWithIndex("Normal_", levelProgress);
 
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelCompletedEvent(levelProgress + bossProgress, levelName, args.Attempts, args.Score);
 #endif
         }
@@ -112,7 +112,7 @@ namespace _Game._1_Analytics.Scripts
             string levelName = GetNameWithIndex("Normal_", levelProgress);
 
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelRestartedEvent(levelProgress + bossProgress, levelName, args.Attempts, args.Score);
 #endif
         }
@@ -125,7 +125,7 @@ namespace _Game._1_Analytics.Scripts
             string levelName = GetNameWithIndex("Boss", bossProgress);
             var args = (LinearLevelEventsArgs)eventArgs;
             
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelStartedEvent(levelIndex, levelName, args.Attempts, args.Score);
 #endif
         }
@@ -137,7 +137,7 @@ namespace _Game._1_Analytics.Scripts
             int levelIndex = levelProgress + bossProgress - 1;
             string levelName = GetNameWithIndex("Boss", bossProgress);
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelFailedEvent(levelIndex, levelName, args.FailReason, args.Attempts,
                 args.Score);
 #endif
@@ -150,7 +150,7 @@ namespace _Game._1_Analytics.Scripts
             int levelIndex = levelProgress + bossProgress - 1;
             string levelName = GetNameWithIndex("Boss", bossProgress);
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendReviveUsedEvent(levelIndex, levelName, args.FailReason, args.Attempts,
                 args.Score);
 #endif
@@ -164,7 +164,7 @@ namespace _Game._1_Analytics.Scripts
             int levelIndex = levelProgress + bossProgress - 1;
 
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelCompletedEvent(levelIndex, levelName, args.Attempts, args.Score);
 #endif
         }
@@ -177,7 +177,7 @@ namespace _Game._1_Analytics.Scripts
             int levelIndex = levelProgress + bossProgress - 1;
 
             var args = (LinearLevelEventsArgs)eventArgs;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendLevelRestartedEvent(levelIndex, levelName, args.Attempts, args.Score);
 #endif
         }
@@ -188,7 +188,7 @@ namespace _Game._1_Analytics.Scripts
             var args = (LinearLevelEventsArgs)obj;
             // if level id smaller than 10, add 00 before it to make it 3 digits
 
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.MissionStarted(args.LevelType.ToString(),
                 GetNameWithIndex(args.LevelType.ToString(), args.LevelId));
 #endif
@@ -197,7 +197,7 @@ namespace _Game._1_Analytics.Scripts
         private void ChallengeLevelCompleted(EventArgs obj)
         {
             var args = (LinearLevelEventsArgs)obj;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.MissionCompleted(args.LevelType.ToString(),
                 GetNameWithIndex(args.LevelType.ToString(), args.LevelId));
 #endif
@@ -206,7 +206,7 @@ namespace _Game._1_Analytics.Scripts
         private void ChallengeLevelFailed(EventArgs obj)
         {
             var args = (LinearLevelEventsArgs)obj;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.MissionFailed(args.LevelType.ToString(),
                 GetNameWithIndex(args.LevelType.ToString(), args.LevelId));
 #endif
@@ -219,7 +219,7 @@ namespace _Game._1_Analytics.Scripts
             int levelProgress = LinearLevelSystem.GetProgress(LinearLevelType.Normal);
             int bossProgress = LinearLevelSystem.GetProgress(LinearLevelType.Boss);
             int levelIndex = levelProgress + bossProgress - 1;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             _eventSender.SendReviveUsedEvent(levelIndex, GetNameWithIndex(args.LevelType.ToString(), args.LevelId),
                 args.FailReason, 0, 0);
 #endif

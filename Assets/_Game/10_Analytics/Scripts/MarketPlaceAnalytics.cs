@@ -27,7 +27,7 @@ namespace _Game._1_Analytics.Scripts
         private void OnSpatulaBought(EventArgs obj)
         {
             var args = (MarketPlaceEventArgs)obj;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             LionStudios.Suite.Analytics.LionAnalytics.ItemCollected(new LionStudios.Suite.Analytics.Reward(args.MarketPlaceItem.ItemIndex.ToString(), "Spatula", 1));
 #endif
         }
@@ -35,7 +35,7 @@ namespace _Game._1_Analytics.Scripts
         private void OnSkinbought(EventArgs obj)
         {
             var args = (MarketPlaceEventArgs)obj;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             LionStudios.Suite.Analytics.LionAnalytics.ItemCollected(
                 new LionStudios.Suite.Analytics.Reward(args.MarketPlaceItem.ItemIndex.ToString(), "Skin", 1));
 #endif
@@ -44,7 +44,7 @@ namespace _Game._1_Analytics.Scripts
         private void OnEnvironmentBought(EventArgs obj)
         {
             var args = (MarketPlaceEventArgs)obj;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             LionStudios.Suite.Analytics.LionAnalytics.ItemCollected(
                 new LionStudios.Suite.Analytics.Reward(args.MarketPlaceItem.ItemIndex.ToString(), "Environment", 1));
 #endif

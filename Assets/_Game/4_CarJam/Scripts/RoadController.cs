@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -18,11 +17,12 @@ namespace _Game._4_CarJam.Scripts
         {
             return currentRoad.NextRoad;
         }
+
         public bool FindRoadAhead(Vector3 position, Vector3 direction, out Road road, out Vector3 intersection)
         {
             road = null;
             intersection = Vector3.zero;
-            
+
             float minDistance = float.MaxValue;
             foreach (var roadElement in RoadList)
             {
@@ -36,6 +36,11 @@ namespace _Game._4_CarJam.Scripts
                         road = roadElement;
                     }
                 }
+            }
+
+            if (road == null)
+            {
+                Debug.LogError("No road found");
             }
 
             return road != null;

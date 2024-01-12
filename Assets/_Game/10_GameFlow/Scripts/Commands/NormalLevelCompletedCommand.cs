@@ -44,9 +44,19 @@ namespace _Game.Systems.GameFlow.Scripts.Commands
             // SHOW WIN SCREEN
             Craft.Get<EffectsSystem>().ConfettiView.Play(false);
             var target = Craft.GetUI<NormalLevelUI>().CoinRewardView;
-            new CollectCoinAnimationCommand().Execute(reward, target).Play();
-            DOVirtual.DelayedCall(0.4f, () => { OnWinScreenClosed(); });
+            // new CollectCoinAnimationCommand().Execute(reward, target).Play();
+            //DOVirtual.DelayedCall(0.4f, () => { OnWinScreenClosed(); });
 
+            DOVirtual.DelayedCall(LevelUIAnimationsSo.Instance.ScreenWaitTime, () =>
+            {
+                Craft.OpenUI<NormalLevelWinUI>(new NormalLevelWinUIArgs()
+                {
+                    CoinReward = reward,
+                    OnClosed = OnWinScreenClosed,
+                    OnCoinMultiplierWatched = OnCoinMultiplierWatched,
+                    ShouldShowMultiplier = false
+                });
+            });
             return;
         }
 
@@ -96,7 +106,7 @@ namespace _Game.Systems.GameFlow.Scripts.Commands
             int levelProgress = linearLevelSystem.GetProgress(LinearLevelType.Normal);
             int bossProgress = linearLevelSystem.GetProgress(LinearLevelType.Boss);
             int levelIndex = levelProgress + bossProgress - 1;
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             LionStudios.Suite.Analytics.LionAnalytics.RewardVideoShow("multiplyCoins", "unknown", levelIndex,
                 new Dictionary<string, object>()
                 {

@@ -312,6 +312,7 @@ namespace _Game._4_CarJam.Scripts
         {
             return _maxPoint;
         }
+
         public bool IsEmpty(Vector3Int point)
         {
             if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)

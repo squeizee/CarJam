@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using _Game.Systems._CoreSystem.Scripts;
 using UnityEngine;
 using SystemInfo = UnityEngine.Device.SystemInfo;
-#if MAX_ADS
+#if HAS_LION_APPLOVIN_SDK
 namespace _Game._0_CraftCore.Scripts.Utility
 {
     public class MaxSDKInitializer : BaseCraftSystem, ICraftSystem

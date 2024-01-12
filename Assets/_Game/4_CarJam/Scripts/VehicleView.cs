@@ -12,7 +12,6 @@ namespace _Game._4_CarJam.Scripts
             // get vehicle color dependent components
             var vehicleColorDependents = GetComponentsInChildren<VehicleColorDependent>();
             // log 
-            Debug.Log($"VehicleView.SetColor() vehicleColorDependents.Length: {vehicleColorDependents.Length}");
             foreach (var vehicleColorDependent in vehicleColorDependents)
             {
                 vehicleColorDependent.Initialize(color);

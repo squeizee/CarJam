@@ -6,7 +6,6 @@ namespace _Game._4_CarJam.Scripts
     [CreateAssetMenu(fileName = "CarJamSo", menuName = "Craft/CarJam/CarJamSo")]
     public class CarJamSo : ScriptableSingleton<CarJamSo>
     {
-        public Transform GridFillItem;
         public GameObject EnvironmentPrefab;
         public float CameraCoefficient = 10;
         public float DefaultCameraDistance = 10;

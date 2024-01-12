@@ -39,18 +39,18 @@ namespace _Game._4_CarJam.Scripts
             OnTapped += () =>
             {
                 vehicleViewParent.transform.DOComplete();
-                vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
+                vehicleViewParent.transform.DOShakeRotation(.3f, 4.5f);
             };
             OnCrash += () =>
             {
                 vehicleViewParent.transform.DOComplete();
-                vehicleViewParent.transform.DOShakeRotation(.3f, 10f);
+                vehicleViewParent.transform.DOShakeRotation(.3f, 4.5f);
             };
         }
 
-        public override void Initialize(Vector2Int positionInGrid, Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action onStateChanged)
         {
-            base.Initialize(positionInGrid, onStateChanged);
+            base.Initialize(positionInGrid, worldPos, onStateChanged);
             State = GameElementState.Idle;
             SetDoorPositions();
             _listSeats = GetComponentsInChildren<Seat>().ToArray();

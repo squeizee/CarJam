@@ -1,5 +1,4 @@
 // #define FIREBASE_INSTALLED
-// #define LION_INSTALLED
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -140,7 +139,7 @@ namespace _Game._1_Config.Scripts
             }
 
             Debug.Log($"InitAbsVariants: {_experimentName} {_experimentCohort}");
-#if LION_INSTALLED
+#if LK_HAS_LION_ANALYTICS
             LionAnalytics.AbCohort(_experimentName, _experimentCohort);
 #endif
         }
