@@ -133,7 +133,7 @@ namespace _Game._4_CarJam.Scripts
                 case 90:
                     direction = Vector2Int.right;
                     neighbor = Vector2Int.down;
-                    distance = (intersectionInGrid.x - vehiclePosition.x) + 1;
+                    distance = (intersectionInGrid.x - vehiclePosition.x);
                     break;
                 case 180:
                     direction = Vector2Int.down;

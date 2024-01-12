@@ -147,9 +147,6 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnVehicleFull(VehicleController vehicle)
         {
-            // iki case var Araba yol uzerinde olabilir 
-            // araba YolaCikmasi Gerekiyor Olabilir 
-
             if (vehicle.RoadPositions.Count == 0)
             {
                 if (roadController.FindRoadAhead(vehicle.transform.position, vehicle.transform.forward, out var road1,
@@ -159,100 +156,134 @@ namespace _Game._4_CarJam.Scripts
                 }
             }
 
-            return;
             float angle = 0;
             Sequence roadSequence = DOTween.Sequence();
-
-            if (roadController.FindRoadAhead(vehicle.transform.position, vehicle.transform.forward, out var road,
-                    out var intersection))
+            Vector3 oldPosition = vehicle.transform.position;
+            while (vehicle.NextTargetPointIndex < vehicle.RoadPositions.Count)
             {
-                angle = Vector3.SignedAngle(vehicle.transform.forward, Vector3.forward, Vector3.down);
-
-                if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, intersection,
-                        out var newIntersection) == false)
+                Vector3 targetPosition = vehicle.RoadPositions[vehicle.NextTargetPointIndex];
+                Vector3 direction = targetPosition - vehicle.RoadPositions[vehicle.NextTargetPointIndex - 1];
+                if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, targetPosition,
+                        out var newTargetPosition))
                 {
-                    if (newIntersection == Vector3.zero)
-                    {
-                        roadSequence.AppendCallback(vehicle.OnWaiting);
-                        return;
-                    }
-
-                    intersection = newIntersection;
-                    vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
-                    roadSequence.Append(vehicle.MoveToPosition(intersection));
-                    roadSequence.AppendCallback(vehicle.OnWaiting);
-                    return;
-                }
-
-                vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
-                roadSequence.AppendCallback(vehicle.OnMove);
-                roadSequence.Append(vehicle.MoveToPosition(intersection));
-                angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
-                roadSequence.Append(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
-
-                while (road.NextRoad != null)
-                {
-                    // if road distance less than 0.2f get next road
-
-                    angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
-
-                    if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle,
-                            road.GetIntersectionPointToNextRoad(), out newIntersection) == false)
-                    {
-                        if (newIntersection == Vector3.zero)
-                        {
-                            roadSequence.AppendCallback(vehicle.OnWaiting);
-                            return;
-                        }
-
-                        intersection = newIntersection;
-                        vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
-                        roadSequence.Append(vehicle.MoveToPosition(intersection));
-                        roadSequence.AppendCallback(vehicle.OnWaiting);
-                        return;
-                    }
-
-                    intersection = road.GetIntersectionPointToNextRoad();
-                    vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
-                    roadSequence.Append(vehicle.MoveToPosition(intersection));
+                    vehicle.PositionInGrid = gridController.GetCellPosition(targetPosition);
+                    roadSequence.AppendCallback(vehicle.OnMove);
+                    roadSequence.Append(vehicle.MoveToPosition(targetPosition, oldPosition));
+                    angle = Vector3.SignedAngle(direction, Vector3.forward, Vector3.down);
                     roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
-                    road = roadController.GetNextRoad(road);
+                    vehicle.NextTargetPointIndex++;
+                    oldPosition = targetPosition;
                 }
-
-                if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, road.End.position,
-                        out newIntersection) == false)
+                else
                 {
-                    if (newIntersection == Vector3.zero)
-                    {
-                        roadSequence.AppendCallback(vehicle.OnWaiting);
-                        return;
-                    }
-
-                    intersection = newIntersection;
-
-                    vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
-                    roadSequence.Append(vehicle.MoveToPosition(intersection));
+                    vehicle.PositionInGrid = gridController.GetCellPosition(newTargetPosition);
+                    roadSequence.Append(vehicle.MoveToPosition(newTargetPosition, oldPosition));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
                     return;
                 }
-
-                angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
-                vehicle.PositionInGrid = gridController.GetMaxPoint();
-                var cornerPosition = gridController.GetWorldPosition(vehicle.PositionInGrid);
-                vehicle.PositionInGrid = new Vector2Int(13, 13);
-                var finalPosition = gridController.GetWorldPosition(gridController.GetMaxPoint(Vector2Int.right * 5));
-                roadSequence.Append(vehicle.MoveToPosition(cornerPosition));
-                roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
-                roadSequence.AppendCallback(environmentController.PlayParticles);
-                roadSequence.AppendCallback(vehicle.OnComplete);
-                // check completed
-                roadSequence.AppendCallback(CheckLevelComplete);
-
-                float duration = roadSequence.Duration();
-                _listCheckCompletedTweens.Add(DOVirtual.DelayedCall(duration, CheckLevelComplete));
-                roadSequence.Append(vehicle.MoveToPosition(finalPosition));
-                _listSequences.Add(roadSequence);
             }
+
+            vehicle.PositionInGrid = new Vector2Int(13, 13);
+            roadSequence.AppendCallback(environmentController.PlayParticles);
+            roadSequence.AppendCallback(vehicle.OnComplete);
+            // check completed
+            roadSequence.AppendCallback(CheckLevelComplete);
+
+            float duration1 = roadSequence.Duration();
+            _listCheckCompletedTweens.Add(DOVirtual.DelayedCall(duration1, CheckLevelComplete));
+            _listSequences.Add(roadSequence);
+            return;
+            //
+            // if (roadController.FindRoadAhead(vehicle.transform.position, vehicle.transform.forward, out var road,
+            //         out var intersection))
+            // {
+            //     angle = Vector3.SignedAngle(vehicle.transform.forward, Vector3.forward, Vector3.down);
+            //
+            //     if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, intersection,
+            //             out var newIntersection) == false)
+            //     {
+            //         if (newIntersection == Vector3.zero)
+            //         {
+            //             roadSequence.AppendCallback(vehicle.OnWaiting);
+            //             return;
+            //         }
+            //
+            //         intersection = newIntersection;
+            //         vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
+            //         roadSequence.Append(vehicle.MoveToPosition(intersection));
+            //         roadSequence.AppendCallback(vehicle.OnWaiting);
+            //         return;
+            //     }
+            //
+            //     vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
+            //     roadSequence.AppendCallback(vehicle.OnMove);
+            //     roadSequence.Append(vehicle.MoveToPosition(intersection));
+            //     angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
+            //     roadSequence.Append(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+            //
+            //     while (road.NextRoad != null)
+            //     {
+            //         // if road distance less than 0.2f get next road
+            //
+            //         angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
+            //
+            //         if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle,
+            //                 road.GetIntersectionPointToNextRoad(), out newIntersection) == false)
+            //         {
+            //             if (newIntersection == Vector3.zero)
+            //             {
+            //                 roadSequence.AppendCallback(vehicle.OnWaiting);
+            //                 return;
+            //             }
+            //
+            //             intersection = newIntersection;
+            //             vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
+            //             roadSequence.Append(vehicle.MoveToPosition(intersection));
+            //             roadSequence.AppendCallback(vehicle.OnWaiting);
+            //             return;
+            //         }
+            //
+            //         intersection = road.GetIntersectionPointToNextRoad();
+            //         vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
+            //         roadSequence.Append(vehicle.MoveToPosition(intersection));
+            //         roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+            //         road = roadController.GetNextRoad(road);
+            //     }
+            //
+            //     if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, road.End.position,
+            //             out newIntersection) == false)
+            //     {
+            //         if (newIntersection == Vector3.zero)
+            //         {
+            //             roadSequence.AppendCallback(vehicle.OnWaiting);
+            //             return;
+            //         }
+            //
+            //         intersection = newIntersection;
+            //
+            //         vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
+            //         roadSequence.Append(vehicle.MoveToPosition(intersection));
+            //         roadSequence.AppendCallback(vehicle.OnWaiting);
+            //         return;
+            //     }
+            //
+            //     angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
+            //     vehicle.PositionInGrid = gridController.GetMaxPoint();
+            //     var cornerPosition = gridController.GetWorldPosition(vehicle.PositionInGrid);
+            //     vehicle.PositionInGrid = new Vector2Int(13, 13);
+            //     var finalPosition = gridController.GetWorldPosition(gridController.GetMaxPoint(Vector2Int.right * 5));
+            //     roadSequence.Append(vehicle.MoveToPosition(cornerPosition));
+            //     roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+            //     roadSequence.AppendCallback(environmentController.PlayParticles);
+            //     roadSequence.AppendCallback(vehicle.OnComplete);
+            //     // check completed
+            //     roadSequence.AppendCallback(CheckLevelComplete);
+            //
+            //     float duration = roadSequence.Duration();
+            //     _listCheckCompletedTweens.Add(DOVirtual.DelayedCall(duration, CheckLevelComplete));
+            //     roadSequence.Append(vehicle.MoveToPosition(finalPosition));
+            //     _listSequences.Add(roadSequence);
+            // }
         }
 
         #region Input Handling
