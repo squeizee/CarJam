@@ -16,11 +16,15 @@ namespace _Game.Systems.GameFlow.Scripts.Commands
             {
                 _lastObservedLevel = playerLevel;
             }
-
-            if (playerLevel - _lastObservedLevel > 7)
+            else
             {
-                _lastObservedLevel = playerLevel;
+                _lastObservedLevel = playerLevel - 1;
             }
+
+            // if (playerLevel - _lastObservedLevel > 7)
+            // {
+            //     _lastObservedLevel = playerLevel;
+            // }
 
             Craft.OpenUI<RoadMapUI>(new RoadMapUIArgs()
             {
