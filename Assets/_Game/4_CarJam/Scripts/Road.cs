@@ -235,6 +235,7 @@ namespace _Game._4_CarJam.Scripts
         public List<Vector3> CalculateRoadPositions(Vector3 vehiclePosition, Vector3 intersection2)
         {
             List<Vector3> roadPositions = new List<Vector3>();
+            vehiclePosition.y = 0;
             roadPositions.Add(vehiclePosition);
             roadPositions.Add(intersection2);
             Road currentRoad = this;
@@ -254,6 +255,18 @@ namespace _Game._4_CarJam.Scripts
                 if (Vector3.Distance(roadPositions[i], roadPositions[i + 1]) < 0.2f)
                 {
                     roadPositions.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            for (int i = 0; i < roadPositions.Count - 2; i++)
+            {
+                var line1 = roadPositions[i + 2] - roadPositions[i];
+                var line2 = roadPositions[i + 1] - roadPositions[i];
+                // if  three point is on the same line, remove middle point
+                if (Vector3.Angle(line1, line2) < 0.1f)
+                {
+                    roadPositions.RemoveAt(i + 1);
                     i--;
                 }
             }
