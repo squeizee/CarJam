@@ -75,7 +75,7 @@ namespace _Game.Systems.GameFlow.Scripts.Commands
         {
             UnSubscribe();
             Craft.BlockInput();
-            DOVirtual.DelayedCall(0.6f, () =>
+            DOVirtual.DelayedCall(0, () =>
             {
                 Craft.UnBlockInput();
                 new NormalLevelCompletedCommand().Execute();
