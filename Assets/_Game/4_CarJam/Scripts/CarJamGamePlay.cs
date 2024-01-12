@@ -50,8 +50,9 @@ namespace _Game._4_CarJam.Scripts
             foreach (var gameElement in _listGameElements)
             {
                 var position = gridController.GetCellPosition(gameElement.transform.position);
+                var worldPosition = gridController.GetWorldPosition(position);
 
-                gameElement.Initialize(position, OnStateChange);
+                gameElement.Initialize(position, worldPosition, OnStateChange);
 
                 switch (gameElement)
                 {

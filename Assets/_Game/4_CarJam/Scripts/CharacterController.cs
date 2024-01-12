@@ -44,9 +44,9 @@ namespace _Game._4_CarJam.Scripts
             _animator = GetComponentInChildren<Animator>();
         }
 
-        public override void Initialize(Vector2Int positionInGrid, Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action onStateChanged)
         {
-            base.Initialize(positionInGrid, onStateChanged);
+            base.Initialize(positionInGrid, worldPos, onStateChanged);
             Stop();
             _indicatorDefaultPosition = indicator.localPosition;
         }

@@ -289,6 +289,11 @@ namespace _Game._4_CarJam.Scripts
             var cellPosition = grid.WorldToCell(pos);
             return new Vector2Int(cellPosition.x, cellPosition.y);
         }
+        
+        public Vector3 GetWorldPosition(Vector2Int pos)
+        {
+            return grid.GetCellCenterWorld(new Vector3Int(pos.x, pos.y, 0));
+        }
 
         public bool IsEmpty(Vector3Int point)
         {

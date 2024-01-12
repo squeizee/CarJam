@@ -48,9 +48,9 @@ namespace _Game._4_CarJam.Scripts
             };
         }
 
-        public override void Initialize(Vector2Int positionInGrid, Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action onStateChanged)
         {
-            base.Initialize(positionInGrid, onStateChanged);
+            base.Initialize(positionInGrid, worldPos, onStateChanged);
             State = GameElementState.Idle;
             SetDoorPositions();
             _listSeats = GetComponentsInChildren<Seat>().ToArray();

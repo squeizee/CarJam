@@ -61,10 +61,11 @@ namespace _Game._4_CarJam.Scripts
         public Vector3 Offset { get; protected set; }
         public Vector2Int Dimension { get; protected set; }
 
-        public Vector2Int PositionInGrid { get; set; }
+        public Vector2Int PositionInGrid;
 
-        public virtual void Initialize(Vector2Int positionInGrid, Action onStateChanged)
+        public virtual void Initialize(Vector2Int positionInGrid,Vector3 worldPos, Action onStateChanged)
         {
+            transform.position = worldPos;
             OnGameElementStateChanged += onStateChanged;
             GameElementColor = color;
             Offset = offset;
