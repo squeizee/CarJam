@@ -3,6 +3,7 @@ using _Game._2_LinearLevel.Scripts;
 using _Game._3_GamePlay;
 using _Game._3_GamePlay.Scripts;
 using _Game.Systems.GameFlow.Scripts.UI;
+using DG.Tweening;
 
 namespace _Game.Systems.GameFlow.Scripts.Commands
 {
@@ -28,7 +29,7 @@ namespace _Game.Systems.GameFlow.Scripts.Commands
                 LinearLevelType.Normal,
                 LinearLevelEvents.NormalLevelStarted
             ));
-            
+
             gamePlaySystem.StartGamePlay(level, new BaseGamePlayStartArgs(isAnimated), 0f);
             Subscribe();
             new ShowTutorialHandCommand().Execute();
@@ -73,7 +74,12 @@ namespace _Game.Systems.GameFlow.Scripts.Commands
         public void OnLevelCompleted()
         {
             UnSubscribe();
-            new NormalLevelCompletedCommand().Execute();
+            Craft.BlockInput();
+            DOVirtual.DelayedCall(0.6f, () =>
+            {
+                Craft.UnBlockInput();
+                new NormalLevelCompletedCommand().Execute();
+            });
         }
 
         public void OnLevelFailed(FailReason reason)

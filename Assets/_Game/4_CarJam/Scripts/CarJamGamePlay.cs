@@ -22,6 +22,9 @@ namespace _Game._4_CarJam.Scripts
         private CharacterController _selectedCharacter;
         private GameElement _lastStateChangedGameElement;
 
+        private List<Tween> _listSequences = new List<Tween>();
+        private List<Tween> _listCheckCompletedTweens = new List<Tween>();
+
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
             base.Initialize(baseGamePlayStartArgs);
@@ -99,7 +102,15 @@ namespace _Game._4_CarJam.Scripts
         private void SubscribeEvents()
         {
             Craft.Get<CraftInputSystem>().UserButtonDown += OnUserButtonDown;
-            Craft.Get<CraftTimeSystem>().Dispatcher.Subscribe(TimeIntervals.OnSecond, CheckCompleted);
+            Craft.Get<CraftTimeSystem>().Dispatcher.Subscribe(TimeIntervals.OnSecond, CheckLevelComplete);
+        }
+
+        private void OnDestroy()
+        {
+            Craft.Get<CraftInputSystem>().UserButtonDown -= OnUserButtonDown;
+            Craft.Get<CraftTimeSystem>().Dispatcher.Unsubscribe(TimeIntervals.OnSecond, CheckLevelComplete);
+            _listSequences.ForEach(x => x?.Kill());
+            _listCheckCompletedTweens.ForEach(x => x?.Kill());
         }
 
         private void OnStateChange(GameElement gameElement)
@@ -112,19 +123,19 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
-        private void CheckCompleted()
+        public override void CheckLevelComplete()
         {
-            if (_gameElementList.TrueForAll(x => x.State == GameElement.GameElementState.Completed))
+            if (GamePlayState == GamePlayState.Started)
             {
-                OnGamePlayCompleted?.Invoke();
+                if (_gameElementList.TrueForAll(x => x.State == GameElement.GameElementState.Completed))
+                {
+                    GamePlayState = GamePlayState.Completed;
+                    OnGamePlayCompleted?.Invoke();
+                    _listCheckCompletedTweens.ForEach(x => x?.Kill());
+                }
             }
         }
 
-        private void OnDestroy()
-        {
-            Craft.Get<CraftInputSystem>().UserButtonDown -= OnUserButtonDown;
-            Craft.Get<CraftTimeSystem>().Dispatcher.Unsubscribe(TimeIntervals.OnSecond, CheckCompleted);
-        }
 
         private void UnselectCharacter()
         {
@@ -216,10 +227,21 @@ namespace _Game._4_CarJam.Scripts
                 }
 
                 angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
-                vehicle.PositionInGrid = gridController.GetMaxPoint(Vector2Int.right * 2);
-                roadSequence.Append(vehicle.MoveToPosition(gridController.GetWorldPosition(vehicle.PositionInGrid)));
+                vehicle.PositionInGrid = gridController.GetMaxPoint();
+                var cornerPosition = gridController.GetWorldPosition(vehicle.PositionInGrid);
+                vehicle.PositionInGrid = new Vector2Int(13, 13);
+                var finalPosition = gridController.GetWorldPosition(gridController.GetMaxPoint(Vector2Int.right * 5));
+                roadSequence.Append(vehicle.MoveToPosition(cornerPosition));
                 roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+                roadSequence.AppendCallback(environmentController.PlayParticles);
                 roadSequence.AppendCallback(vehicle.OnComplete);
+                // check completed
+                roadSequence.AppendCallback(CheckLevelComplete);
+
+                float duration = roadSequence.Duration();
+                _listCheckCompletedTweens.Add(DOVirtual.DelayedCall(duration, CheckLevelComplete));
+                roadSequence.Append(vehicle.MoveToPosition(finalPosition));
+                _listSequences.Add(roadSequence);
             }
         }
 

@@ -156,7 +156,7 @@ namespace _Game._4_CarJam.Scripts
         public void OnComplete()
         {
             State = GameElementState.Completed;
-            vehicleViewParent.gameObject.SetActive(false);
+         //   vehicleViewParent.gameObject.SetActive(false);
         }
         public override void ShowEmoji(int repeat = 4)
         {

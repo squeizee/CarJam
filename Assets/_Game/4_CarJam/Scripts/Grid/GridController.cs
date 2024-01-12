@@ -232,6 +232,8 @@ namespace _Game._4_CarJam.Scripts
         public Vector2Int GetCellPosition(Vector3 pos)
         {
             var cellPosition = grid.WorldToCell(pos);
+            cellPosition.x = Mathf.Clamp(cellPosition.x, _minPoint.x, _maxPoint.x);
+            cellPosition.y = Mathf.Clamp(cellPosition.y, _minPoint.y, _maxPoint.y);
             return new Vector2Int(cellPosition.x, cellPosition.y);
         }
 
