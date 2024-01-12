@@ -147,9 +147,19 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnVehicleFull(VehicleController vehicle)
         {
-            if (_lastStateChangedGameElement == vehicle)
-                return;
+            // iki case var Araba yol uzerinde olabilir 
+            // araba YolaCikmasi Gerekiyor Olabilir 
 
+            if (vehicle.RoadPositions.Count == 0)
+            {
+                if (roadController.FindRoadAhead(vehicle.transform.position, vehicle.transform.forward, out var road1,
+                        out var intersection2))
+                {
+                    vehicle.SetRoadPositions(road1.CalculateRoadPositions(vehicle.transform.position, intersection2));
+                }
+            }
+
+            return;
             float angle = 0;
             Sequence roadSequence = DOTween.Sequence();
 

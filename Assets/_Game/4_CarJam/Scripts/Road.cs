@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace _Game._4_CarJam.Scripts
@@ -229,6 +230,35 @@ namespace _Game._4_CarJam.Scripts
                        && (y >= line.y1 && y <= line.y2
                            || y >= line.y2 && y <= line.y1);
             }
+        }
+
+        public List<Vector3> CalculateRoadPositions(Vector3 vehiclePosition, Vector3 intersection2)
+        {
+            List<Vector3> roadPositions = new List<Vector3>();
+            roadPositions.Add(vehiclePosition);
+            roadPositions.Add(intersection2);
+            Road currentRoad = this;
+            while (currentRoad.NextRoad != null)
+            {
+                // get intersection point
+                var intersection = currentRoad.GetIntersectionPointToNextRoad();
+                roadPositions.Add(intersection);
+                currentRoad = currentRoad.NextRoad;
+            }
+
+            roadPositions.Add(currentRoad.End.position);
+
+            // remove if two point is close to each other
+            for (int i = 0; i < roadPositions.Count - 1; i++)
+            {
+                if (Vector3.Distance(roadPositions[i], roadPositions[i + 1]) < 0.2f)
+                {
+                    roadPositions.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            return roadPositions;
         }
     }
 }

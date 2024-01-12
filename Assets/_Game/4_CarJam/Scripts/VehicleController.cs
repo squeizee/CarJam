@@ -33,6 +33,7 @@ namespace _Game._4_CarJam.Scripts
         private Seat[] _listSeats;
         private Dictionary<Vector2Int,DoorSide> _dictDoor = new();
         private Dictionary<Vector2Int,Seat> _dictSeat = new();
+        public List<Vector3> RoadPositions = new List<Vector3>();
 
         private void OnEnable()
         {
@@ -139,6 +140,10 @@ namespace _Game._4_CarJam.Scripts
             var distance = Vector3.Distance(transform.position, position);
             return transform.DOMove(position, distance / VehicleSo.Instance.VehicleSpeed).SetEase(Ease.Linear);
         }   
+        public void SetRoadPositions(List<Vector3> roadPositions)
+        {
+            RoadPositions = roadPositions;
+        }
         
         public bool IsVehicleFull()
         {
