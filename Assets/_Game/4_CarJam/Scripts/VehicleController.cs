@@ -119,6 +119,7 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
+        [Button]
         public void OnPassengerSit()
         {
             if (IsVehicleFull())

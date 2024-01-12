@@ -1,3 +1,4 @@
+using System;
 using Sirenix.OdinInspector;
 using DG.Tweening;
 using DG.Tweening;
@@ -14,6 +15,8 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Transform _rightTransform;
         [SerializeField] private ParticleSystem _leftParticleSystem;
         [SerializeField] private ParticleSystem _rightParticleSystem;
+        [SerializeField] private Collider _confettiCollider;
+        
         
         public void Initialize(GridController gridController)
         {
@@ -30,5 +33,7 @@ namespace _Game._4_CarJam.Scripts
             _leftParticleSystem.Play();
             _rightParticleSystem.Play();
         }
+
+        
     }
 }

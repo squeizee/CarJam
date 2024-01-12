@@ -150,23 +150,11 @@ namespace _Game._4_CarJam.Scripts
             for (int i = 1; i < distance + 1; i++)
             {
                 var point = vehiclePosition + direction * i;
-
-                if (vehicle.IsPointInVehicle(point))
-                {
-                    return true;
-                }
-
-                if (point == _maxPoint)
-                {
-                    newIntersection = GetWorldPosition(point);
-                    break;
-                }
-
-                if (IsEmpty(point) && IsEmpty(point + neighbor))
+                
+                if (CanVehicleMove(point) && CanVehicleMove(point + neighbor))
                 {
                     newIntersection = GetWorldPosition(point);
                 }
-
                 else
                 {
                     isTargetReached = false;
@@ -223,7 +211,13 @@ namespace _Game._4_CarJam.Scripts
             foreach (var gameElement in _listGameElements.Where(gameElement =>
                          gameElement.State is not GameElement.GameElementState.Completed))
             {
-                gameElement.GetPointList().ForEach(point => elementMap[point.x, point.y] = ElementType.Element);
+                gameElement.GetPointList().ForEach(point =>
+                {
+                    //check x,y in range
+                    if (point.x < 0 || point.x >= _mapSize.x || point.y < 0 || point.y >= _mapSize.y)
+                        return;
+                    elementMap[point.x, point.y] = ElementType.Element;
+                });
             }
 
             return elementMap;
@@ -265,6 +259,14 @@ namespace _Game._4_CarJam.Scripts
             return elementMap[point.x, point.y] == ElementType.Ground;
         }
 
+        public bool CanVehicleMove(Vector2Int point)
+        {
+            if (IsPointInGrid(point) == false)
+                return true;
+
+            ElementType[,] elementMap = GetMapDataElement();
+            return elementMap[point.x, point.y] == ElementType.Ground;
+        }
         public bool IsPointInGrid(Vector2Int point)
         {
             return point.x >= _minPoint.x && point.x <= _maxPoint.x && point.y >= _minPoint.y && point.y <= _maxPoint.y;

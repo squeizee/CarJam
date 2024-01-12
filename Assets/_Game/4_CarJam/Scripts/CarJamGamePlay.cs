@@ -5,6 +5,7 @@ using _Game._3_GamePlay.Scripts;
 using _Game.Library.CraftTime;
 using DG.Tweening;
 using Modules.Shared.Controller;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace _Game._4_CarJam.Scripts
@@ -145,6 +146,7 @@ namespace _Game._4_CarJam.Scripts
             _selectedCharacter = null;
         }
 
+        
         private void OnVehicleFull(VehicleController vehicle)
         {
             if (vehicle.RoadPositions.Count == 0)
@@ -163,28 +165,39 @@ namespace _Game._4_CarJam.Scripts
             {
                 Vector3 targetPosition = vehicle.RoadPositions[vehicle.NextTargetPointIndex];
                 Vector3 direction = targetPosition - vehicle.RoadPositions[vehicle.NextTargetPointIndex - 1];
+                angle = Vector3.SignedAngle(direction, Vector3.forward, Vector3.down);
+                
                 if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, targetPosition,
                         out var newTargetPosition))
                 {
                     vehicle.PositionInGrid = gridController.GetCellPosition(targetPosition);
                     roadSequence.AppendCallback(vehicle.OnMove);
                     roadSequence.Append(vehicle.MoveToPosition(targetPosition, oldPosition));
-                    angle = Vector3.SignedAngle(direction, Vector3.forward, Vector3.down);
                     roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
                     vehicle.NextTargetPointIndex++;
                     oldPosition = targetPosition;
                 }
                 else
                 {
+                    roadSequence.Append(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+                    
+                    if (newTargetPosition == Vector3.zero)
+                    {
+                        roadSequence.AppendCallback(vehicle.OnWaiting);
+                        
+                        return;
+                    }
+                    
                     vehicle.PositionInGrid = gridController.GetCellPosition(newTargetPosition);
                     roadSequence.Append(vehicle.MoveToPosition(newTargetPosition, oldPosition));
+                    roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
                     return;
                 }
             }
 
             vehicle.PositionInGrid = new Vector2Int(13, 13);
-            roadSequence.AppendCallback(environmentController.PlayParticles);
+            //roadSequence.AppendCallback(environmentController.PlayParticles);
             roadSequence.AppendCallback(vehicle.OnComplete);
             // check completed
             roadSequence.AppendCallback(CheckLevelComplete);
