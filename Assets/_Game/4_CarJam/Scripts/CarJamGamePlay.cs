@@ -147,7 +147,7 @@ namespace _Game._4_CarJam.Scripts
                     out var intersection))
             {
                 angle = Vector3.SignedAngle(vehicle.transform.forward, Vector3.forward, Vector3.down);
-
+                
                 if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, intersection,
                         out var newIntersection) == false)
                 {
@@ -156,32 +156,27 @@ namespace _Game._4_CarJam.Scripts
                         roadSequence.AppendCallback(vehicle.OnWaiting);
                         return;
                     }
-
+                
                     intersection = newIntersection;
                     vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                     roadSequence.Append(vehicle.MoveToPosition(intersection));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
                     return;
                 }
-
-
+                
+                
                 vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                 roadSequence.AppendCallback(vehicle.OnMove);
                 roadSequence.Append(vehicle.MoveToPosition(intersection));
                 angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
                 roadSequence.Append(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
-
+                
                 while (road.NextRoad != null)
                 {
                     // if road distance less than 0.2f get next road
-                    if (Vector3.Distance(road.End.position, road.NextRoad.Start.position) < 0.2f)
-                    {
-                        road = roadController.GetNextRoad(road);
-                        continue;
-                    }
-
+                
                     angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
-
+                
                     if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle,
                             road.GetIntersectionPointToNextRoad(), out newIntersection) == false)
                     {
@@ -190,22 +185,22 @@ namespace _Game._4_CarJam.Scripts
                             roadSequence.AppendCallback(vehicle.OnWaiting);
                             return;
                         }
-
+                
                         intersection = newIntersection;
                         vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                         roadSequence.Append(vehicle.MoveToPosition(intersection));
                         roadSequence.AppendCallback(vehicle.OnWaiting);
                         return;
                     }
-
+                
                     intersection = road.GetIntersectionPointToNextRoad();
                     vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                     roadSequence.Append(vehicle.MoveToPosition(intersection));
                     roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
                     road = roadController.GetNextRoad(road);
                 }
-
-
+                
+                
                 if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, road.End.position,
                         out newIntersection) == false)
                 {
@@ -214,15 +209,15 @@ namespace _Game._4_CarJam.Scripts
                         roadSequence.AppendCallback(vehicle.OnWaiting);
                         return;
                     }
-
+                
                     intersection = newIntersection;
-
+                
                     vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                     roadSequence.Append(vehicle.MoveToPosition(intersection));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
                     return;
                 }
-
+                
                 angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
                 vehicle.PositionInGrid = gridController.GetMaxPoint(Vector2Int.right * 2);
                 roadSequence.Append(vehicle.MoveToPosition(gridController.GetWorldPosition(vehicle.PositionInGrid)));
