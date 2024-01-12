@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
@@ -52,6 +53,9 @@ namespace _Game._4_CarJam.Scripts
             get => _state;
             protected set
             {
+                if(_state == value) 
+                    return;
+                
                 _state = value;
                 OnGameElementStateChanged?.Invoke();
             }
@@ -63,6 +67,56 @@ namespace _Game._4_CarJam.Scripts
 
         public Vector2Int PositionInGrid { get; set; }
 
+        public bool IsPointInVehicle(Vector2Int point)
+        {
+            return GetPointList().Contains(point);
+        }
+
+        public List<Vector2Int> GetPointList()
+        {
+            List<Vector2Int> pointList = new List<Vector2Int>();
+            
+            int xSign = 0, ySign = 0;
+            int dim1 = 0, dim2 = 0;
+
+            switch (GetElementDirection())
+            {
+                case GameElementDirection.Up:
+                    xSign = 1;
+                    ySign = -1;
+                    dim1 = Dimension.y;
+                    dim2 = Dimension.x;
+                    break;
+                case GameElementDirection.Right:
+                    xSign = -1;
+                    ySign = -1;
+                    dim1 = Dimension.x;
+                    dim2 = Dimension.y;
+                    break;
+                case GameElementDirection.Down:
+                    xSign = -1;
+                    ySign = 1;
+                    dim1 = Dimension.y;
+                    dim2 = Dimension.x;
+                    break;
+                case GameElementDirection.Left:
+                    xSign = 1;
+                    ySign = 1;
+                    dim1 = Dimension.x;
+                    dim2 = Dimension.y;
+                    break;
+            }
+
+            for (int x = 0; x < dim1; x++)
+            {
+                for (int y = 0; y < dim2; y++)
+                {
+                    pointList.Add(new Vector2Int(PositionInGrid.x + x * xSign,PositionInGrid.y+y * ySign));
+                }
+            }
+
+            return pointList;
+        }
         public virtual void Initialize(Vector2Int positionInGrid, Action onStateChanged)
         {
             OnGameElementStateChanged += onStateChanged;

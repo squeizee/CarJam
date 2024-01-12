@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using DG.Tweening.Plugins.Core.PathCore;
 using PathFind;
 using UnityEngine;
 using Grid = UnityEngine.Grid;
@@ -127,17 +128,84 @@ namespace _Game._4_CarJam.Scripts
                 return false;
             }
         }
-
+        
+        
         public Vector2Int WorldToGridPosition(Vector3 pos)
         {
             var cellPosition = grid.WorldToCell(pos);
             return new Vector2Int(cellPosition.x, cellPosition.y);
         }
 
+        public bool CanVehicleReachIntersectionPoint(VehicleController vehicle,float angle, Vector3 intersection, out Vector3 newIntersection)
+        {
+            newIntersection = Vector3.zero;
+            
+            bool isTargetReached = true;
+            var intersectionInGrid = grid.WorldToCell(intersection);
+            var vehiclePosition = vehicle.PositionInGrid;
+            var direction = Vector2Int.zero;
+            var neighbor = Vector2Int.zero;
+            var distance = 0;
+            int intAngle = Mathf.RoundToInt(angle) < 0 ? Mathf.RoundToInt(angle) + 360 : Mathf.RoundToInt(angle);
+            
+            
+            switch (intAngle)
+            {
+                case 0:
+                    direction = Vector2Int.up;
+                    neighbor = Vector2Int.right;
+                    distance = intersectionInGrid.y - vehiclePosition.y;
+                    break;
+                case 90:
+                    direction = Vector2Int.right;
+                    neighbor = Vector2Int.down;
+                    distance = (intersectionInGrid.x - vehiclePosition.x) + 1;
+                    break;
+                case 180:
+                    direction = Vector2Int.down;
+                    neighbor = Vector2Int.left;
+                    distance = vehiclePosition.y - intersectionInGrid.y;
+                    break;
+                case 270:
+                    direction = Vector2Int.left;
+                    neighbor = Vector2Int.up;
+                    distance = vehiclePosition.x - intersectionInGrid.x;
+                    break;
+            }
+            
+            for (int i = 1; i < distance + 1; i++) 
+            {
+                var point = vehiclePosition + direction * i;
+
+                if (vehicle.IsPointInVehicle(point))
+                {
+                    return true;
+                }
+                
+                if (point == _maxPoint)
+                {
+                    newIntersection = GetWorldPosition(point);
+                    break;
+                }
+                
+                if (IsEmpty(point) && IsEmpty(point + neighbor))
+                {
+                    newIntersection = GetWorldPosition(point);
+                }
+                    
+                else
+                {
+                    isTargetReached = false;
+                    break;
+                }
+            }
+            
+            return isTargetReached;
+        }
         public bool CanCharacterReachVehicle(CharacterController character, VehicleController vehicle,
             out List<Point> closestPath)
         {
-            var doorPositions = vehicle.DoorPositions;
+            var doorPositions = vehicle.DoorPositions();
             var characterPosition = character.PositionInGrid;
             bool isPathFound = false;
 
@@ -167,59 +235,6 @@ namespace _Game._4_CarJam.Scripts
 
             return isPathFound;
         }
-
-        public void CheckForwardPath(VehicleController vehicleController)
-        {
-            var pivotPoint = grid.WorldToCell(vehicleController.transform.position);
-            var direction = Vector3Int.zero;
-            var neighbor = Vector3Int.zero;
-            var distanceToBorder = 0;
-            var offset = vehicleController.Dimension.x;
-
-            switch (vehicleController.GetDirection)
-            {
-                case GameElement.GameElementDirection.Up:
-                    direction = Vector3Int.up;
-                    neighbor = Vector3Int.right;
-                    distanceToBorder = _maxPoint.y - pivotPoint.y;
-                    break;
-                case GameElement.GameElementDirection.Right:
-                    direction = Vector3Int.right;
-                    neighbor = Vector3Int.down;
-                    distanceToBorder = _maxPoint.x - pivotPoint.x;
-                    break;
-                case GameElement.GameElementDirection.Down:
-                    direction = Vector3Int.down;
-                    neighbor = Vector3Int.left;
-                    distanceToBorder = pivotPoint.y - _minPoint.y;
-                    break;
-                case GameElement.GameElementDirection.Left:
-                    direction = Vector3Int.left;
-                    neighbor = Vector3Int.up;
-                    distanceToBorder = pivotPoint.x - _minPoint.x;
-                    break;
-            }
-
-            var targetPoint = pivotPoint + direction * (offset * 2 + distanceToBorder);
-            List<Vector3> path = new List<Vector3>();
-            bool isTargetReached = true;
-            for (int i = 1; i < distanceToBorder + 1; i++)
-            {
-                if (IsEmpty(pivotPoint + direction * i) && IsEmpty(pivotPoint + neighbor + direction * i))
-                    path.Add(pivotPoint + direction * i);
-                else
-                {
-                    isTargetReached = false;
-                    break;
-                }
-            }
-
-            if (isTargetReached)
-                path.Add(targetPoint);
-
-            vehicleController.MoveForward(path, isTargetReached);
-        }
-
         private ElementType[,] GetMapDataElement()
         {
             ElementType[,] elementMap = new ElementType[_mapSize.x, _mapSize.y];
@@ -275,7 +290,7 @@ namespace _Game._4_CarJam.Scripts
 
                 if (gameElement is not VehicleController vehicle) continue;
 
-                foreach (var seat in vehicle.SeatPositions)
+                foreach (var seat in vehicle.SeatPositions())
                 {
                     elementMap[seat.x, seat.y] = ElementType.Seat;
                 }
@@ -289,7 +304,14 @@ namespace _Game._4_CarJam.Scripts
             var cellPosition = grid.WorldToCell(pos);
             return new Vector2Int(cellPosition.x, cellPosition.y);
         }
-
+        public Vector3 GetWorldPosition(Vector2Int pos)
+        {
+            return grid.GetCellCenterWorld(new Vector3Int(pos.x, pos.y, 0));
+        }
+        public Vector2Int GetMaxPoint()
+        {
+            return _maxPoint;
+        }
         public bool IsEmpty(Vector3Int point)
         {
             if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)
@@ -301,13 +323,18 @@ namespace _Game._4_CarJam.Scripts
 
         public bool IsEmpty(Vector2Int point)
         {
-            if (point.x < _minPoint.x || point.x > _maxPoint.x || point.y < _minPoint.y || point.y > _maxPoint.y)
-                return false;
+           if(IsPointInGrid(point) == false)
+               return false;
 
             ElementType[,] elementMap = GetMapDataElement();
             return elementMap[point.x, point.y] == ElementType.Ground;
         }
-
+        
+        public bool IsPointInGrid(Vector2Int point)
+        {
+            return point.x >= _minPoint.x && point.x <= _maxPoint.x && point.y >= _minPoint.y && point.y <= _maxPoint.y;
+        }
+        
         public Rect GetLocalRect()
         {
             return new Rect(_minPoint.x, _minPoint.y, _maxPoint.x - _minPoint.x, _maxPoint.y - _minPoint.y);

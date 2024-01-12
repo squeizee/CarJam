@@ -18,9 +18,9 @@ namespace _Game._4_CarJam.Scripts
 
         public Action<VehicleController> OnVehicleFull;
         public Action<VehicleController> OnBeforeMove;
-        public List<Vector2Int> DoorPositions => _dictDoor.Keys.ToList();
-        public List<Vector2Int> SeatPositions => _dictSeat.Keys.ToList();
-        public GameElementDirection GetDirection => GetElementDirection();
+        public List<Vector2Int> DoorPositions() => _dictDoor.Keys.ToList();
+        public List<Vector2Int> SeatPositions() => _dictSeat.Keys.ToList();
+        public GameElementDirection GetDirection() => GetElementDirection();
 
         
         [SerializeField] private VehicleView vehicleView;
@@ -128,13 +128,13 @@ namespace _Game._4_CarJam.Scripts
         {
             if (IsVehicleFull())
             {
-                OnBeforeMove?.Invoke(this);
+                OnVehicleFull?.Invoke(this);
+                //OnBeforeMove?.Invoke(this);
             }
         }
 
         public Tween MoveToPosition(Vector3 position)
         {
-            
             position.y = transform.position.y;
             var distance = Vector3.Distance(transform.position, position);
             return transform.DOMove(position, distance / VehicleSo.Instance.VehicleSpeed).SetEase(Ease.Linear);
@@ -185,7 +185,11 @@ namespace _Game._4_CarJam.Scripts
         {
             return _centerPosition.position;
         }
-        
+        public void OnWaiting()
+        {
+            State = GameElementState.Waiting;
+            ShowEmoji(-1);
+        }
         public void OnComplete()
         {
             State = GameElementState.Completed;
@@ -204,7 +208,6 @@ namespace _Game._4_CarJam.Scripts
         {
             OnTapped?.Invoke();
         }
-
         public override void OnMove()
         {
             transform.DOComplete();
