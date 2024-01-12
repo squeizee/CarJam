@@ -51,7 +51,7 @@ namespace _Game._4_CarJam.Scripts
             _indicatorDefaultPosition = indicator.localPosition;
         }
 
-        public Sequence MoveAlongPath(List<Point> path)
+        public Sequence MoveAlongPath(List<Point> path, bool isSetPosition = true)
         {
             transform.DOComplete();
 
@@ -79,7 +79,11 @@ namespace _Game._4_CarJam.Scripts
 
             _sequence.AppendCallback(() =>
             {
-                PositionInGrid = new Vector2Int(path[^1].x, path[^1].y);
+                if (isSetPosition)
+                {
+                    PositionInGrid = new Vector2Int(path[^1].x, path[^1].y);
+                }
+
                 Stop();
             });
 
@@ -116,11 +120,16 @@ namespace _Game._4_CarJam.Scripts
                 .OnComplete(() => happyIndicator.gameObject.SetActive(false));
         }
 
+        public void OnSeatReserved()
+        {
+            mainCollider.enabled = false;
+            PositionInGrid = new Vector2Int(14, 14);
+        }
+
         public void OnComplete()
         {
             _animator.Play("Sit");
             State = GameElementState.Completed;
-            mainCollider.enabled = false;
             ShowHappyIndicator();
         }
 
@@ -155,15 +164,21 @@ namespace _Game._4_CarJam.Scripts
 
         public Tween MoveToVehicle(VehicleController vehicle, Seat seat)
         {
-            transform.DOComplete();
-            Vector3 targetPosition = vehicle.GetCenterPosition();
+            Sequence sequence = DOTween.Sequence();
+            Vector3 targetPosition = seat.transform.position;
             targetPosition.y = transform.position.y;
-            return transform.DOMove(targetPosition, 0.2f).OnComplete(() =>
+
+            sequence.AppendCallback(() => seat.SetCharacter(transform));
+            sequence.Append(transform.DOLocalMove(Vector3.zero, 0.2f));
+            sequence.Join(transform.DOLocalRotate(Vector3.zero, 0.2f));
+            sequence.Join(transform.DOScale(Vector3.one, 0.2f));
+            sequence.AppendCallback(() =>
             {
                 OnComplete();
-                seat.SetCharacter(transform);
                 vehicle.OnPassengerSit();
             });
+
+            return sequence;
         }
     }
 }
