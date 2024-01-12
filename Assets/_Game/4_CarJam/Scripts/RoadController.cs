@@ -51,17 +51,17 @@ namespace _Game._4_CarJam.Scripts
             return road != null;
         }
 
-        public bool IsVehicleOnRoad(Vector3 position, Vector3 direction, out Road road)
-        {
-            // foreach (var roadElement in RoadList)
-            // {
-            //     var roadDirection = roadElement.GetDirection();
-            //
-            //     if (direction == roadDirection)
-            //     {
-            //         
-            //     }
-            // }
-        }
+        // public bool IsVehicleOnRoad(Vector3 position, Vector3 direction, out Road road)
+        // {
+        //     foreach (var roadElement in RoadList)
+        //     {
+        //         var roadDirection = roadElement.GetDirection();
+        //     
+        //         if (direction == roadDirection)
+        //         {
+        //             
+        //         }
+        //     }
+        // }
     }
 }
