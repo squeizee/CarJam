@@ -44,7 +44,7 @@ namespace _Game._4_CarJam.Scripts
             _animator = GetComponentInChildren<Animator>();
         }
 
-        public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action<GameElement> onStateChanged)
         {
             base.Initialize(positionInGrid, worldPos, onStateChanged);
             Stop();

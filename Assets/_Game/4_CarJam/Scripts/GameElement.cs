@@ -33,7 +33,7 @@ namespace _Game._4_CarJam.Scripts
             Right
         }
 
-        protected Action OnGameElementStateChanged;
+        protected Action<GameElement> OnGameElementStateChanged;
         protected Action OnCrash;
         protected Action OnTapped;
 
@@ -57,7 +57,7 @@ namespace _Game._4_CarJam.Scripts
                     return;
                 
                 _state = value;
-                OnGameElementStateChanged?.Invoke();
+                OnGameElementStateChanged?.Invoke(this);
             }
         }
 
@@ -117,8 +117,7 @@ namespace _Game._4_CarJam.Scripts
 
             return pointList;
         }
-        public virtual void Initialize(Vector2Int positionInGrid, Action onStateChanged)
-        public virtual void Initialize(Vector2Int positionInGrid,Vector3 worldPos, Action onStateChanged)
+        public virtual void Initialize(Vector2Int positionInGrid,Vector3 worldPos, Action<GameElement> onStateChanged)
         {
             transform.position = worldPos;
             OnGameElementStateChanged += onStateChanged;

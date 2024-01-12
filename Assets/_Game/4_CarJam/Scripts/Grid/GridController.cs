@@ -51,32 +51,7 @@ namespace _Game._4_CarJam.Scripts
                 _minPoint.y = cellPosition.y < _minPoint.y ? cellPosition.y : _minPoint.y;
             }
         }
-
-
-        public bool FindPath3(Vector3 pos, CharacterController character)
-        {
-            var des = grid.WorldToCell(pos);
-            if (!IsEmpty(des)) return false;
-
-            ElementType[,] elementMap = GetMapDataElement();
-
-            var start = grid.WorldToCell(character.transform.position);
-
-            PathFind.Grid pathFindGrid = new PathFind.Grid(_mapSize.x, _mapSize.y, elementMap);
-
-            Point from = new Point(start.x, start.y);
-            Point to = new Point(des.x, des.y);
-
-            List<Point> path = Pathfinding.FindPath(pathFindGrid, from, to);
-
-            if (path.Count == 0)
-                return false;
-
-            character.MoveAlongPath(path);
-
-            return true;
-        }
-
+        
         public bool FindPath(Vector2Int from, Vector2Int to, out List<Point> path)
         {
             // boundary check for to
@@ -245,48 +220,9 @@ namespace _Game._4_CarJam.Scripts
             }
 
             foreach (var gameElement in _listGameElements.Where(gameElement =>
-                         gameElement.State is GameElement.GameElementState.Idle
-                             or GameElement.GameElementState.Waiting))
+                         gameElement.State is not GameElement.GameElementState.Completed))
             {
-                var pivotPoint = gameElement.PositionInGrid;
-                int xSign = 0, ySign = 0;
-                int dim1 = 0, dim2 = 0;
-
-                switch (gameElement.GetElementDirection())
-                {
-                    case GameElement.GameElementDirection.Up:
-                        xSign = 1;
-                        ySign = -1;
-                        dim1 = gameElement.Dimension.y;
-                        dim2 = gameElement.Dimension.x;
-                        break;
-                    case GameElement.GameElementDirection.Right:
-                        xSign = -1;
-                        ySign = -1;
-                        dim1 = gameElement.Dimension.x;
-                        dim2 = gameElement.Dimension.y;
-                        break;
-                    case GameElement.GameElementDirection.Down:
-                        xSign = -1;
-                        ySign = 1;
-                        dim1 = gameElement.Dimension.y;
-                        dim2 = gameElement.Dimension.x;
-                        break;
-                    case GameElement.GameElementDirection.Left:
-                        xSign = 1;
-                        ySign = 1;
-                        dim1 = gameElement.Dimension.x;
-                        dim2 = gameElement.Dimension.y;
-                        break;
-                }
-
-                for (int x = 0; x < dim1; x++)
-                {
-                    for (int y = 0; y < dim2; y++)
-                    {
-                        elementMap[pivotPoint.x + x * xSign, pivotPoint.y + y * ySign] = ElementType.Element;
-                    }
-                }
+                gameElement.GetPointList().ForEach(point => elementMap[point.x, point.y] = ElementType.Element);
 
                 if (gameElement is not VehicleController vehicle) continue;
 
@@ -308,9 +244,9 @@ namespace _Game._4_CarJam.Scripts
         {
             return grid.GetCellCenterWorld(new Vector3Int(pos.x, pos.y, 0));
         }
-        public Vector2Int GetMaxPoint()
+        public Vector2Int GetMaxPoint(Vector2Int offset = default)
         {
-            return _maxPoint;
+            return _maxPoint + offset;
         }
 
         public bool IsEmpty(Vector3Int point)

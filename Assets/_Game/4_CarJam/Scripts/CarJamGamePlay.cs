@@ -16,20 +16,30 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private EnvironmentController environmentController;
 
 
-        private List<GameElement> _listGameElements;
+        private List<GameElement> _gameElementList;
+        private List<VehicleController> _vehicleList;
+        private List<CharacterController> _characterList;
         private CharacterController _selectedCharacter;
+        private GameElement _lastStateChangedGameElement;
 
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
         {
             base.Initialize(baseGamePlayStartArgs);
 
-            _listGameElements = GetComponentsInChildren<GameElement>().ToList();
-            gridController.Initialize(_listGameElements);
+            _gameElementList = GetComponentsInChildren<GameElement>().ToList();
+            gridController.Initialize(_gameElementList);
 
+            _vehicleList = _gameElementList.Where(x => x is VehicleController).Cast<VehicleController>().ToList();
+            _characterList = _gameElementList.Where(x => x is CharacterController).Cast<CharacterController>().ToList();
+
+            InitializeVehicleElements();
+            InitializeCharacterElements();
+            MatchCharacterToVehicles();
+            
             roadController = GetComponentInChildren<RoadController>();
             roadController.Initialize();
 
-            SetVehiclesToCharacters();
+
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
             CreateEnvironment();
@@ -45,42 +55,43 @@ namespace _Game._4_CarJam.Scripts
             environmentController.Initialize(gridController);
         }
 
-        private void SetVehiclesToCharacters()
+        private void InitializeVehicleElements()
         {
-            foreach (var gameElement in _listGameElements)
+            foreach (var vehicle in _vehicleList)
             {
-                var position = gridController.GetCellPosition(gameElement.transform.position);
+                var position = gridController.GetCellPosition(vehicle.transform.position);
                 var worldPosition = gridController.GetWorldPosition(position);
 
-                gameElement.Initialize(position, worldPosition, OnStateChange);
+                vehicle.Initialize(position, worldPosition, OnStateChange);
+                vehicle.OnVehicleFull += OnVehicleFull;
+            }
+        }
 
-                switch (gameElement)
+        private void InitializeCharacterElements()
+        {
+            foreach (var character in _characterList)
+            {
+                var position = gridController.GetCellPosition(character.transform.position);
+                var worldPosition = gridController.GetWorldPosition(position);
+
+                character.Initialize(position, worldPosition, OnStateChange);
+            }
+        }
+
+        private void MatchCharacterToVehicles()
+        {
+            foreach (var character in _characterList)
+            {
+                foreach (var vehicle in _vehicleList.Where(x => x.GameElementColor == character.GameElementColor))
                 {
-                    case VehicleController vehicle:
-                        //vehicle.OnBeforeMove += gridController.CheckForwardPath;
-                        vehicle.OnVehicleFull += OnVehicleFull;
-                        break;
-                    case CharacterController character:
+                    foreach (var doorPosition in vehicle.DoorPositions())
                     {
-                        foreach (var vElement in _listGameElements.Where(x =>
-                                     x.GameElementColor == character.GameElementColor && x is VehicleController))
-                        {
-                            var vehicle = vElement as VehicleController;
+                        character.VehicleDoorPositions.Add(doorPosition, vehicle);
+                    }
 
-                            if (!vehicle) continue;
-
-                            foreach (var doorPosition in vehicle.DoorPositions())
-                            {
-                                character.VehicleDoorPositions.Add(doorPosition, vehicle);
-                            }
-
-                            foreach (var seatPosition in vehicle.SeatPositions())
-                            {
-                                character.VehicleSeatPositions.Add(seatPosition, vehicle);
-                            }
-                        }
-
-                        break;
+                    foreach (var seatPosition in vehicle.SeatPositions())
+                    {
+                        character.VehicleSeatPositions.Add(seatPosition, vehicle);
                     }
                 }
             }
@@ -92,21 +103,19 @@ namespace _Game._4_CarJam.Scripts
             Craft.Get<CraftTimeSystem>().Dispatcher.Subscribe(TimeIntervals.OnSecond, CheckCompleted);
         }
 
-        private void OnStateChange()
+        private void OnStateChange(GameElement gameElement)
         {
-            foreach (var waitingGameElement in _listGameElements.Where(x =>
-                         x.State == GameElement.GameElementState.Waiting))
+            _lastStateChangedGameElement = gameElement;
+
+            foreach (var vehicle in _vehicleList.Where(x=>x.State == GameElement.GameElementState.Waiting))
             {
-                if (waitingGameElement is VehicleController vehicleController)
-                {
-                    vehicleController.TriggerOnBeforeMoveIfFull();
-                }
+                vehicle.TriggerOnBeforeMoveIfFull();
             }
         }
 
         private void CheckCompleted()
         {
-            if (_listGameElements.TrueForAll(x => x.State == GameElement.GameElementState.Completed))
+            if (_gameElementList.TrueForAll(x => x.State == GameElement.GameElementState.Completed))
             {
                 OnGamePlayCompleted?.Invoke();
             }
@@ -128,29 +137,34 @@ namespace _Game._4_CarJam.Scripts
 
         private void OnVehicleFull(VehicleController vehicle)
         {
+            if(_lastStateChangedGameElement == vehicle)
+                return;
+            
             float angle = 0;
             Sequence roadSequence = DOTween.Sequence();
-            
-            if (roadController.FindRoadAhead(vehicle.transform.position, vehicle.transform.forward, out var road, out var intersection))
+
+            if (roadController.FindRoadAhead(vehicle.transform.position, vehicle.transform.forward, out var road,
+                    out var intersection))
             {
                 angle = Vector3.SignedAngle(vehicle.transform.forward, Vector3.forward, Vector3.down);
-                
-                if(gridController.CanVehicleReachIntersectionPoint(vehicle,angle,intersection, out var newIntersection) == false)
+
+                if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, intersection,
+                        out var newIntersection) == false)
                 {
                     if (newIntersection == Vector3.zero)
                     {
                         roadSequence.AppendCallback(vehicle.OnWaiting);
                         return;
                     }
-                    
+
                     intersection = newIntersection;
                     vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                     roadSequence.Append(vehicle.MoveToPosition(intersection));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
                     return;
                 }
-                
-                
+
+
                 vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                 roadSequence.AppendCallback(vehicle.OnMove);
                 roadSequence.Append(vehicle.MoveToPosition(intersection));
@@ -165,23 +179,25 @@ namespace _Game._4_CarJam.Scripts
                         road = roadController.GetNextRoad(road);
                         continue;
                     }
+
                     angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
 
-                    if(gridController.CanVehicleReachIntersectionPoint(vehicle,angle,road.GetIntersectionPointToNextRoad(), out newIntersection) == false)
+                    if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle,
+                            road.GetIntersectionPointToNextRoad(), out newIntersection) == false)
                     {
                         if (newIntersection == Vector3.zero)
                         {
                             roadSequence.AppendCallback(vehicle.OnWaiting);
                             return;
                         }
-                        
+
                         intersection = newIntersection;
                         vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                         roadSequence.Append(vehicle.MoveToPosition(intersection));
                         roadSequence.AppendCallback(vehicle.OnWaiting);
                         return;
                     }
-                    
+
                     intersection = road.GetIntersectionPointToNextRoad();
                     vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                     roadSequence.Append(vehicle.MoveToPosition(intersection));
@@ -189,34 +205,29 @@ namespace _Game._4_CarJam.Scripts
                     road = roadController.GetNextRoad(road);
                 }
 
-                
-                
-                if (gridController.CanVehicleReachIntersectionPoint(vehicle,angle,road.End.position,out newIntersection) == false)
+
+                if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, road.End.position,
+                        out newIntersection) == false)
                 {
                     if (newIntersection == Vector3.zero)
                     {
                         roadSequence.AppendCallback(vehicle.OnWaiting);
                         return;
                     }
-                    
+
                     intersection = newIntersection;
-                    
+
                     vehicle.PositionInGrid = gridController.GetCellPosition(intersection);
                     roadSequence.Append(vehicle.MoveToPosition(intersection));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
                     return;
-                    
                 }
-                
+
                 angle = Vector3.SignedAngle(road.GetDirection(), Vector3.forward, Vector3.down);
-                vehicle.PositionInGrid = gridController.GetMaxPoint();
+                vehicle.PositionInGrid = gridController.GetMaxPoint(Vector2Int.right * 2);
                 roadSequence.Append(vehicle.MoveToPosition(gridController.GetWorldPosition(vehicle.PositionInGrid)));
                 roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
-                roadSequence.Append(environmentController.RotateBarrier());
-                roadSequence.Join(vehicle.MoveToPosition(gridController.GetWorldPosition(vehicle.PositionInGrid + Vector2Int.right * 5)));
-                roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
                 roadSequence.AppendCallback(vehicle.OnComplete);
-                
             }
         }
 
@@ -300,10 +311,12 @@ namespace _Game._4_CarJam.Scripts
                     {
                         seat = vehicle.GetAvailableSeat();
                     }
+
                     if (seat.IsReserved())
                     {
                         return;
                     }
+
                     if (gridController.CanCharacterReachVehicle(_selectedCharacter, vehicle,
                             out List<PathFind.Point> path))
                     {

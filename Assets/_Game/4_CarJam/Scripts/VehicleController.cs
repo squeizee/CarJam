@@ -48,7 +48,7 @@ namespace _Game._4_CarJam.Scripts
             };
         }
 
-        public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action onStateChanged)
+        public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action<GameElement> onStateChanged)
         {
             base.Initialize(positionInGrid, worldPos, onStateChanged);
             State = GameElementState.Idle;
@@ -144,43 +144,6 @@ namespace _Game._4_CarJam.Scripts
         {
             return !_dictSeat.Any(x=>x.Value.IsEmpty());
         }
-        public void MoveForward(List<Vector3> path, bool isTargetReached)
-        {
-            if (path.Count == 0)
-            {
-                if (State != GameElementState.Waiting)
-                    State = GameElementState.Waiting;
-                return;
-            }
-
-            // if seat is none of them empty
-            if (Array.Exists(_listSeats, x => x.IsEmpty()))
-            {
-                if (State != GameElementState.Waiting)
-                    State = GameElementState.Waiting;
-                return;
-            }
-            
-            List<Vector3> pathVector3 = path.ConvertAll(point =>
-                new Vector3(point.x + Offset.x, transform.localPosition.y, point.y + Offset.z));
-
-            if (isTargetReached)
-            {
-                var targetPoint = pathVector3[^1];
-                transform.DOLocalMove(targetPoint, VehicleSo.Instance.CompleteDuration)
-                    .OnComplete(() => { State = GameElementState.Completed; })
-                    .SetEase(Ease.InBack, overshoot: VehicleSo.Instance.VehicleOvershoot);
-            }
-            else
-            {
-                transform.DOLocalPath(pathVector3.ToArray(), 0.2f * path.Count).SetEase(Ease.Linear).OnComplete(() =>
-                {
-                    PositionInGrid = new Vector2Int((int)path[^1].x, (int)path[^1].y);
-                    State = GameElementState.Waiting;
-                });
-            }
-        }
-        
         public Vector3 GetCenterPosition()
         {
             return _centerPosition.position;
