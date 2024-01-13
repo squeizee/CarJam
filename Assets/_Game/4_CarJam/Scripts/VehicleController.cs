@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
@@ -35,6 +34,7 @@ namespace _Game._4_CarJam.Scripts
         private Dictionary<Vector2Int, Seat> _dictSeat = new();
         public List<Vector3> RoadPositions = new List<Vector3>();
         public int NextTargetPointIndex = 1;
+        public Sequence MovementSequence;
 
         private void OnEnable()
         {
@@ -137,7 +137,7 @@ namespace _Game._4_CarJam.Scripts
             }
         }
 
-        public Tween MoveToPosition(Vector3 position,Vector3 oldPosition)
+        public Tween MoveToPosition(Vector3 position, Vector3 oldPosition)
         {
             position.y = transform.position.y;
             oldPosition.y = transform.position.y;

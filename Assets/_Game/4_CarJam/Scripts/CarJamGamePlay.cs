@@ -23,7 +23,6 @@ namespace _Game._4_CarJam.Scripts
         private CharacterController _selectedCharacter;
         private GameElement _lastStateChangedGameElement;
 
-        private List<Tween> _listSequences = new List<Tween>();
         private List<Tween> _listCheckCompletedTweens = new List<Tween>();
 
         public override void Initialize(BaseGamePlayStartArgs baseGamePlayStartArgs)
@@ -110,7 +109,7 @@ namespace _Game._4_CarJam.Scripts
         {
             Craft.Get<CraftInputSystem>().UserButtonDown -= OnUserButtonDown;
             Craft.Get<CraftTimeSystem>().Dispatcher.Unsubscribe(TimeIntervals.OnSecond, CheckLevelComplete);
-            _listSequences.ForEach(x => x?.Kill());
+            _vehicleList.ForEach(x => x.MovementSequence?.Kill());
             _listCheckCompletedTweens.ForEach(x => x?.Kill());
         }
 
@@ -158,9 +157,17 @@ namespace _Game._4_CarJam.Scripts
                 }
             }
 
+            if (vehicle.MovementSequence != null && vehicle.MovementSequence.IsPlaying())
+            {
+                return;
+            }
+
+            vehicle.MovementSequence?.Kill();
+
             float angle = 0;
             Sequence roadSequence = DOTween.Sequence();
             Vector3 oldPosition = vehicle.transform.position;
+
             while (vehicle.NextTargetPointIndex < vehicle.RoadPositions.Count)
             {
                 Vector3 targetPosition = vehicle.RoadPositions[vehicle.NextTargetPointIndex];
@@ -200,7 +207,7 @@ namespace _Game._4_CarJam.Scripts
             roadSequence.AppendCallback(CheckLevelComplete);
             float duration1 = roadSequence.Duration();
             _listCheckCompletedTweens.Add(DOVirtual.DelayedCall(duration1, CheckLevelComplete));
-            _listSequences.Add(roadSequence);
+            vehicle.MovementSequence = roadSequence;
         }
 
         #region Input Handling
