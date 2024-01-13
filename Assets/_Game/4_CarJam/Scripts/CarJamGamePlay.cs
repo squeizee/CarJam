@@ -204,13 +204,14 @@ namespace _Game._4_CarJam.Scripts
                     if (newTargetPosition == Vector3.zero)
                     {
                         roadSequence.AppendCallback(vehicle.OnWaiting);
-
+                        vehicle.MovementSequence = roadSequence;
                         return;
                     }
 
                     vehicle.PositionInGrid = gridController.GetCellPosition(newTargetPosition);
                     roadSequence.Append(vehicle.MoveToPosition(newTargetPosition, oldPosition));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
+                    vehicle.MovementSequence = roadSequence;
                     return;
                 }
             }

@@ -137,15 +137,17 @@ namespace _Game._4_CarJam.Scripts
             //     .SetEase(Ease.Linear).OnComplete(
             //         () => { emoji.gameObject.SetActive(false); });
             //
+            if (emoji.gameObject.activeSelf == false)
+            {
+                emoji.gameObject.SetActive(true);
+                //  emoji.localPosition = _indicatorDefaultPosition - Vector3.up * 0.5f;
+                emoji.DOKill();
+                emoji.localScale = Vector3.one * 0.1f;
 
-            emoji.gameObject.SetActive(true);
-            //  emoji.localPosition = _indicatorDefaultPosition - Vector3.up * 0.5f;
-            emoji.DOKill();
-            emoji.localScale = Vector3.one * 0.1f;
-
-            emoji.DOScale(0.15f, 0.3f).SetLoops(repeat, LoopType.Yoyo)
-                .SetEase(Ease.Linear).OnUpdate((() => { emoji.LookAt(Camera.main.transform); }))
-                .OnComplete(() => emoji.gameObject.SetActive(false));
+                emoji.DOScale(0.15f, 0.45f).SetLoops(repeat, LoopType.Yoyo)
+                    .SetEase(Ease.Linear).OnUpdate((() => { emoji.LookAt(Camera.main.transform); }))
+                    .OnComplete(() => emoji.gameObject.SetActive(false));
+            }
         }
 
         public virtual void HideEmoji()
