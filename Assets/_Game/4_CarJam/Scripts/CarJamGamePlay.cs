@@ -173,9 +173,22 @@ namespace _Game._4_CarJam.Scripts
                 Vector3 targetPosition = vehicle.RoadPositions[vehicle.NextTargetPointIndex];
                 Vector3 direction = targetPosition - vehicle.RoadPositions[vehicle.NextTargetPointIndex - 1];
                 angle = Vector3.SignedAngle(direction, Vector3.forward, Vector3.down);
+                bool isLastPoint = vehicle.NextTargetPointIndex == vehicle.RoadPositions.Count - 1;
+                bool shouldCheckExtraDistance = false;
+                if (isLastPoint == false)
+                {
+                    Vector3 nextDirection = vehicle.RoadPositions[vehicle.NextTargetPointIndex + 1] - targetPosition;
+                    float nextAngle = Vector3.SignedAngle(nextDirection, direction, Vector3.down);
+                    nextAngle = nextAngle < 0 ? nextAngle + 360 : nextAngle;
+                    nextAngle = nextAngle % 360;
+                    nextAngle = Mathf.Round(nextAngle / 90) * 90;
+                    shouldCheckExtraDistance = nextAngle == 270;
+                    Debug.Log(nextAngle);
+                    Debug.Log(shouldCheckExtraDistance);
+                }
 
                 if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, targetPosition,
-                        out var newTargetPosition))
+                        out var newTargetPosition, shouldCheckExtraDistance))
                 {
                     vehicle.PositionInGrid = gridController.GetCellPosition(targetPosition);
                     roadSequence.AppendCallback(vehicle.OnMove);

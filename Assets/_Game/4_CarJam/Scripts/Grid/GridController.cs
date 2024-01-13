@@ -111,7 +111,7 @@ namespace _Game._4_CarJam.Scripts
         }
 
         public bool CanVehicleReachIntersectionPoint(VehicleController vehicle, float angle, Vector3 intersection,
-            out Vector3 newIntersection)
+            out Vector3 newIntersection, bool shouldCheckNext)
         {
             newIntersection = Vector3.zero;
 
@@ -122,6 +122,7 @@ namespace _Game._4_CarJam.Scripts
             var neighbor = Vector2Int.zero;
             var distance = 0;
             int intAngle = Mathf.RoundToInt(angle) < 0 ? Mathf.RoundToInt(angle) + 360 : Mathf.RoundToInt(angle);
+            int extraDistance = shouldCheckNext ? 1 : 0;
 
             switch (intAngle)
             {
@@ -147,10 +148,12 @@ namespace _Game._4_CarJam.Scripts
                     break;
             }
 
+            distance += extraDistance;
+
             for (int i = 1; i < distance + 1; i++)
             {
                 var point = vehiclePosition + direction * i;
-                
+
                 if (CanVehicleMove(point) && CanVehicleMove(point + neighbor))
                 {
                     newIntersection = GetWorldPosition(point);
@@ -267,6 +270,7 @@ namespace _Game._4_CarJam.Scripts
             ElementType[,] elementMap = GetMapDataElement();
             return elementMap[point.x, point.y] == ElementType.Ground;
         }
+
         public bool IsPointInGrid(Vector2Int point)
         {
             return point.x >= _minPoint.x && point.x <= _maxPoint.x && point.y >= _minPoint.y && point.y <= _maxPoint.y;
