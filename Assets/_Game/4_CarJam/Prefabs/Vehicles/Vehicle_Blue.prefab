@@ -1195,9 +1195,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8129084256055800717}
-  m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 0.62, y: 2, z: -1.4}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalRotation: {x: -0.33999765, y: 0.6270837, z: 0.35171866, w: 0.60618615}
+  m_LocalPosition: {x: 0.62, y: 2.535, z: -0.813}
+  m_LocalScale: {x: 0.12362122, y: 0.12362122, z: 0.12362122}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6347617376403802637}
@@ -1311,12 +1311,15 @@ MonoBehaviour:
   dimension: {x: 2, y: 2}
   emoji: {fileID: 8510455325993264620}
   _state: 0
+  PositionInGrid: {x: 0, y: 0}
   vehicleView: {fileID: 5257840215229610858}
   _centerPosition: {fileID: 5794086170765039758}
   vehicleViewParent: {fileID: 8803556893513639260}
   seats:
   - {fileID: 1920002552000059782}
   - {fileID: 3234360436070020934}
+  RoadPositions: []
+  NextTargetPointIndex: 1
 --- !u!114 &5257840215229610858
 MonoBehaviour:
   m_ObjectHideFlags: 0

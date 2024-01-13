@@ -130,12 +130,22 @@ namespace _Game._4_CarJam.Scripts
 
         public virtual void ShowEmoji(int repeat = 4)
         {
-            // look camera 
-            emoji.LookAt(Camera.main.transform);
+            // // look camera 
+            // emoji.LookAt(Camera.main.transform);
+            // emoji.gameObject.SetActive(true);
+            // emoji.DOLocalMoveY(emoji.localPosition.y + .5f, 0.5f).SetLoops(repeat, LoopType.Yoyo)
+            //     .SetEase(Ease.Linear).OnComplete(
+            //         () => { emoji.gameObject.SetActive(false); });
+            //
+
             emoji.gameObject.SetActive(true);
-            emoji.DOLocalMoveY(emoji.localPosition.y + .5f, 0.5f).SetLoops(repeat, LoopType.Yoyo)
-                .SetEase(Ease.Linear).OnComplete(
-                    () => { emoji.gameObject.SetActive(false); });
+            //  emoji.localPosition = _indicatorDefaultPosition - Vector3.up * 0.5f;
+            emoji.DOKill();
+            emoji.localScale = Vector3.one * 0.1f;
+
+            emoji.DOScale(0.15f, 0.3f).SetLoops(repeat, LoopType.Yoyo)
+                .SetEase(Ease.Linear).OnUpdate((() => { emoji.LookAt(Camera.main.transform); }))
+                .OnComplete(() => emoji.gameObject.SetActive(false));
         }
 
         public virtual void HideEmoji()
