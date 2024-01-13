@@ -146,7 +146,7 @@ namespace _Game._4_CarJam.Scripts
             _selectedCharacter = null;
         }
 
-        
+
         private void OnVehicleFull(VehicleController vehicle)
         {
             if (vehicle.RoadPositions.Count == 0)
@@ -166,7 +166,7 @@ namespace _Game._4_CarJam.Scripts
                 Vector3 targetPosition = vehicle.RoadPositions[vehicle.NextTargetPointIndex];
                 Vector3 direction = targetPosition - vehicle.RoadPositions[vehicle.NextTargetPointIndex - 1];
                 angle = Vector3.SignedAngle(direction, Vector3.forward, Vector3.down);
-                
+
                 if (gridController.CanVehicleReachIntersectionPoint(vehicle, angle, targetPosition,
                         out var newTargetPosition))
                 {
@@ -180,32 +180,27 @@ namespace _Game._4_CarJam.Scripts
                 else
                 {
                     roadSequence.Append(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
-                    
+
                     if (newTargetPosition == Vector3.zero)
                     {
                         roadSequence.AppendCallback(vehicle.OnWaiting);
-                        
+
                         return;
                     }
-                    
+
                     vehicle.PositionInGrid = gridController.GetCellPosition(newTargetPosition);
                     roadSequence.Append(vehicle.MoveToPosition(newTargetPosition, oldPosition));
-                    roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
                     roadSequence.AppendCallback(vehicle.OnWaiting);
                     return;
                 }
             }
 
             vehicle.PositionInGrid = new Vector2Int(13, 13);
-            //roadSequence.AppendCallback(environmentController.PlayParticles);
             roadSequence.AppendCallback(vehicle.OnComplete);
-            // check completed
             roadSequence.AppendCallback(CheckLevelComplete);
-
             float duration1 = roadSequence.Duration();
             _listCheckCompletedTweens.Add(DOVirtual.DelayedCall(duration1, CheckLevelComplete));
             _listSequences.Add(roadSequence);
-            
         }
 
         #region Input Handling

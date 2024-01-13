@@ -146,7 +146,13 @@ namespace _Game._4_CarJam.Scripts
 
         public GameElementDirection GetElementDirection()
         {
-            return transform.eulerAngles.y switch
+            float angle = transform.eulerAngles.y;
+            if (angle < 0)
+                angle += 360;
+            angle = angle % 360;
+            angle = Mathf.Round(angle / 90) * 90;
+
+            return angle switch
             {
                 0 => GameElementDirection.Up,
                 90 => GameElementDirection.Right,
