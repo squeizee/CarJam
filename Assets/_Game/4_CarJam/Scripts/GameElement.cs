@@ -53,9 +53,9 @@ namespace _Game._4_CarJam.Scripts
             get => _state;
             protected set
             {
-                if(_state == value) 
+                if (_state == value)
                     return;
-                
+
                 _state = value;
                 OnGameElementStateChanged?.Invoke(this);
             }
@@ -75,7 +75,7 @@ namespace _Game._4_CarJam.Scripts
         public List<Vector2Int> GetPointList()
         {
             List<Vector2Int> pointList = new List<Vector2Int>();
-            
+
             int xSign = 0, ySign = 0;
             int dim1 = 0, dim2 = 0;
 
@@ -111,13 +111,14 @@ namespace _Game._4_CarJam.Scripts
             {
                 for (int y = 0; y < dim2; y++)
                 {
-                    pointList.Add(new Vector2Int(PositionInGrid.x + x * xSign,PositionInGrid.y+y * ySign));
+                    pointList.Add(new Vector2Int(PositionInGrid.x + x * xSign, PositionInGrid.y + y * ySign));
                 }
             }
 
             return pointList;
         }
-        public virtual void Initialize(Vector2Int positionInGrid,Vector3 worldPos, Action<GameElement> onStateChanged)
+
+        public virtual void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action<GameElement> onStateChanged)
         {
             transform.position = worldPos;
             OnGameElementStateChanged += onStateChanged;
@@ -129,25 +130,9 @@ namespace _Game._4_CarJam.Scripts
 
         public virtual void ShowEmoji(int repeat = 4)
         {
-            switch (GetElementDirection())
-            {
-                case (GameElementDirection.Up):
-                    emoji.DOLocalRotate(new Vector3(70, 0, 0), 0);
-                    break;
-                case (GameElementDirection.Down):
-                    emoji.DOLocalRotate(new Vector3(-70, 0, 0), 0);
-                    break;
-                case (GameElementDirection.Left):
-                    emoji.DOLocalRotate(new Vector3(70, 90, 0), 0);
-                    break;
-                case (GameElementDirection.Right):
-                    emoji.DOLocalRotate(new Vector3(70, -90, 0), 0);
-                    break;
-            }
-
+            // look camera 
+            emoji.LookAt(Camera.main.transform);
             emoji.gameObject.SetActive(true);
-
-
             emoji.DOLocalMoveY(emoji.localPosition.y + .5f, 0.5f).SetLoops(repeat, LoopType.Yoyo)
                 .SetEase(Ease.Linear).OnComplete(
                     () => { emoji.gameObject.SetActive(false); });
@@ -177,8 +162,8 @@ namespace _Game._4_CarJam.Scripts
 
         public virtual void OnMove()
         {
-            
         }
+
         public virtual void Stop()
         {
         }
