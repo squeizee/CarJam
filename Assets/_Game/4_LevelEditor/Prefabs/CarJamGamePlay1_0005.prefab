@@ -48,9 +48,9 @@ MonoBehaviour:
   - objectType: 1
     position: {x: 2, y: 4}
   - objectType: 0
-    position: {x: 5, y: 5}
+    position: {x: 3, y: 6}
   - objectType: 1
-    position: {x: 4, y: 4}
+    position: {x: 4, y: 5}
   - objectType: 2
     position: {x: 3, y: 3}
   isComplete: 0
@@ -1504,7 +1504,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8981213888157274184, guid: c985d902e6c0aa54d8c98cbb72bc2562, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.5
+      value: 5.8
       objectReference: {fileID: 0}
     - target: {fileID: 8981213888157274184, guid: c985d902e6c0aa54d8c98cbb72bc2562, type: 3}
       propertyPath: m_LocalRotation.w
