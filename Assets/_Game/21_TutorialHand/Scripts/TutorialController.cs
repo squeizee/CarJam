@@ -9,7 +9,7 @@ namespace _Game._21_TutorialHand.Scripts
     public class TutorialController : MonoBehaviour
     {
         [SerializeField] private GridController _gridController;
-        [SerializeField] private List<Vector2Int> _tutorialHandPositionsInGrid;
+        [SerializeField] private List<TutorialPoints> _tutorialPointsList;
 
         public bool isComplete;
         
@@ -18,7 +18,7 @@ namespace _Game._21_TutorialHand.Scripts
         
         public void Initialize()
         {
-            _tutorialHandPositions = _gridController.GetWorldPosition(_tutorialHandPositionsInGrid);
+            //_tutorialHandPositions = _gridController.GetWorldPosition();
 
             _currentIndex = 0;
             Craft.Get<TutorialHandSystem>().ShowHand(_tutorialHandPositions[_currentIndex]);
@@ -36,7 +36,7 @@ namespace _Game._21_TutorialHand.Scripts
         }
         public bool IsCorrectPosition(Vector2Int position)
         {
-            return _tutorialHandPositionsInGrid[_currentIndex] == position;
+            return _tutorialPointsList[_currentIndex].position == position;
         }
     }
 
@@ -49,6 +49,6 @@ namespace _Game._21_TutorialHand.Scripts
             Character
         };
         public ObjectType objectType;
-        public Vector2Int position;
+        public Vector2 position;
     }
 }

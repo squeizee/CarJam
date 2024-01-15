@@ -250,7 +250,19 @@ namespace _Game._4_CarJam.Scripts
             {
                 // if (tutorialController != null)
                 // {
-                //     var x = tutorialController.IsCorrectPosition(gridController.GetCellPosition(obj));
+                //     if (tutorialController.isComplete == false)
+                //     {
+                //         var isCorrectPosition = tutorialController.IsCorrectPosition(gridController.GetCellPosition(obj));
+                //         if (isCorrectPosition == true)
+                //         {
+                //             tutorialController.Next();
+                //         }
+                //         else
+                //         {
+                //             return;
+                //         }
+                //     }
+                //    
                 // }
                 
                 OnObjectTouched(touchedGameElement);
