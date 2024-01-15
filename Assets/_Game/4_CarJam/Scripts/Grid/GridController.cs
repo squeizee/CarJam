@@ -290,7 +290,6 @@ namespace _Game._4_CarJam.Scripts
             return new Rect(_minPoint.x + transformPosition.x, _minPoint.y + transformPosition.z,
                 _maxPoint.x - _minPoint.x, _maxPoint.y - _minPoint.y);
         }
-        
 
         public GridItemView TryGetGridItemView(Vector2Int doorPosition, out GridItemView gridItemView)
         {

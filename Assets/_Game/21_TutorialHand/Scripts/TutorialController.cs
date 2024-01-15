@@ -16,15 +16,19 @@ namespace _Game._21_TutorialHand.Scripts
         private List<Vector3> _tutorialHandPositions = new();
         private int _currentIndex;
         
+        private GridController _gridController;
 
-        private Vector3 _groundOffset = new Vector3(.35f, 3f, -.9f);
-        private Vector3 _characterOffset = new Vector3(0,2f,0);
-        private Vector3 _vehicleOffset = new Vector3(0,1.5f,0);
+        private Vector3 _groundOffset = new Vector3(0, .5f, 0);
+        private Vector3 _characterOffset = new Vector3(0,1.75f,0);
+        private Vector3 _vehicleOffset = new Vector3(0,.5f,0);
+
+        private float _distance = 4f;
         
         public void Initialize(GridController gridController)
         {
+            _gridController = gridController;
             _tutorialHandPositions =
-                gridController.GetWorldPosition(_tutorialPointsList.Select(x => x.position).ToList());
+                _gridController.GetWorldPosition(_tutorialPointsList.Select(x => x.position).ToList());
 
             CalculateWithOffset();
             
@@ -47,49 +51,47 @@ namespace _Game._21_TutorialHand.Scripts
 
         public bool IsCorrectObject(TutorialPoints.ObjectType objectType, Vector2Int position)
         {
-            switch (objectType)
-            {
-                case TutorialPoints.ObjectType.Ground:
-                case TutorialPoints.ObjectType.Character:
-                    if (IsCorrectPosition(position))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-
-                case TutorialPoints.ObjectType.Vehicle:
-                    return true;
-            }
-
-            return false;
+            return _tutorialPointsList[_currentIndex].objectType == objectType && IsCorrectPosition(position);
         }
 
         public bool IsCorrectPosition(Vector2Int position)
         {
             return _tutorialPointsList[_currentIndex].position == position;
         }
-
+        
         private void CalculateWithOffset()
         {
+            Vector3 cameraPosition = Camera.main.transform.position;
+            
             //calculate position with offsets
             for (int i = 0; i < _tutorialPointsList.Count; i++)
             {
-                switch (_tutorialPointsList[i].objectType)
+                Vector3 offset = _tutorialPointsList[i].objectType switch
                 {
-                    case TutorialPoints.ObjectType.Ground:
-                        _tutorialHandPositions[i] = new Vector3(_tutorialHandPositions[i].x + _groundOffset.x
-                            , _groundOffset.y, _tutorialHandPositions[i].z + _groundOffset.z);
-                        break;
-                    case TutorialPoints.ObjectType.Character:
-                        _tutorialHandPositions[i] += _characterOffset;
-                        break;
-                    case TutorialPoints.ObjectType.Vehicle:
-                        _tutorialHandPositions[i] += _vehicleOffset;
-                        break;
-                }
+                    TutorialPoints.ObjectType.Ground => _groundOffset,
+                    TutorialPoints.ObjectType.Character => _characterOffset,
+                    TutorialPoints.ObjectType.Vehicle => _vehicleOffset,
+                    _ => Vector3.zero
+                };
+                
+                Vector3 targetPosition = _tutorialHandPositions[i] + offset;
+                Vector3 direction = cameraPosition - targetPosition;
+                direction.Normalize();
+                _tutorialHandPositions[i] = targetPosition + direction * _distance;
+                
+                // switch (_tutorialPointsList[i].objectType)
+                // {
+                //     case TutorialPoints.ObjectType.Ground:
+                //         _tutorialHandPositions[i] = new Vector3(_tutorialHandPositions[i].x + _groundOffset.x
+                //             , _groundOffset.y, _tutorialHandPositions[i].z + _groundOffset.z);
+                //         break;
+                //     case TutorialPoints.ObjectType.Character:
+                //         _tutorialHandPositions[i] += _characterOffset;
+                //         break;
+                //     case TutorialPoints.ObjectType.Vehicle:
+                //         _tutorialHandPositions[i] += _vehicleOffset;
+                //         break;
+                // }
             }
         }
     }

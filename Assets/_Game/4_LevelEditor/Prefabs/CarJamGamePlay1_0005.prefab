@@ -48,11 +48,11 @@ MonoBehaviour:
   - objectType: 1
     position: {x: 2, y: 4}
   - objectType: 0
-    position: {x: 2, y: 7}
+    position: {x: 5, y: 5}
   - objectType: 1
     position: {x: 4, y: 4}
   - objectType: 2
-    position: {x: 2, y: 3}
+    position: {x: 3, y: 3}
   isComplete: 0
 --- !u!1 &5927061507290680312
 GameObject:

@@ -48,7 +48,7 @@ MonoBehaviour:
   - objectType: 1
     position: {x: 4, y: 1}
   - objectType: 2
-    position: {x: 0, y: 2}
+    position: {x: 1, y: 3}
   isComplete: 0
 --- !u!1 &5867130052227840394
 GameObject:
