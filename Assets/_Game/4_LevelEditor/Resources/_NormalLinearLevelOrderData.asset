@@ -29,7 +29,6 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  LevelAssetReferences:
   - m_AssetGUID: 1621a3448bbeb46c9bf4233e9ffb66bd
     m_SubObjectName: 
     m_SubObjectType: 
@@ -38,6 +37,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  LevelAssetReferences:
   - m_AssetGUID: 8a9108cedf0e0463c926bbe284338d3f
     m_SubObjectName: 
     m_SubObjectType: 
