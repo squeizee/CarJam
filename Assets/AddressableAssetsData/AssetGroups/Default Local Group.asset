@@ -121,6 +121,10 @@ MonoBehaviour:
     m_Address: Assets/_Game/4_LevelEditor/Prefabs/CarJamGamePlay1_0027.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 928db3874fc9643b1915b37eebc84e68
+    m_Address: Assets/_Game/4_LevelEditor/Prefabs/CarJamGamePlay1_0028.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 88fad8ecf943ca6468cd25e2cff23ca0, type: 2}
   m_SchemaSet:
