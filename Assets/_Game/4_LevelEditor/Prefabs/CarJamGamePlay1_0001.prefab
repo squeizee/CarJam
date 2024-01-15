@@ -1,5 +1,55 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &404146212983808038
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 837945730107675868}
+  - component: {fileID: 7771523459729316644}
+  m_Layer: 0
+  m_Name: TutorialController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &837945730107675868
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404146212983808038}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4008703249454542610}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7771523459729316644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 404146212983808038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f287730c60c74b57a8f11847c698cfa2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tutorialPointsList:
+  - objectType: 1
+    position: {x: 4, y: 1}
+  - objectType: 2
+    position: {x: 0, y: 2}
+  isComplete: 0
 --- !u!1 &5867130052227840394
 GameObject:
   m_ObjectHideFlags: 0
@@ -585,6 +635,7 @@ Transform:
   - {fileID: 4959728540902086408}
   - {fileID: 2229724939143733232}
   - {fileID: 5551974998487693280}
+  - {fileID: 837945730107675868}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -609,6 +660,7 @@ MonoBehaviour:
   gridController: {fileID: 8108633347843610916}
   roadController: {fileID: 0}
   environmentController: {fileID: 0}
+  tutorialController: {fileID: 0}
 --- !u!1001 &196933087764347146
 PrefabInstance:
   m_ObjectHideFlags: 0

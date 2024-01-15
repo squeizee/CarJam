@@ -47,15 +47,22 @@ namespace _Game._4_CarJam.Scripts
             SubscribeEvents();
             GamePlayState = GamePlayState.Started;
             CreateEnvironment();
-
+            GetTutorialController();
+            
             CarJamCameraController.Instance.UpdateCameraPosition(gridController.GetWorldRect());
 
-            if (tutorialController != null)
-            {
-                tutorialController.Initialize();
-            }
+            
         }
 
+        private void GetTutorialController()
+        {
+            tutorialController = GetComponentInChildren<TutorialController>();
+            
+            if (tutorialController != null)
+            {
+                tutorialController.Initialize(gridController);
+            }
+        }
         // create environment
         private void CreateEnvironment()
         {
@@ -248,29 +255,32 @@ namespace _Game._4_CarJam.Scripts
             if (Craft.Get<CraftInputSystem>()
                 .GetGameObjectUnderMouse(LayerMask.GetMask("GameElement"), out var touchedGameElement, out var hit))
             {
-                // if (tutorialController != null)
-                // {
-                //     if (tutorialController.isComplete == false)
-                //     {
-                //         var isCorrectPosition = tutorialController.IsCorrectPosition(gridController.GetCellPosition(obj));
-                //         if (isCorrectPosition == true)
-                //         {
-                //             tutorialController.Next();
-                //         }
-                //         else
-                //         {
-                //             return;
-                //         }
-                //     }
-                //    
-                // }
-                
                 OnObjectTouched(touchedGameElement);
             }
             else if (Craft.Get<CraftInputSystem>()
                          .GetGameObjectUnderMouse(LayerMask.GetMask("Ground"), out var touchedGround, out var hit2)
                      && _selectedCharacter)
             {
+                #region TutorialHand
+
+                if (tutorialController != null && tutorialController.isComplete == false)
+                {
+                    var groundObj = touchedGround.GetComponentInParent<GridItemView>();
+                    
+                    var isCorrectPosition = tutorialController.IsCorrectObject(TutorialPoints.ObjectType.Ground,groundObj.PositionInGrid);
+                    
+                    if (isCorrectPosition)
+                    {
+                        tutorialController.Next();
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                #endregion
+                
                 if (gridController.MoveToPosition(_selectedCharacter, touchedGround.transform.position,
                         out Sequence sequence))
                 {
@@ -290,6 +300,25 @@ namespace _Game._4_CarJam.Scripts
         private void OnObjectTouched(GameObject touchedObject)
         {
             var gameElement = touchedObject.GetComponentInParent<GameElement>();
+            
+            #region TutorialHand
+
+            if (tutorialController != null && tutorialController.isComplete == false)
+            {
+                var objType = gameElement is VehicleController ? TutorialPoints.ObjectType.Vehicle : TutorialPoints.ObjectType.Character;
+                var isCorrectPosition = tutorialController.IsCorrectObject(objType,gameElement.PositionInGrid);
+                    
+                if (isCorrectPosition)
+                {
+                    tutorialController.Next();
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            #endregion
 
             switch (gameElement)
             {
