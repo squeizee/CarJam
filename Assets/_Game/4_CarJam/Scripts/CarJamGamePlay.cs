@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using _Game._0_CraftCore.Scripts.Core;
+using _Game._21_TutorialHand.Scripts;
 using _Game._3_GamePlay.Scripts;
 using _Game.Library.CraftTime;
 using DG.Tweening;
@@ -15,6 +16,7 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private GridController gridController;
         [SerializeField] private RoadController roadController;
         [SerializeField] private EnvironmentController environmentController;
+        [SerializeField] private TutorialController tutorialController;
 
 
         private List<GameElement> _gameElementList;
@@ -47,6 +49,11 @@ namespace _Game._4_CarJam.Scripts
             CreateEnvironment();
 
             CarJamCameraController.Instance.UpdateCameraPosition(gridController.GetWorldRect());
+
+            if (tutorialController != null)
+            {
+                tutorialController.Initialize();
+            }
         }
 
         // create environment
@@ -241,6 +248,11 @@ namespace _Game._4_CarJam.Scripts
             if (Craft.Get<CraftInputSystem>()
                 .GetGameObjectUnderMouse(LayerMask.GetMask("GameElement"), out var touchedGameElement, out var hit))
             {
+                // if (tutorialController != null)
+                // {
+                //     var x = tutorialController.IsCorrectPosition(gridController.GetCellPosition(obj));
+                // }
+                
                 OnObjectTouched(touchedGameElement);
             }
             else if (Craft.Get<CraftInputSystem>()

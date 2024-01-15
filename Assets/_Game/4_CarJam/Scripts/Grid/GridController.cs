@@ -238,7 +238,10 @@ namespace _Game._4_CarJam.Scripts
         {
             return grid.GetCellCenterWorld(new Vector3Int(pos.x, pos.y, 0));
         }
-
+        public List<Vector3> GetWorldPosition(List<Vector2Int> points)
+        {
+            return points.ConvertAll(GetWorldPosition);
+        }
         public Vector2Int GetMaxPoint(Vector2Int offset = default)
         {
             return _maxPoint + offset;
@@ -287,6 +290,7 @@ namespace _Game._4_CarJam.Scripts
             return new Rect(_minPoint.x + transformPosition.x, _minPoint.y + transformPosition.z,
                 _maxPoint.x - _minPoint.x, _maxPoint.y - _minPoint.y);
         }
+        
 
         public GridItemView TryGetGridItemView(Vector2Int doorPosition, out GridItemView gridItemView)
         {
