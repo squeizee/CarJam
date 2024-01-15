@@ -216,7 +216,7 @@ namespace _Game._4_CarJam.Scripts
                 }
             }
 
-            vehicle.PositionInGrid = new Vector2Int(13, 13);
+            vehicle.PositionInGrid = new Vector2Int(33, 33);
             roadSequence.AppendCallback(vehicle.OnComplete);
             roadSequence.AppendCallback(CheckLevelComplete);
             float duration1 = roadSequence.Duration();

@@ -21,7 +21,7 @@ namespace _Game._4_CarJam.Scripts
         [SerializeField] private Transform groundTileMapParent;
 
         private List<GridItemView> _listGridItemViews;
-        private Vector2Int _mapSize = new Vector2Int(15, 15);
+        private Vector2Int _mapSize = new Vector2Int(35, 35);
         private List<GameElement> _listGameElements;
 
         private Vector2Int _maxPoint;

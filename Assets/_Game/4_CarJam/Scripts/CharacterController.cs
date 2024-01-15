@@ -123,7 +123,7 @@ namespace _Game._4_CarJam.Scripts
         public void OnSeatReserved()
         {
             mainCollider.enabled = false;
-            PositionInGrid = new Vector2Int(14, 14);
+            PositionInGrid = new Vector2Int(34, 34);
         }
 
         public void OnComplete()
