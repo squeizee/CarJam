@@ -33,8 +33,12 @@ namespace _Game._4_CarJam.Scripts
         private Seat[] _listSeats;
         private Dictionary<Vector2Int, DoorSide> _dictDoor = new();
         private Dictionary<Vector2Int, Seat> _dictSeat = new();
+
+        
         public List<Vector3> RoadPositions = new List<Vector3>();
         public int NextTargetPointIndex = 1;
+
+        public Collider mainCollider;
 
         private void OnEnable()
         {
@@ -47,7 +51,7 @@ namespace _Game._4_CarJam.Scripts
             {
                 vehicleViewParent.transform.DOComplete();
                 vehicleViewParent.transform.DOShakeRotation(.3f, 4.5f);
-            };
+            };  
         }
 
         public override void Initialize(Vector2Int positionInGrid, Vector3 worldPos, Action<GameElement> onStateChanged)
@@ -57,8 +61,8 @@ namespace _Game._4_CarJam.Scripts
             SetDoorPositions();
             _listSeats = GetComponentsInChildren<Seat>().ToArray();
             SetSeatPositions();
-
             UpdateColor();
+            bounds = mainCollider.bounds;
         }
 
         public void UpdateColor()

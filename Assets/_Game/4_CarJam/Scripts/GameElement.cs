@@ -66,12 +66,22 @@ namespace _Game._4_CarJam.Scripts
         public Vector2Int Dimension { get; protected set; }
 
         public Vector2Int PositionInGrid;
-
+        public Bounds bounds;
         public bool IsPointInVehicle(Vector2Int point)
         {
             return GetPointList().Contains(point);
         }
 
+        
+        public virtual void Initialize(Vector2Int positionInGrid,Vector3 worldPos, Action<GameElement> onStateChanged)
+        {
+            transform.position = worldPos;
+            OnGameElementStateChanged += onStateChanged;
+            GameElementColor = color;
+            Offset = offset;
+            Dimension = dimension;
+            PositionInGrid = positionInGrid;
+        }
         public List<Vector2Int> GetPointList()
         {
             List<Vector2Int> pointList = new List<Vector2Int>();
@@ -117,16 +127,11 @@ namespace _Game._4_CarJam.Scripts
 
             return pointList;
         }
-        public virtual void Initialize(Vector2Int positionInGrid,Vector3 worldPos, Action<GameElement> onStateChanged)
-        {
-            transform.position = worldPos;
-            OnGameElementStateChanged += onStateChanged;
-            GameElementColor = color;
-            Offset = offset;
-            Dimension = dimension;
-            PositionInGrid = positionInGrid;
-        }
 
+        public Bounds GetBounds()
+        {
+            return bounds;
+        }
         public virtual void ShowEmoji(int repeat = 4)
         {
             switch (GetElementDirection())

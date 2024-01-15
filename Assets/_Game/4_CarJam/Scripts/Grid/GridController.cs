@@ -211,7 +211,9 @@ namespace _Game._4_CarJam.Scripts
             foreach (var gameElement in _listGameElements.Where(gameElement =>
                          gameElement.State is not GameElement.GameElementState.Completed))
             {
-                gameElement.GetPointList().ForEach(point =>
+                var bounds = FindPointsInBounds(gameElement.GetBounds());
+                
+                bounds.ForEach(point =>
                 {
                     //check x,y in range
                     if (point.x < 0 || point.x >= _mapSize.x || point.y < 0 || point.y >= _mapSize.y)
@@ -223,6 +225,27 @@ namespace _Game._4_CarJam.Scripts
             return elementMap;
         }
 
+        private List<Vector2Int> FindPointsInBounds(Bounds bounds)
+        {
+            List<Vector2Int> points = new List<Vector2Int>();
+            var min = WorldToGridPosition(bounds.min);
+            var max = WorldToGridPosition(bounds.max);
+
+            if (min == max)
+            {
+                return new List<Vector2Int>() {min};
+            }
+            
+            for (int x = min.x; x < max.x; x++)
+            {
+                for (int y = min.y; y < max.y; y++)
+                {
+                    points.Add(new Vector2Int(x, y));
+                }
+            }
+
+            return points;
+        }
         public Vector2Int GetCellPosition(Vector3 pos)
         {
             var cellPosition = grid.WorldToCell(pos);

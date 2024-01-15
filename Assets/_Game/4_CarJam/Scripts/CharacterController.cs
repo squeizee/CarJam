@@ -49,6 +49,7 @@ namespace _Game._4_CarJam.Scripts
             base.Initialize(positionInGrid, worldPos, onStateChanged);
             Stop();
             _indicatorDefaultPosition = indicator.localPosition;
+            bounds = mainCollider.bounds;
         }
 
         public Sequence MoveAlongPath(List<Point> path, bool isSetPosition = true)
