@@ -18,13 +18,13 @@ MonoBehaviour:
   appIds:
   - 1910731689342027
   appLabels:
-  - CarJam
+  - Car Jam 3D
   cookie: 1
   logging: 1
   status: 1
   xfbml: 0
   frictionlessRequests: 1
-  androidKeystorePath: 
+  androidKeystorePath: user.keystore
   iosURLSuffix: 
   appLinkSchemes:
   - list: []
