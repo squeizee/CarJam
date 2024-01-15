@@ -207,13 +207,13 @@ namespace _Game._4_CarJam.Scripts
                     vehicle.PositionInGrid = gridController.GetCellPosition(targetPosition);
                     roadSequence.AppendCallback(vehicle.OnMove);
                     roadSequence.Append(vehicle.MoveToPosition(targetPosition, oldPosition));
-                    roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+                    roadSequence.Join(vehicle.transform.DORotate(angle * Vector3.up, 0.2f).SetEase(Ease.Linear));
                     vehicle.NextTargetPointIndex++;
                     oldPosition = targetPosition;
                 }
                 else
                 {
-                    roadSequence.Append(vehicle.transform.DORotate(angle * Vector3.up, 0.1f).SetEase(Ease.Linear));
+                    roadSequence.Append(vehicle.transform.DORotate(angle * Vector3.up, 0.2f).SetEase(Ease.Linear));
 
                     if (newTargetPosition == Vector3.zero)
                     {
